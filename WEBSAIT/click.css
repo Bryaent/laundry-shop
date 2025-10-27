@@ -1,0 +1,146 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ html,body{
+    background: url("servicebg.png") no-repeat center center/cover;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif; 
+    
+}
+header{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: #0088cc;   
+    color: white;         
+    text-align: center;    /* Pantayin ang laman sa gitna horizontally */
+    padding: 10px;         /* Space sa loob ng header (lahat sides) */
+    font-family: "Poppins", sans-serif;
+   
+}
+
+header h1 button{
+    font-size: 15px;       
+    margin-bottom: 5px;    /* Space sa ilalim ng h1 */
+}
+
+header button{
+    background: white;    
+    color: black;       
+    border: none;          /* Alisin ang border */
+    padding: 5px 15px;     /* Vertical at horizontal na space sa loob ng button */
+    cursor: pointer;       /* Magiging pointer (kamay) ang mouse kapag naka-hover */
+    border-radius: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bolder;
+}
+header button:hover{
+    color: #0088cc;
+}
+
+.logo {
+    box-sizing: border-box;
+    width: 100%;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+}
+
+.logo img {
+    position: relative;
+    top: -20px;
+    left: 3rem;
+   display: block;
+   width: 110px;
+   height: 100px;
+   box-sizing: border-box;
+}
+
+nav{
+   background: white;
+   text-align: center;
+   padding: 10px;
+   border-bottom: 1px solid #ddd;
+}
+
+nav ul{
+   
+   display: flex;
+   justify-content: center;
+   gap: 80px;
+   list-style: none;
+
+}
+
+nav a{
+   text-decoration: none;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+nav a:hover{
+    color:  #0088cc;
+}
+.question{
+    margin-right: 100px;
+}
+.question h2{
+    display: flex;
+    font-size: 2em;
+    margin-top: 60px;
+    justify-content: center;
+    text-align: center;
+    color: black;
+    
+}
+.question p{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+}
+.container{
+    margin: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 90px;
+   
+}
+
+.container .box1{
+    background: white;
+    text-align: center;
+    height: 170px;
+     width: 420px;
+    border-radius: 20px;
+    font-size: 26px;
+}
+.container .box1 h3{
+    padding-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+.container .box2 h3{
+    padding-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+.container .box2{
+    background: white;
+    text-align: center;
+    height: 170px;
+     width: 420px;
+    border-radius: 20px;
+    font-size: 2em;
+}
+.container button{
+    background: none;   /* PARA MA DEFAULT YUNG BUTTON*/
+    box-shadow: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
