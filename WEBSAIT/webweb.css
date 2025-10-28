@@ -387,3 +387,130 @@ p {
   height: 100px;
   text-align: center;
 }
+
+/* === Main Layout === */
+.services-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* === Small Service Boxes === */
+.service-box {
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  transition: transform 0.3s ease;
+}
+
+.service-box:hover {
+  transform: translateY(-5px);
+}
+
+.service-box img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.service-box h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.service-box .desc {
+  font-size: 14px;
+  color: #444;
+  margin: 8px 0 12px 0;
+  line-height: 1.4;
+}
+
+.service-box p:last-child {
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #007bff;
+  margin-top: 5px;
+  border-top: 2px solid #000;
+  display: inline-block;
+  padding-top: 5px;
+}
+
+/* === Full Service Blue Box === */
+.full-service-box {
+  background: #007bff;
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px 25px;
+  width: 200px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.full-service-box h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.full-service-box h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.full-service-box ul {
+  list-style: none;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.full-service-box li::before {
+  content: "› ";
+  font-weight: bold;
+}
+
+.service-box {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 220px;              
+  height: 270px;             
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+}
+
+.service-box img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.service-box h4 {
+  font-size: 18px;
+  margin: 8px 0;
+}
+
+.service-box .desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+  flex-grow: 1;              
+}
+
+.service-box p:last-child {
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 8px;
+}
