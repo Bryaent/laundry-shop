@@ -111,7 +111,7 @@ nav a:hover{
    
 }
 
-.container .box1{
+.container .box{
     background: white;
     text-align: center;
     height: 170px;
@@ -119,17 +119,17 @@ nav a:hover{
     border-radius: 20px;
     font-size: 26px;
 }
-.container .box1 h3{
+.container .box h3{
     padding-top: 10px;
     margin-bottom: 10px;
     padding-bottom: 20px;
 }
-.container .box2 h3{
+.container .box h3{
     padding-top: 10px;
     margin-bottom: 10px;
     padding-bottom: 20px;
 }
-.container .box2{
+.container .box{
     background: white;
     text-align: center;
     height: 170px;
