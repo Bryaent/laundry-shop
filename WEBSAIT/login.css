@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url("franbg.png") no-repeat center center/cover;
+}
+.wrapper{
+    background: transparent;
+     width: 350px;
+     padding: 30px;
+    border: 2px solid   rgba(255, 255, 255, .2);
+     backdrop-filter: blur(10px); /* frosted glass effect */
+
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  color: white;
+}
+    
+
