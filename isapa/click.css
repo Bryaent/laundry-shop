@@ -1,0 +1,290 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+html, body {
+  background: url("servicebg.png") no-repeat center center / cover;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: center;   /* centers everything horizontally */
+  align-items: center;       /* centers vertically */
+  flex-wrap: wrap;
+  background: #0088cc;
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  gap: 8px; /* spacing between text and button */
+}
+
+/* Header text */
+header span {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* Black button */
+header button {
+  background: rgb(255, 255, 255);
+  color: #0088cc;
+  border: none;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+/* Hover effect */
+header button:hover {
+  background: #333;
+}
+
+
+/* NAVIGATION */
+nav {
+  background: white;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  list-style: none;
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+nav a:hover {
+  color: #0088cc;
+}
+
+/* QUESTION SECTION */
+.question {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.question h2 {
+  font-size: 2em;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.question p {
+  font-size: 20px;
+  color: #333;
+}
+
+/* SERVICE CONTAINER */
+.container {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 90px;
+  flex-wrap: wrap;
+}
+
+/* SERVICE BOXES */
+.container .box {
+  background: white;
+  text-align: center;
+  height: 170px;
+  width: 420px;
+  border-radius: 20px;
+  font-size: 1.5em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.container .box h3 {
+  padding-top: 20px;
+  margin-bottom: 10px;
+  color: #0088cc;
+}
+
+.container .box p {
+  font-size: 18px;
+  color: #333;
+}
+
+/* REMOVE DEFAULT BUTTON LOOK */
+.container button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* JS-RELATED STATES */
+.hidden {
+  display: none;
+}
+
+.active .box {
+  border: 3px solid #0088cc;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,136,204,0.3);
+}
+
+.step-btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: 2px solid #0088cc;
+  background: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step-btn:hover {
+  background: #0088cc;
+  color: white;
+}
+
+.step-btn.selected {
+  background: #0088cc;
+  color: white;
+}
+
+/* NEXT BUTTON */
+#nextBtn {
+  margin-top: 20px;
+  display: block;
+  background: #0088cc;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+#nextBtn:hover {
+  background: #006fa3;
+}
+
+.options-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+.option {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 30px 50px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.option:hover {
+  border: 2px solid #0088cc;
+  box-shadow: 0 0 15px rgba(0,136,204,0.2);
+}
+
+/* === Below Options Centered === */
+.below-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centers all horizontally */
+  text-align: center;
+  margin-top: 30px;
+}
+
+.below-options p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.step-buttons button {
+  background-color: #0088cc;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.step-buttons button:hover {
+  background-color: #006fa8;
+}
+
+.next-btn {
+  background-color: #0088cc;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.next-btn:hover {
+  background-color: #006fa8;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Selected state styling */
+.step-btn.selected {
+  background-color: #006fa8;
+  border: 2px solid #004f7f;
+}
+.step-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.step-btn {
+  border: 2px solid transparent;  /* no border initially */
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 0.3s ease;
+}
+
+.step-btn.selected {
+  border: 2px solid #0088cc;      /* blue border when selected */
+  color: #0070a800;
+}
+

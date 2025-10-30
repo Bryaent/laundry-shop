@@ -151,6 +151,7 @@ nav a:hover{
     text-align: center;
     padding: 80px;
     font-family:"Poppins", sans-serif;
+    
 
 }
 .services-header h2 {
@@ -191,8 +192,13 @@ nav a:hover{
   padding: 25px 20px;
   width: 180px;
   box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
 }
 
+.service-box:hover {
+ transform: translateY(-5px);
+}
+  
 .service-box img {
   width: 70px;
   margin-bottom: 10px;
@@ -211,36 +217,38 @@ nav a:hover{
   padding-top: 5px;
 }
 
-.service-full {
+.full-service-box {
   background: #0094ff;
   color: white;
   border-radius: 10px;
-  padding: 30px 25px;
+  padding: 10px 20px;
   text-align: left;
-  width: 240px;
+  width: 180px;
   box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
-}
+} 
 
-.service-full h3 {
+.full-service-box h3 {
   font-size: 20px;
   font-weight: 700;
 }
 
-.service-full h1 {
+.full-service-box h1 {
   font-size: 45px;
   font-weight: 800;
   margin: 10px 0 15px;
 }
 
-.service-full ul {
+.full-service-box ul {
   list-style: none;
   padding: 0;
 }
 
-.service-full li {
+.full-service-box li {
   font-size: 14px;
+  list-style: bullets;
   margin-bottom: 8px;
 }
+
 
 .book-btn {
   margin-top: 40px;
