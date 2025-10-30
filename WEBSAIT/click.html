@@ -3,56 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Service Selection</title>
     <link rel="stylesheet" href="click.css">
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   
     <header>
-         <div class="logo">
-    <img src="Logo.png" alt="img">
-   </div>
+        <div class="logo">
+            <img src="Logo.png" alt="img">
+        </div>
         <div>
-     <span>FAST AND FRESH LAUNDRY JUST
-      <a href="click.html">
-      <button>CLICK AWAY!</button>
-      </span>
-   </div>
+            <span>FAST AND FRESH LAUNDRY JUST
+                <a href="click.html">
+                    <button>CLICK AWAY!</button>
+                </a>
+            </span>
+        </div>
     </header>
+
     <nav>
-    <ul>
-        <li><a href="#home">HOME</a></li>
-        <li><a href="#franchise">FRANCHISE</a></li>
-        <li><a href="#service">SERVICE</a></li>
-        <li><a href="#aboutus">ABOUT US</a></li>
-        <li><a href="#contactus">CONTACT US</a></li>
-        
-    </ul>
+        <ul>
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#franchise">FRANCHISE</a></li>
+            <li><a href="#service">SERVICES</a></li>
+            <li><a href="#aboutus">ABOUT US</a></li>
+            <li><a href="#contactus">CONTACT US</a></li>
+        </ul>
     </nav>
-    <div class="question">
+
+    <div class="service-question">
         <h2>1. What service do you want?</h2>
-       <p> Pick one main option. If you choose Self-Select,<br>pick any combination of Wash, Dry, Fold</p>
+        <p>Pick one main option. If you choose Self-Select,<br>pick any combination of Wash, Dry, Fold.</p>
     </div>
     
-    <section id="kontainer">
-    <div class="container">
-        <button><div class="box">
-       <h3>Full Service</h3>
-        <p> We will handle <br> every for you</p>
-       
-       </div>
+    <div class="service-options-container">
+        <!-- Full Service -->
+        <button class="service-option-button">
+            <div class="service-option-box">
+                <h3>Full Service</h3>
+                <p>We will handle everything for you</p>
+            </div>
         </button>
-            <div class="container">
-      <button> <div class="box">
-       <h3>Self Select</h3>
-      <p> Choose whichever steps you<br> want below</p>
-      </div>
-    </div>
-</button>
-</section>
+
+        <!-- Self Select -->
+        <button class="service-option-button">
+            <div class="service-option-box">
+                <h3>Self-Select</h3>
+                <p>Choose whichever steps you want below</p>
+            </div>
+        </button>
     </div>
 
- <script src="web.js"></script>
+    <script src="web.js"></script>
 </body>
 </html>

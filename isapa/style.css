@@ -1,0 +1,303 @@
+*{
+    margin: 0px;
+    padding: 0%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+body{
+    font-family: "Poppins", sans-serif; 
+    line-height: 1.6; /* Taas ng pagitan ng mga linya ng text */
+}
+header{
+    background: #0088cc;   
+    color: white;         
+    text-align: center;    /* Pantayin ang laman sa gitna horizontally */
+    max-width: 100%;
+    
+}
+
+header h1{
+    font-size: 18px;       
+    margin-bottom: 5px;    /* Space sa ilalim ng h1 */
+}
+
+header button{
+    background: white;    
+     font-family: 'Poppins', sans-serif; 
+    color: black;       
+    border: none;          /* Alisin ang border */
+    padding: 5px 15px;     /* Vertical at horizontal na space sa loob ng button */
+    cursor: pointer;       /* Magiging pointer (kamay) ang mouse kapag naka-hover */
+    border-radius: 20px;
+    font-weight: bolder;
+}
+header button:hover{
+  color: #0094ff;
+}
+/* ========== NAVIGATION BAR ========== */
+nav{
+    background: white;               
+    padding: 10px;                    /* Space sa loob ng nav */
+    border-bottom: 1px solid #ddd;    /* Manipis na guhit sa ibaba (gray) */
+    text-align: center;               /* Pantayin sa gitna yung content */
+    margin-bottom: -10px;
+}
+
+nav ul{
+    list-style: none;                 /* Alisin yung bilog/number sa list items */
+    display: flex;                    /* Gawing flexbox layout */
+    justify-content: center;          /* Pantayin sa gitna horizontally */
+    gap: 80px;                        /* Distansya sa pagitan ng mga items */
+}
+
+nav a{
+    text-decoration: none;            /* Alisin yung underline ng links */
+    color: black;                     /* Kulay ng text ng links */
+    font-weight: bold;                /* Gawing bold yung text */
+}
+
+nav a:hover{
+    color: #0088cc;                   /* Kapag naka-hover, magiging blue */
+}
+
+#Home{
+    background: url(Home-Background.png) no-repeat center center/cover;
+    width: 100%;
+    height: 100vh;
+    padding-left: 150px;
+    padding-top: 200px;
+    
+    
+}
+#Home, .home-text {
+    
+    color: white;
+}
+
+.home-text h2 {
+   padding-bottom: 30px;
+   font-weight: bolder;
+   text-shadow: black;
+}
+
+#Franchise {
+    background: url(franbg.png) no-repeat center center/cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+}
+
+.franchise-content{
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  max-width: 1100px;
+}
+
+.franchise-logo {
+  width: 350px;
+  height: auto;
+}
+
+.franchise-text {
+  color: #000;
+  max-width: 600px;
+}
+
+.franchise-text h2 {
+  font-size: 28px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.franchise-text h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 20px;
+}
+
+.franchise-text p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.partner-btn {
+  background: #0077cc;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
+}
+
+.partner-btn:hover {
+  background: #005fa3;
+}
+
+
+#Service{
+    background: url(servicebg.png) no-repeat center center/cover;
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    padding: 80px;
+    font-family:"Poppins", sans-serif;
+
+}
+.services-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.services-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.services-header h3 span {
+  font-weight: 700;
+}
+
+.services-header p {
+  font-size: 15px;
+  color: #333;
+  max-width: 650px;
+  margin: 15px auto 40px;
+  font-family: "Poppins", sans-serif;
+}
+
+.services-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.service-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px 20px;
+  width: 180px;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+}
+
+.service-box img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.service-box h4 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.service-box p {
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-top: 2px solid #000;
+  padding-top: 5px;
+}
+
+.service-full {
+  background: #0094ff;
+  color: white;
+  border-radius: 10px;
+  padding: 30px 25px;
+  text-align: left;
+  width: 240px;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+}
+
+.service-full h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.service-full h1 {
+  font-size: 45px;
+  font-weight: 800;
+  margin: 10px 0 15px;
+}
+
+.service-full ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service-full li {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.book-btn {
+  margin-top: 40px;
+  background: linear-gradient(to bottom, #0094ff, #0066cc);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.book-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to bottom, #007adb, #004fa3);
+}
+
+#About{
+    background: url(abawt.png) no-repeat center center/cover;
+    height: 100vh;
+    width: 100%;
+    padding-left: 150px;
+    padding-top: 200px;
+   
+
+}
+.about-text{
+    font-size: 25px;
+    color: white;
+}
+
+#Contact {
+    background: url(contactbg3.png) no-repeat center center/cover;
+    height: 100vh;
+    width: 100%;
+    
+}
+#container-ratings {   /*DitO KO NAGAGALAW YUNG BOX*/
+  display: flex;
+  justify-content: center; 
+  align-items: center;       
+  height: 400px;
+  gap: 80px;
+  margin-top: 99px;
+}
+
+
+#container-ratings .box {
+    background: lightblue;
+    text-align: center;
+    height: 150px;
+    width: 200px;
+    padding-top: 20px;
+    border-radius: 20px;
+    font-size: 20px;
+}
+

@@ -287,16 +287,13 @@ nav a:hover{
   background: linear-gradient(to bottom, #007adb, #004fa3);
 }
 #aboutus{
-    background: url("abawt.png");
-    background-repeat: no-repeat;
+    background: url("abawt.png") no-repeat center center/cover; 
     background-size: cover;
     height: 100vh;
     width: 100%;
     margin: 0;
-    padding: 0;
     margin-top: 95px;
-    padding-left: 0;
-    display: flex;              /* gawin flex container */
+   display: flex;              /* gawin flex container */
   flex-direction: column;     /* para naka-vertical */
   justify-content: center;    /* center vertically */
   align-items: center;        /* center horizontally */
@@ -499,7 +496,7 @@ p {
   max-width: 400px;
   border-radius: 10px;
   margin-top: 10px;
-  margin-right: 50rem;
+  
 }
 .ratings-section{
   margin: 0;
