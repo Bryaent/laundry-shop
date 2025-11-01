@@ -3,16 +3,25 @@
     padding: 0%;
     max-width: 100%;
     box-sizing: border-box;
+   
 }
+
 body{
     font-family: "Poppins", sans-serif; 
     line-height: 1.6; /* Taas ng pagitan ng mga linya ng text */
+    scroll-behavior: smooth;
+   
 }
 header{
-    background: #0088cc;   
-    color: white;         
-    text-align: center;    /* Pantayin ang laman sa gitna horizontally */
-    max-width: 100%;
+    position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* depende sa taas ng header mo */
+  background: #0088cc;
+  color: white;
+  text-align: center;
+  z-index: 1000;
     
 }
 
@@ -59,11 +68,17 @@ nav a{
 nav a:hover{
     color: #0088cc;                   /* Kapag naka-hover, magiging blue */
 }
+#Lugu{
+  width: 150px;
+  height: 200px;
+  margin-bottom: -150px;
+  margin-top: -35px;
+}
 
 #Home{
     background: url(Home-Background.png) no-repeat center center/cover;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     padding-left: 150px;
     padding-top: 200px;
     
@@ -83,12 +98,27 @@ nav a:hover{
 #Franchise {
     background: url(franbg.png) no-repeat center center/cover;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 80px;
 }
+.reveal {
+  opacity: 0;
+  transform: translateY(80px);
+  transition: all 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal:nth-child(1) { transition-delay: 0s; }
+.reveal:nth-child(2) { transition-delay: 0.2s; }
+.reveal:nth-child(3) { transition-delay: 0.4s; }
+.reveal:nth-child(4) { transition-delay: 0.4s; }
+
 
 .franchise-content{
   display: flex;
@@ -146,7 +176,7 @@ nav a:hover{
 
 #Service{
     background: url(servicebg.png) no-repeat center center/cover;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     text-align: center;
     padding: 80px;
@@ -271,7 +301,7 @@ nav a:hover{
 
 #About{
     background: url(abawt.png) no-repeat center center/cover;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     padding-left: 150px;
     padding-top: 200px;
@@ -285,7 +315,7 @@ nav a:hover{
 
 #Contact {
     background: url(contactbg3.png) no-repeat center center/cover;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     
 }
@@ -307,5 +337,18 @@ nav a:hover{
     padding-top: 20px;
     border-radius: 20px;
     font-size: 20px;
+}
+#fb-img{
+  display: flex;
+  justify-content: center;
+  width: 40%;
+  height: 50%;
+  margin-left: 50%;
+}
+#map-img{
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  height: 50%;
 }
 

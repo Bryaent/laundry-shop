@@ -11,7 +11,7 @@ form.addEventListener('submit', function(event) {
   // example login check (pwede mong palitan kung gusto mo)
   if (username === "admin" && password === "1234") {
     // kapag tama ang username at password, pupunta sa ibang HTML file
-    window.open("WEBSAYT.html", "_self");
+    window.open("index.html", "_self");
   } else {
     alert("Invalid username or password!");
   }

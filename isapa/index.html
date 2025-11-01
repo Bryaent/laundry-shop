@@ -2,25 +2,28 @@
 <html lang="en">
 <head>
     <title>Document</title>
-</head>
-<body>
     <link rel="stylesheet" href="style.css">
      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
      <header>
     <div>
       <span>FAST AND FRESH LAUNDRY JUST</span>
       <a href="click.html">
       <button>CLICK AWAY!</button>
       </a>
+      <div id="Lugu">
+        <img src="Logo.png">
+      </div>
     </div>
-
+   
     <nav>
       <ul>
-        <li><a href="#home">HOME</a></li>
-        <li><a href="#franchise">FRANCHISE</a></li>
-        <li><a href="#service">SERVICE</a></li>
-        <li><a href="#aboutus">ABOUT US</a></li>
-        <li><a href="#contact">CONTACT US</a></li>
+        <li><a href="#Home">HOME</a></li>
+        <li><a href="#Franchise">FRANCHISE</a></li>
+        <li><a href="#Service">SERVICE</a></li>
+        <li><a href="#About">ABOUT US</a></li>
+        <li><a href="#Contact">CONTACT US</a></li>
       </ul>
     </nav>
   </header>
@@ -37,7 +40,7 @@
     </div>
   </section>
 
-    <section id="Franchise">
+    <section id="Franchise" class="reveal">
   <div class="franchise-content">
     <img src="Logo.png" alt="M and M Laundry Shop Logo" class="franchise-logo">
     <div class ="franchise-text">
@@ -54,7 +57,7 @@
   </div>
   </section>
 
-   <section id="Service">
+   <section id="Service" class="reveal">
   <div class="services-header">
     <h2>Service</h2>
     <h3>Serving all your laundry needs<br><span>Wash • Dry • Fold</span></h3>
@@ -67,21 +70,21 @@
  <div class="services-section">
   <div class="services-container">
     <div class="service-box">
-      <img src="washicon.jpg" alt="Wash Icon">
+      <img src="Wash logo (1).png" alt="Wash Icon">
       <h4>₱60</h4>
       <p class="desc">Washing your clothes to remove dirt and stains.</p>
       <p>WASH</p>
     </div>
 
     <div class="service-box">
-      <img src="dry.png" alt="Dry Icon">
+      <img src="Dry logo (1).png" alt="Dry Icon">
       <h4>₱65</h4>
       <p class="desc">Carefully drying clothes for softness and freshness.</p>
       <p>DRY</p>
     </div>
 
     <div class="service-box">
-      <img src="fold.png" alt="Fold Icon">
+      <img src="Fold logo (1).png" alt="Fold Icon">
       <h4>₱30</h4>
       <p class="desc">Neatly folding your clothes, ready to wear.</p>
       <p>FOLD</p>
@@ -103,7 +106,7 @@
   <button class="book-btn">BOOK NOW</button>
   </section>
 
-  <section id="About">
+  <section id="About" class="reveal">
     <div class="about-text">
         <h2>ABOUT M AND M LAUNDRY</h2>
         <p> We are family-run laundry shop, opened at the start of <br>
@@ -112,7 +115,7 @@
     </div>
   </section>
 
-  <section id="Contact">
+  <section id="Contact" class="reveal">
   <div class="contact-container">
 
     <!-- Kaliwa -->
@@ -123,7 +126,7 @@
       0993-8224989</p>
 
       <p>Facebook Page</p>
-      <img src="fbpage.png" alt="Facebook Page" class="fb-img">
+      <img src="fbpage.png" alt="Facebook Page" id="fb-img">
     </div>
 
     <!-- Kanan -->
@@ -131,7 +134,7 @@
       <p>Laundry Shop Location:<br>
       244 Market Avenue, Brgy. San Miguel, Pasig City</p>
 
-      <img src="laundrymap.png" alt="Map" class="map-img">
+      <img src="mapweb.png" alt="Map" id="map-img">
     </div>
 
   </div>
@@ -150,5 +153,47 @@
   </div>
 </div>
  </section>
+  
+<script>
+  // 👉 Function na nagha-handle ng paglabas ng mga elements habang nag-scroll
+  function revealOnScroll() {
+    // Hanapin lahat ng elements na may class na "reveal"
+    const reveals = document.querySelectorAll(".reveal");
+
+    // Loop para i-check isa-isa lahat ng .reveal elements
+    for (let i = 0; i < reveals.length; i++) {
+      const windowHeight = window.innerHeight; // taas ng visible area ng browser
+      const elementTop = reveals[i].getBoundingClientRect().top; // posisyon ng element relative sa viewport
+      const elementVisible = 150; // gaano kalapit sa viewport bago siya mag-appear (adjustable)
+
+      /* 
+         Kondisyon:
+         1️⃣ Kapag ang itaas ng element ay mas mababa na sa (height ng window - elementVisible)
+             ➜ ibig sabihin nakikita na siya sa screen, kaya lalabas siya.
+         2️⃣ O kapag nasa dulo na ng page (scrollY + windowHeight halos katapusan ng body)
+             ➜ para ma-trigger din ang animation ng last section tulad ng "Contact Us".
+      */
+      if (
+        elementTop < windowHeight - elementVisible ||
+        window.scrollY + windowHeight >= document.body.scrollHeight - 100
+      ) {
+        // Idagdag ang 'active' class para mag-trigger ng animation
+        reveals[i].classList.add("active");
+      } else {
+        // Alisin ang 'active' class kapag hindi pa siya nakikita
+        reveals[i].classList.remove("active");
+      }
+    }
+  }
+
+  // 📜 Event listener na magpapatakbo ng function tuwing may scroll
+  window.addEventListener("scroll", revealOnScroll);
+
+  // 🔄 Tawagin agad ang function kahit hindi pa nag-scroll (para sa mga element na nasa itaas)
+  revealOnScroll();
+</script>
+
+
+
 </body>
 </html>
