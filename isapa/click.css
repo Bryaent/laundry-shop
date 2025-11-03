@@ -459,3 +459,177 @@ select:focus {
 
 }
 
+/* ✅ Center the whole page vertically and horizontally */
+#page5,
+#page6,
+#page7 {
+display: flex;
+flex-direction: column;
+align-items: center; /* center horizontally */
+justify-content: flex-start; /* content starts from top */
+padding-top: 10px; /* ⬆️ mas mataas placement */
+min-height: 100vh;
+text-align: center;
+box-sizing: border-box;
+}
+
+
+#summaryTable {
+width: 100%;
+border-collapse: collapse;
+font-size: 16px;
+}
+
+#summaryTable th, #summaryTable td {
+padding: 10px;
+text-align: left;
+border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+#summaryTable thead th {
+background: transparent;
+font-weight: 700;
+}
+
+.contact-form {
+width: 90%;
+max-width: 900px;
+background: rgba(255,255,255,0.95);
+padding: 30px;
+border-radius: 20px;
+box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+margin: 0 auto; /* ✅ center horizontally */
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.contact-form .form-row {
+display: flex;
+gap: 15px;
+margin-bottom: 12px;
+width: 100%;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form select {
+flex: 1;
+padding: 10px 12px;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 15px;
+}
+
+.contact-form label {
+display:block;
+margin: 10px 0 6px;
+font-weight: 600;
+}
+
+.contact-form .note {
+font-size: 13px;
+color: #666;
+margin-top: 8px;
+margin-bottom: 16px;
+text-align: center;
+}
+
+.ticket-box {
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:12px;
+padding: 30px 20px;
+background: rgba(255,255,255,0.95);
+border-radius:12px;
+width: 60%;
+max-width: 480px;
+box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+margin: 0 auto; /* ✅ center horizontally */
+}
+
+.ticket-number {
+font-size: 64px;
+font-weight: 800;
+letter-spacing: 6px;
+color: #0070a8;
+}
+
+.ticket-box p {
+font-size: 14px;
+color:#333;
+text-align:center;
+}
+/* White background box for Total Breakdown table */
+.summary-card {
+  background: rgba(255, 255, 255, 0.95); /* white with slight transparency */
+  padding: 25px 40px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  margin: 20px auto; /* center horizontally and add top margin */
+}
+/* White box style for the table */
+.summary-card {
+  background: #fff;
+  padding: 20px 35px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* White box style for the table */
+.summary-card {
+  background: #fff;
+  padding: 20px 35px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Table layout */
+#summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+#summaryTable th,
+#summaryTable td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Header style */
+#summaryTable th {
+  font-weight: 700;
+  text-align: left;
+  background: transparent;
+}
+
+/* Center the Quantity column */
+#summaryTable th:first-child,
+#summaryTable td:first-child {
+  text-align: center;
+}
+
+/* Right-align and color red for Price column */
+#summaryTable th:last-child,
+#summaryTable td:last-child {
+  text-align: right;
+  color: #e60000;
+}
+
+/* Total row */
+#summaryTable tfoot td {
+  border-top: 2px solid #d0d0d0;
+  font-weight: 700;
+  color: #e60000;
+}
+
