@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,14 @@
   <link rel="stylesheet" href="click.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header>
     <span>FAST AND FRESH LAUNDRY JUST
-        <a href="click.html">
-          <button>CLICK AWAY!</button>
-        </a>
-      </span>
+      <a href="click.html">
+        <button>CLICK AWAY!</button>
+      </a>
+    </span>
     </div>
   </header>
 
@@ -27,12 +29,12 @@
     </ul>
   </nav>
 
-  <div class="question">
-    <h2>1. What service do you want?</h2>
-    <p>Pick one main option. If you choose Self-Select,<br>pick any combination of Wash, Dry, Fold</p>
-  </div>
-
   <section id="kontainer">
+    <div class="question">
+      <h2>1. What service do you want?</h2>
+      <p>Pick one main option. If you choose Self-Select,<br>pick any combination of Wash, Dry, Fold</p>
+    </div>
+
     <div class="container">
       <button id="fullService" class="service-btn">
         <div class="box">
@@ -49,23 +51,115 @@
       </button>
     </div>
 
-
     <!-- Below Options Section -->
-<section class="below-options">
-  <div id="inclusions" class="hidden">
-    <p>Inclusions: Wash & Dry & Fold, Detergent, Fabric Conditioner, Fabric Cologne</p>
-  </div>
+    <section class="below-options">
+      <div id="inclusions" class="hidden">
+        <p>Inclusions: Wash & Dry & Fold, Detergent, Fabric Conditioner, Fabric Cologne</p>
+      </div>
 
-  <div id="steps" class="step-buttons hidden">
-    <button class="step-btn">Wash</button>
-    <button class="step-btn">Dry</button>
-    <button class="step-btn">Fold</button>
-  </div>
+      <div id="steps" class="step-buttons hidden">
+        <button class="step-btn">Wash</button>
+        <button class="step-btn">Dry</button>
+        <button class="step-btn">Fold</button>
+      </div>
 
-  <button id="nextBtn" class="next-btn hidden">Next</button>
-</section>
+      <button id="nextBtn" class="next-btn hidden">Next</button>
+    </section>
+  </section> <!-- ✅ close kontainer here -->
 
+
+  <!-- === PAGE 2: PICK LIQUID DETERGENT === -->
+  <section id="page2" class="hidden">
+    <button class="back-btn" id="backToPage1">←</button>
+    <div class="question">
+      <h2>2. Pick Your Liquid Detergent</h2>
+      <p>TIP: 1 sachet can cover up to 4 kilograms of laundry.</p>
+    </div>
+
+    <div class="below-options">
+      <label for="detergentSelect">Liquid Detergent:</label>
+      <select id="detergentSelect">
+        <option value="">-- Select Detergent --</option>
+        <option value="Surf Rose Fresh 64mL">Surf Rose Fresh 64mL ₱20</option>
+        <option value="Surf Cherry Blossom 64mL">Surf Cherry Blossom 64mL ₱20</option>
+        <option value="Ariel Twin Sunrise Fresh 64g">Ariel Twin Sunrise Fresh 64g ₱25</option>
+        <option value="Ariel Twin Downy 64g">Ariel Twin Downy 64g ₱25</option>
+        <option value="I have mine (liquid only)">I have mine (liquid only)</option>
+      </select>
+
+      <div class="quantity">
+        <button id="minusDet">−</button>
+        <span id="detQty">1</span>
+        <button id="plusDet">+</button>
+      </div>
+
+      <button id="nextToFabcon" class="next-btn hidden">Next</button>
+    </div>
+  </section>
+
+  <!-- === PAGE 3: PICK FABRIC CONDITIONER === -->
+  <section id="page3" class="hidden">
+    <button class="back-btn" id="backToPage2">←</button>
+    <div class="question">
+      <h2>3. Choose Your Fabric Conditioner</h2>
+      <p>TIP: 1 sachet can cover up to 4 kilograms of laundry.</p>
+    </div>
+
+    <div class="below-options">
+      <label for="fabconSelect">Fabric Conditioner:</label>
+      <select id="fabconSelect">
+        <option value="">-- Select Fabric Conditioner --</option>
+        <option value="Surf Luxe Perfume 40mL">Surf Luxe Perfume 40mL ₱15</option>
+        <option value="Surf Blossom Fresh 40mL">Surf Blossom Fresh 40mL ₱15</option>
+        <option value="Del Shower Fresh 33mL">Del Shower Fresh 33mL ₱15</option>
+        <option value="Del Lavender Breeze 33mL">Del Lavender Breeze 33mL ₱15</option>
+        <option value="I have mine">I have mine</option>
+      </select>
+
+      <div class="quantity">
+        <button id="minusFab">−</button>
+        <span id="fabQty">1</span>
+        <button id="plusFab">+</button>
+      </div>
+
+      <div>
+        <input type="checkbox" id="addBleach">
+        <label for="addBleach">Add Bleach</label>
+      </div>
+
+      <button id="nextToDetails" class="next-btn hidden">Next</button>
+    </div>
+  </section>
+
+  <!-- === PAGE 4: LAUNDRY DETAILS === -->
+  <section id="page4" class="hidden">
+    <button class="back-btn" id="backToPage3">←</button>
+    <div class="question">
+      <h2>Laundry Details</h2>
+    </div>
+
+    <div class="below-options">
+      <div class="load-type">
+        <label>Type of Load:</label><br>
+        <label><input type="radio" name="loadType" value="Regular Clothes"> Regular Clothes (8kg max)</label>
+        <label><input type="radio" name="loadType" value="Bedsheets"> Bedsheets (5kg max)</label>
+        <label><input type="radio" name="loadType" value="Comforter"> Comforter (3kg max)</label>
+      </div>
+
+      <div class="quantity">
+        <label>Number of Loads:</label><br>
+        <button id="minusLoad">−</button>
+        <span id="loadQty">1</span>
+        <button id="plusLoad">+</button>
+      </div>
+
+      <textarea id="specialNotes" placeholder="e.g., Separate whites, etc."></textarea>
+
+      <button id="finishBtn" class="finishBtn">Finish</button>
+    </div>
+  </section>
 
   <script src="click.js"></script>
 </body>
+
 </html>
