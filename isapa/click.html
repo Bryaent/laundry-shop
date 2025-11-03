@@ -159,7 +159,91 @@
     </div>
   </section>
 
-  <script src="click.js"></script>
+  
+
+
+<!-- === PAGE 5: TOTAL BREAKDOWN / SUMMARY === -->
+<section id="page5" class="hidden">
+  <button class="back-btn" id="backToPage4">←</button>
+  <div class="question">
+    <h2>Total Breakdown</h2>
+  </div>
+
+  <div class="below-options">
+    <div class="summary-card">
+      <table id="summaryTable">
+        <thead>
+          <tr>
+            <th>Quantity</th>
+            <th>Item</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- rows injected by JS -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td style="text-align: right; font-weight:700;">Total:</td>
+            <td id="summaryTotal" style="font-weight:700;">₱0</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <button id="toContactBtn" class="next-btn">NEXT</button>
+  </div>
+</section>
+
+<!-- === PAGE 6: CONTACT, ADDRESS, PAYMENT === -->
+<section id="page6" class="hidden">
+  <button class="back-btn" id="backToPage5">←</button>
+  <div class="question">
+    <h2>Contact, Address, and Payment Details</h2>
+  </div>
+
+  <div class="below-options contact-form">
+    <div class="form-row">
+      <input type="text" id="fullName" placeholder="Full Name">
+      <input type="text" id="contactNumber" placeholder="Contact Number">
+    </div>
+    <div class="form-row">
+      <input type="email" id="email" placeholder="Email">
+      <input type="text" id="completeAddress" placeholder="Complete Address">
+    </div>
+
+    <label for="paymentMode">Mode of Payment</label>
+    <select id="paymentMode">
+      <option value="cod">Cash Upon Delivery</option>
+      <option value="gcash">GCash</option>
+      <option value="bank">Bank Transfer</option>
+    </select>
+
+    <p class="note">Note: Pickup/Delivery Fee is stated on the date of delivery by the rider.</p>
+
+    <button id="submitOrderBtn" class="next-btn">NEXT</button>
+  </div>
+</section>
+
+<!-- === PAGE 7: CONFIRMATION / TICKET === -->
+<section id="page7" class="hidden">
+  <div class="question">
+    <h2>Thank you for entrusting your laundry to us!</h2>
+    <p>Here's your ticket number. Ticket number is also sent to your Email (requires backend).</p>
+  </div>
+
+  <div class="below-options confirmation">
+    <div class="ticket-box">
+      <div id="ticketNumber" class="ticket-number">0000</div>
+      <p id="ticketNote"></p>
+    </div>
+
+    <button id="trackBtn" class="next-btn">TRACK MY LAUNDRY</button>
+  </div>
+</section>
+<script src="click.js"></script>
+
 </body>
 
 </html>
