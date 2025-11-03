@@ -299,19 +299,77 @@ nav a:hover{
   background: linear-gradient(to bottom, #007adb, #004fa3);
 }
 
-#About{
-    background: url(abawt.png) no-repeat center center/cover;
-    min-height: 100vh;
-    width: 100%;
-    padding-left: 150px;
-    padding-top: 200px;
-   
+#About {
+  background: url(abawt.png) no-repeat center center/cover;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;                /* Gawing side by side: image at text */
+  align-items: center;          /* Gitna vertically */
+  justify-content: center;      /* Gitna horizontally sa buong section */
+  gap: 100px;                   /* Layo ng image at text */
+  padding: 100px;
+}
 
+.about-text {
+  display: flex;
+  flex-direction: column;       /* Para si h2 nasa taas ng p */
+  justify-content: center;
+  font-size: 25px;
+  color: black;
+  max-width: 500px;             /* Limit ang lapad ng text */
 }
-.about-text{
-    font-size: 25px;
-    color: white;
+
+.about-text h2 {
+  font-weight: bold;
+  margin-bottom: 20px;          /* Agwat ng h2 sa paragraph */
 }
+
+
+
+.carousel {
+      width: 600px;
+      height: 350px;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      position: relative;
+      
+    }
+
+    .slides {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 1s ease;
+    }
+
+    .slides img {
+      width: 600px;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    /* Optional: small dots indicator */
+    .dots {
+      position: absolute;
+      bottom: 15px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .dots span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.6);
+      margin: 5px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .dots .active {
+      background: #fff;
+    }
 
 #Contact {
     background: url(contactbg3.png) no-repeat center center/cover;
@@ -351,46 +409,4 @@ nav a:hover{
   width: 40%;
   height: 50%;
 }
- .carousel {
-      width: 600px;
-      height: 350px;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      position: relative;
-    }
-
-    .slides {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      transition: transform 1s ease;
-    }
-
-    .slides img {
-      width: 600px;
-      height: 350px;
-      object-fit: cover;
-    }
-
-    /* Optional: small dots indicator */
-    .dots {
-      position: absolute;
-      bottom: 15px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .dots span {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.6);
-      margin: 5px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .dots .active {
-      background: #fff;
-    }
+ 

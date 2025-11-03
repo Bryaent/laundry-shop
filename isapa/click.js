@@ -153,4 +153,8 @@ loadRadios.forEach(radio => {
 backToPage3.addEventListener("click", () => {
   page4.classList.add("hidden");
   page3.classList.remove("hidden");
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> be1609c (nov3 11:43)
