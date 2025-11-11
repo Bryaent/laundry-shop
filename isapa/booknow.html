@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Now | M & M Laundry</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="booknow.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <div id="Lugu">
+        <img src="Logo.png" alt="Logo">
+      </div>
+      <div class="tagline">
+        <span>FAST AND FRESH LAUNDRY JUST</span>
+        <a href="click.html">
+        <button>CLICK AWAY!</button>
+        </a>
+      </div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="index.html#Home">HOME</a></li>
+        <li><a href="index.html#Franchise">FRANCHISE</a></li>
+        <li><a href="index.html#Service">SERVICE</a></li>
+        <li><a href="index.html#About">ABOUT US</a></li>
+        <li><a href="index.html#Contact">CONTACT US</a></li>
+        <li><a href="account.html" class="account-btn">ACCOUNT</a></li>
+        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="booknow-page">
+    <section class="booknow-container">
+      <div class="tab-buttons">
+  <a href="click.html">
+  <button class="tab-btn">Book a Service</button>
+  <a href="tracklaundry.html">
+  <button class="tab-btn">Track Your Laundry</button>
+</a>
+
+</div>
+
+<!-- BOOK FORM SECTION -->
+<div id="bookSection" class="tab-content active">
+  <h2>Book a Laundry Service</h2>
+  <p>Select your preferred service.</p>
+</div>
+
+<!-- TRACK SECTION -->
+<div id="trackSection" class="tab-content">
+  <h2>Track Your Laundry</h2>
+  <p>Enter your tracking number to view your laundry status.</p>
+  <input type="text" id="trackingNumber" placeholder="Enter Tracking Code">
+  <button onclick="trackLaundry()">Track</button>
+  <div id="result" class="result-box"></div>
+</div>
+
+
+        <div id="trackResult" class="hidden">
+          <h3>Ticket Information</h3>
+          <p><strong>Ticket:</strong> <span id="ticketDisplay"></span></p>
+          <p><strong>Name:</strong> <span id="nameDisplay"></span></p>
+          <p><strong>Contact:</strong> <span id="contactDisplay"></span></p>
+          <p><strong>Service:</strong> <span id="serviceDisplay"></span></p>
+          <p><strong>Amount:</strong> <span id="amountDisplay"></span></p>
+          <p><strong>Status:</strong> <span id="statusDisplay" class="status"></span></p>
+        </div>
+
+        <div id="trackError" class="hidden error-msg">
+          ❌ Ticket not found. Please check your ticket number.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/booknow.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      if (confirm("Are you sure you want to log out?")) {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account</title>
+  <link rel="stylesheet" href="account.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-left">
+      <div id="Lugu">
+        <img src="Logo.png" alt="Logo">
+      </div>
+      <div class="tagline">
+        <span>FAST AND FRESH LAUNDRY JUST</span>
+          <a href="click.html">
+          <button>CLICK AWAY!</button>
+        </a>
+      </div>
+    </div>
+<nav>
+      <ul>
+<li><a href="index.html">HOME</a></li>
+<li><a href="franchise.html">FRANCHISE</a></li>
+<li><a href="service.html">SERVICE</a></li>
+<li><a href="about.html">ABOUT US</a></li>
+<li><a href="contact.html">CONTACT US</a></li>
+<li><a href="account.html" class="account-btn active">ACCOUNT</a></li>
+<li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ACCOUNT SECTION ===== -->
+  <section class="account-container">
+    <div class="account-card">
+      <h2>My Account</h2>
+      <div class="profile-info">
+        <div class="profile-pic">
+          <img src="lance.jpg" alt="Profile Picture">
+        </div>
+
+        <div class="details">
+          <p><strong>Name:</strong> <span id="accName">Customer Name</span></p>
+          <p><strong>Email:</strong> <span id="accEmail">customer@email.com</span></p>
+          <p><strong>Contact:</strong> <span id="accContact">0912 345 6789</span></p>
+          <p><strong>Address:</strong> <span id="accAddress">123 Laundry Street, City</span></p>
+        </div>
+      </div>
+
+      <div class="account-actions">
+        <button id="editBtn" class="btn">Edit Info</button>
+        <button id="saveBtn" class="btn hidden">Save Changes</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  // Load user data (if available)
+  const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+
+  document.getElementById("accName").textContent = user.name || "Customer Name";
+  document.getElementById("accEmail").textContent = user.email || "customer@email.com";
+  document.getElementById("accContact").textContent = user.contact || "0912 345 6789";
+  document.getElementById("accAddress").textContent = user.address || "123 Laundry Street, City";
+
+  // Logout button
+  document.getElementById("logoutBtn").addEventListener("click", function() {
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
+    }
+  });
+
+  // Edit / Save toggle
+  const editBtn = document.getElementById("editBtn");
+  const saveBtn = document.getElementById("saveBtn");
+  const detailsDiv = document.querySelector(".details");
+
+  editBtn.addEventListener("click", () => {
+    detailsDiv.querySelectorAll("span").forEach(span => {
+      const val = span.textContent;
+      const input = document.createElement("input");
+      input.value = val;
+      span.replaceWith(input);
+    });
+    editBtn.classList.add("hidden");
+    saveBtn.classList.remove("hidden");
+  });
+
+  saveBtn.addEventListener("click", () => {
+    const inputs = detailsDiv.querySelectorAll("input");
+    const updatedUser = {
+      name: inputs[0].value,
+      email: inputs[1].value,
+      contact: inputs[2].value,
+      address: inputs[3].value
+    };
+
+    // Replace inputs with spans again
+    inputs.forEach((input, i) => {
+      const span = document.createElement("span");
+      span.textContent = Object.values(updatedUser)[i];
+      input.replaceWith(span);
+    });
+
+    // ✅ Save updated data to localStorage
+    localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+
+    editBtn.classList.remove("hidden");
+    saveBtn.classList.add("hidden");
+
+    alert("Profile updated successfully!");
+  });
+</script>
+
+</body>
+</html>

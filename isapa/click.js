@@ -167,6 +167,13 @@ const toContactBtn = document.getElementById("toContactBtn");
 const backToPage5Btn = document.getElementById("backToPage5");
 const submitOrderBtn = document.getElementById("submitOrderBtn");
 const trackBtn = document.getElementById("trackBtn");
+if (trackBtn) {
+  trackBtn.addEventListener("click", () => {
+    // redirect to your Track Laundry page
+    window.location.href = "tracklaundry.html";
+  });
+}
+
 
 const summaryTableBody = document.querySelector("#summaryTable tbody");
 const summaryTotalEl = document.getElementById("summaryTotal");
@@ -176,25 +183,20 @@ const ticketNoteEl = document.getElementById("ticketNote");
 
 // Price list (₱)
 const PRICES = {
-  // steps (if selected individually)
   Wash: 60,
   Dry: 65,
   Fold: 30,
-  // detergents by option label (simplified)
   "Surf Rose Fresh 64mL": 20,
   "Surf Cherry Blossom 64mL": 20,
   "Ariel Twin Sunrise Fresh 64g": 25,
   "Ariel Twin Downy 64g": 25,
   "I have mine (liquid only)": 0,
-  // fabric conditioner
   "Surf Luxe Perfume 40mL": 15,
   "Surf Blossom Fresh 40mL": 15,
   "Del Shower Fresh 33mL": 15,
   "Del Lavender Breeze 33mL": 15,
   "I have mine": 0,
-  // add bleach
   Bleach: 25,
-  // load types (optional fee adjustments - here 0)
   "Regular Clothes": 0,
   Bedsheets: 0,
   Comforter: 0
@@ -202,8 +204,10 @@ const PRICES = {
 
 // helper: format currency
 function toPHP(n) {
-  return "₱" + Number(n).toLocaleString();
+  const num = isNaN(n) ? 0 : n;
+  return "₱" + num.toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
 
 // Build order items from current selections
 function buildOrderItems() {
@@ -234,7 +238,7 @@ function buildOrderItems() {
   const detQty = Number(document.getElementById("detQty").textContent) || 1;
   if (detVal) {
     const per = PRICES[detVal] ?? 0;
-    if (per > 0) items.push({ qty: detQty, name: detVal, price: per * detQty });
+     items.push({ qty: detQty, name: detVal, price: per * detQty });
   }
 
   // fabric conditioner
@@ -270,22 +274,30 @@ function renderSummary() {
 
   items.forEach(it => {
     const tr = document.createElement("tr");
+
     const tdQty = document.createElement("td");
     tdQty.textContent = it.qty;
+
     const tdName = document.createElement("td");
     tdName.textContent = it.name;
+
     const tdPrice = document.createElement("td");
-    tdPrice.textContent = toPHP(it.price);
+    // ensure numeric first, then format
+    const priceValue = parseFloat(it.price) || 0;
+    tdPrice.textContent = toPHP(priceValue);
+
     tr.appendChild(tdQty);
     tr.appendChild(tdName);
     tr.appendChild(tdPrice);
     summaryTableBody.appendChild(tr);
-    total += Number(it.price) || 0;
+
+    total += priceValue;
   });
 
   summaryTotalEl.textContent = toPHP(total);
   return { items, total };
 }
+
 
 // navigation: page4 -> page5
 const finishBtnEl = document.getElementById("finishBtn");
@@ -310,16 +322,20 @@ if (backToPage4Btn) backToPage4Btn.addEventListener("click", () => {
 });
 
 // page5 -> contact
-if (toContactBtn) {
-  toContactBtn.addEventListener("click", () => {
-    const result = renderSummary();
-    if (result.total <= 0) {
-      if (!confirm("Your order total is ₱0. Proceed anyway?")) return;
-    }
-    page5.classList.add("hidden");
-    page6.classList.remove("hidden");
-  });
-}
+toContactBtn.addEventListener("click", () => {
+  const result = renderSummary();
+  if (result.total <= 0) {
+    if (!confirm("Your order total is ₱0. Proceed anyway?")) return;
+  }
+
+  // ✅ Save order data to localStorage
+  localStorage.setItem("laundryOrderTotal", result.total);
+  localStorage.setItem("laundryOrderItems", JSON.stringify(result.items));
+
+  page5.classList.add("hidden");
+  page6.classList.remove("hidden");
+});
+
 
 // back from contact to summary
 if (backToPage5Btn) backToPage5Btn.addEventListener("click", () => {
@@ -327,50 +343,57 @@ if (backToPage5Btn) backToPage5Btn.addEventListener("click", () => {
   page5.classList.remove("hidden");
 });
 
-// submit contact & show confirmation
+// ===== SUBMIT ORDER & SHOW CONFIRMATION =====
 if (submitOrderBtn) {
   submitOrderBtn.addEventListener("click", () => {
-    // basic validation
-    const fullName = document.getElementById("fullName").value.trim();
-    const contactNumber = document.getElementById("contactNumber").value.trim();
+    const name = document.getElementById("fullName").value.trim();
+    const contact = document.getElementById("contactNumber").value.trim();
     const email = document.getElementById("email").value.trim();
-    const completeAddress = document.getElementById("completeAddress").value.trim();
-    const paymentMode = document.getElementById("paymentMode").value;
+    const address = document.getElementById("completeAddress").value.trim();
+    const payment = document.getElementById("paymentMode").value;
+    const total = document
+      .getElementById("summaryTotal")
+      .innerText.replace("₱", "")
+      .replace(",", "")
+      .trim();
 
-    if (!fullName || !contactNumber || !email || !completeAddress) {
+    if (!name || !contact || !email || !address) {
       alert("Please fill in all contact and address fields.");
       return;
     }
 
-    // prepare order payload (for possible backend)
+    // ✅ Generate one consistent ticket number
+    const ticket = String(Math.floor(1000 + Math.random() * 9000));
+
+    // ✅ Build the order object
     const order = {
-      customer: { fullName, contactNumber, email, completeAddress, paymentMode },
-      summary: renderSummary()
+      ticket,
+      name,
+      contact,
+      email,
+      address,
+      payment,
+      amount: total,
+      date: new Date().toLocaleString(),
+      service: "Laundry Service",
+      status: "Pending",
     };
 
-    // Generate ticket number (4 digit)
-    const ticket = String(Math.floor(1000 + Math.random() * 9000));
-    localStorage.setItem("lastOrder", JSON.stringify({ order, ticket, timestamp: Date.now() }));
+    // ✅ Save to localStorage for admin page
+    const existing = JSON.parse(localStorage.getItem("orders")) || [];
+    existing.push(order);
+    localStorage.setItem("orders", JSON.stringify(existing));
 
-    // Show ticket page
-    ticketNumberEl.textContent = ticket;
-    ticketNoteEl.textContent = `Ticket number is ${ticket}. We've saved your order locally.`;
-    page6.classList.add("hidden");
-    page7.classList.remove("hidden");
+    // ✅ Show the ticket number on thank-you page
+    document.getElementById("ticketNumber").textContent = ticket;
+    document.getElementById("ticketNote").textContent =
+      `Thank you for entrusting your laundry to us! `;
 
-    // TODO: send `order` to your backend API to email the customer and persist the order.
-    // Example: fetch('/api/orders', { method:'POST', body:JSON.stringify(order) })
+    // ✅ Navigate to thank-you page
+    document.getElementById("page6").classList.add("hidden");
+    document.getElementById("page7").classList.remove("hidden");
   });
 }
 
-// track button (simple behavior: open a tiny modal or alert)
-if (trackBtn) {
-  trackBtn.addEventListener("click", () => {
-    const stored = JSON.parse(localStorage.getItem("lastOrder") || "null");
-    if (stored && stored.ticket) {
-      alert(`Order ${stored.ticket}\nStatus: Received\nName: ${stored.order.customer.fullName}`);
-    } else {
-      alert("No recent order found. Please save or create an order first.");
-    }
-  });
-}
+
+

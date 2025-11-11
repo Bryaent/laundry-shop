@@ -4,29 +4,32 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-     <header>
-    <div>
+<header>
+  <div class="header-left">
+    <div id="Lugu">
+      <img src="Logo.png" alt="Logo">
+    </div>
+    <div class="tagline">
       <span>FAST AND FRESH LAUNDRY JUST</span>
       <a href="click.html">
-      <button>CLICK AWAY!</button>
+        <button>CLICK AWAY!</button>
       </a>
-      <div id="Lugu">
-        <img src="Logo.png">
-      </div>
     </div>
-   
-    <nav>
-      <ul>
-        <li><a href="#Home">HOME</a></li>
-        <li><a href="#Franchise">FRANCHISE</a></li>
-        <li><a href="#Service">SERVICE</a></li>
-        <li><a href="#About">ABOUT US</a></li>
-        <li><a href="#Contact">CONTACT US</a></li>
-      </ul>
-    </nav>
-  </header>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="#Home">HOME</a></li>
+      <li><a href="#Franchise">FRANCHISE</a></li>
+      <li><a href="#Service">SERVICE</a></li>
+      <li><a href="#About">ABOUT US</a></li>
+      <li><a href="#Contact">CONTACT US</a></li>
+      <li><a href="account.html" class="account-btn">ACCOUNT</a></li>
+      <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+    </ul>
+  </nav>
+</header>
+
        <section id="Home">
     <div class ="home-text">
       <h2>Fast, Fresh and Hassle-Free Laundry<br>Right at Your Fingertips</h2>
@@ -103,7 +106,8 @@
     </div>
   </div>
 </div>
-  <button class="book-btn">BOOK NOW</button>
+  <a href="booknow.html" class="book-btn">BOOK NOW</a>
+
   </section>
 
   <section id="About" class="reveal">
@@ -208,6 +212,14 @@
   revealOnScroll();
 </script>
 
+<script>
+  document.getElementById("logoutBtn").addEventListener("click", function() {
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html"; // redirect to login page
+    }
+  });
+</script>
 
 <script src="web.js"></script>
 </body>

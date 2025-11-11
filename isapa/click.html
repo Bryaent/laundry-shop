@@ -19,15 +19,16 @@
     </div>
   </header>
 
-  <nav>
-    <ul>
-      <li><a href="#home">HOME</a></li>
-      <li><a href="#franchise">FRANCHISE</a></li>
-      <li><a href="#service">SERVICE</a></li>
-      <li><a href="#aboutus">ABOUT US</a></li>
-      <li><a href="#contactus">CONTACT US</a></li>
-    </ul>
-  </nav>
+ <nav>
+  <ul>
+    <li><a href="index.html">HOME</a></li>
+    <li><a href="franchise.html">FRANCHISE</a></li>
+    <li><a href="service.html">SERVICE</a></li>
+    <li><a href="about.html">ABOUT US</a></li>
+    <li><a href="contact.html">CONTACT US</a></li>
+  </ul>
+</nav>
+
 
   <section id="kontainer">
     <div class="question">
@@ -228,20 +229,18 @@
 
 <!-- === PAGE 7: CONFIRMATION / TICKET === -->
 <section id="page7" class="hidden">
-  <div class="question">
+  <div class="thankyou-box">
     <h2>Thank you for entrusting your laundry to us!</h2>
-    <p>Here's your ticket number. Ticket number is also sent to your Email (requires backend).</p>
-  </div>
-
-  <div class="below-options confirmation">
-    <div class="ticket-box">
-      <div id="ticketNumber" class="ticket-number">0000</div>
-      <p id="ticketNote"></p>
-    </div>
-
-    <button id="trackBtn" class="next-btn">TRACK MY LAUNDRY</button>
+    <p>Here's your ticket number.</p>
+    <div id="ticketNumber">####</div>
+    <p id="ticketNote">
+      Ticket number is also sent to your Email (requires backend).
+    </p>
+    <button id="trackBtn" class="btn">Track Order</button>
   </div>
 </section>
+
+
 <script src="click.js"></script>
 
 </body>

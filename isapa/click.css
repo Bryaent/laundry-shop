@@ -633,3 +633,48 @@ text-align:center;
   color: #e60000;
 }
 
+/* === THANK YOU / CONFIRMATION PAGE === */
+#page7 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* full height */
+  background: url('your-background.jpg') no-repeat center center/cover; /* same as login background */
+  padding: 20px;
+}
+
+.thankyou-box {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 40px 60px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.thankyou-box h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #0066cc;
+}
+
+.thankyou-box p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+#ticketNumber {
+  display: inline-block;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #0088ff;
+}
+
+#ticketNote {
+  margin-top: 15px;
+  font-size: 15px;
+  color: #444;
+}
