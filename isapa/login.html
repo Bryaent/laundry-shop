@@ -2,29 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LOGIN</title>
+  <title>Login</title>
   <link rel="stylesheet" href="login.css">
 </head>
 <body>
-  <form id="loginForm">
-    <h1>LOGIN</h1>
-    <div class="wrapper">
-      <div class="input-box">
+  <div class="login-container">
+    <form id="loginForm" class="login-box">
+      <h1>Login</h1>
+
+      <div class="input-group">
         <input type="text" id="username" placeholder="Username" required>
       </div>
 
-      <div class="input-box">
+      <div class="input-group">
         <input type="password" id="password" placeholder="Password" required>
       </div>
 
-      <div class="remember-forgot">
-        <label><input type="checkbox"> Remember Bisaya</label>
-        <br>
-        <button type="submit" class="btn">LOGIN</button>
-        <label><button type="button" class="btn2">Create Account</button></label>
+      <div class="input-group">
+        <select id="loginType" required>
+          <option value="">-- Select Login Type --</option>
+          <option value="customer">Customer</option>
+          <option value="admin">Admin</option>
+        </select>
       </div>
-    </div>
-  </form>
+
+      <div class="options">
+        <label><input type="checkbox"> Remember Me</label>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+      <button type="button" class="btn-secondary">Create Account</button>
+    </form>
+  </div>
 
   <script src="login.js"></script>
 </body>
