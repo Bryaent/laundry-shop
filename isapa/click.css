@@ -534,33 +534,67 @@ margin-top: 8px;
 margin-bottom: 16px;
 text-align: center;
 }
+/* === PAGE 7 DESIGN (Ticket Page) === */
+.ticket-page {
+  background: linear-gradient(to bottom, #a3d4ff, #ffffff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+}
 
-.ticket-box {
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:12px;
-padding: 30px 20px;
-background: rgba(255,255,255,0.95);
-border-radius:12px;
-width: 60%;
-max-width: 480px;
-box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-margin: 0 auto; /* ✅ center horizontally */
+.ticket-container {
+  background: transparent;
+  padding: 40px;
+  border-radius: 15px;
+  max-width: 600px;
+}
+
+.ticket-container h2 {
+  font-size: 24px;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.subtext {
+  font-style: italic;
+  color: #333;
+  margin-bottom: 40px;
 }
 
 .ticket-number {
-font-size: 64px;
-font-weight: 800;
-letter-spacing: 6px;
-color: #0070a8;
+  font-size: 100px;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 20px;
+  border-bottom: 5px solid #000;
+  display: inline-block;
+  line-height: 1;
 }
 
-.ticket-box p {
-font-size: 14px;
-color:#333;
-text-align:center;
+.track-btn {
+  background: linear-gradient(to bottom, #50aaff, #0070c9);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 35px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
 }
+
+.track-btn:hover {
+  background: linear-gradient(to bottom, #0070c9, #005fa8);
+  transform: translateY(-2px);
+}
+
+
 /* White background box for Total Breakdown table */
 .summary-card {
   background: rgba(255, 255, 255, 0.95); /* white with slight transparency */

@@ -44,10 +44,10 @@
     </div>
   </section>
 
-    <section id="Franchise" class="reveal">
-  <div class="franchise-content">
+   <section id="Franchise" class="reveal">
+  <div class="franchise-content" id="franchiseMain">
     <img src="Logo.png" alt="M and M Laundry Shop Logo" class="franchise-logo">
-    <div class ="franchise-text">
+    <div class="franchise-text">
       <h2>Franchise</h2>
       <h3>Join the M & M Laundry Shop Family<br>Your Fresh Start to Business Success!</h3>
       <p>
@@ -56,10 +56,50 @@
         Together, we’ll help you build a thriving business and turn clean clothes into a
         clean path to success — your journey begins with M & M today!
       </p>
-      <button class="partner-btn">BE OUR PARTNER</button>
+      <button class="partner-btn" id="openFormBtn">BE OUR PARTNER</button>
     </div>
   </div>
-  </section>
+
+  <!-- Franchise Inquiry Form -->
+  <div class="franchise-form" id="franchiseForm" style="display: none;">
+    <div class="form-container">
+      <div class="form-logo">
+        <img src="Logo.png" alt="M and M Laundry Shop Logo">
+      </div>
+      <div class="form-box">
+        <h2>Franchise Inquiry Form</h2>
+        <form id="inquiryForm">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" required>
+          </div>
+
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" required>
+          </div>
+
+          <div class="input-group">
+            <label>Contact Number</label>
+            <input type="text" id="contact" required>
+          </div>
+
+          <div class="input-group full-width">
+            <label>Message<span style="color:red">*</span></label>
+            <textarea id="message" required></textarea>
+          </div>
+
+          <button type="submit" class="send-btn">SEND INQUIRY</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thank You Message -->
+  <div class="thankyou-box" id="thankYou" style="display: none;">
+    <h2>Thank you for inquiring!</h2>
+  </div>
+</section>
 
    <section id="Service" class="reveal">
   <div class="services-header">
@@ -141,45 +181,93 @@
   </div>
   </section>
 
-  <section id="Contact" class="reveal">
-  <div class="contact-container">
+ <section id="Contact" class="reveal">
+  <div class="contact-wrapper">
 
-    <!-- Kaliwa -->
-    <div class="left-side">
+    <div class="contact-header">
       <h2>Contact Us</h2>
-      <p>Contact No.<br>
-      0968-3010566<br>
-      0993-8224989</p>
-
-      <p>Facebook Page</p>
-      <img src="fbpage.png" alt="Facebook Page" id="fb-img">
+      <p>We’re here to help! Reach us through any of the channels below.</p>
     </div>
 
-    <!-- Kanan -->
-    <div class="right-side">
-      <p>Laundry Shop Location:<br>
-      244 Market Avenue, Brgy. San Miguel, Pasig City</p>
+    <div class="contact-content">
 
-      <img src="mapweb.png" alt="Map" id="map-img">
+      <!-- Left Column -->
+      <div class="contact-left">
+        <h3>Get in Touch</h3>
+        <p><strong>Contact Numbers:</strong><br>
+        📞 0968-301-0566<br>
+        📞 0993-822-4989</p>
+
+        <p><strong>Facebook Page:</strong></p>
+        <a href="https://www.facebook.com/share/186siPTUNN/?mibextid=wwXIfr" class="fb-link">
+          <img src="fbpage.png" alt="Facebook Page">
+          Visit Our Page
+        </a>
+      </div>
+
+      <!-- Right Column -->
+      <div class="contact-right">
+        <h3>Our Location</h3>
+        <p>M & M Laundry Shop<br>
+        244 Market Avenue, Brgy. San Miguel, Pasig City</p>
+
+        <div class="location-images">
+          <img src="a4.png" alt="Laundry Shop" class="shop-photo">
+          <img src="mapweb.png" alt="Map Location" class="map-photo">
+        </div>
+      </div>
     </div>
 
+    <div class="ratings-wrapper">
+  <div class="rating-box">
+    <div class="rating-header">
+      <img src="rico.jpg" alt="Rico Blanco">
+      <div>
+        <h4>Rico Blanco</h4>
+        <p class="stars">⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+    <p class="review-text">"Bilis ng service, grabe! Mabait din yung staff."</p>
   </div>
- <div id ="container-ratings">
-  <div class="box">
-    Rico Blanco<br>⭐⭐⭐⭐⭐<p>Bilis ng service,<br>grabe! Mabait din <br> yung staff</p>
+
+  <div class="rating-box">
+    <div class="rating-header">
+      <img src="lea.jpg" alt="Lea Salonga">
+      <div>
+        <h4>Lea Salonga</h4>
+        <p class="stars">⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+    <p class="review-text">"Laging mabango at maayos ang pagkakaplantsa."</p>
   </div>
-   <div class="box">
-    Lea Salonga<br>⭐⭐⭐⭐⭐<p>Laging mabango<br>at maayos ang <br> pagkakaplantsa<br> ng damit</p>
+
+  <div class="rating-box">
+    <div class="rating-header">
+      <img src="vice.jpg" alt="Vice Ganda">
+      <div>
+        <h4>Vice Ganda</h4>
+        <p class="stars">⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+    <p class="review-text">"On time palagi yung delivery — super convenient!"</p>
   </div>
-   <div class="box">
-   Vice Ganda<br>⭐⭐⭐⭐⭐<p>On time palagi yung<br>delivery napaka-<br> convenient sobra</p>
-  </div>
-   <div class="box">
-    Vhong Navarro<br>⭐⭐⭐⭐⭐<p>Abot-kaya ang<br>presyo at sulit<br>ang quality </p>
+
+  <div class="rating-box">
+    <div class="rating-header">
+      <img src="vhong.jpg" alt="Vhong Navarro">
+      <div>
+        <h4>Vhong Navarro</h4>
+        <p class="stars">⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+    <p class="review-text">"Abot-kaya ang presyo at sulit ang quality."</p>
   </div>
 </div>
- </section>
-  
+
+
+  </div>
+</section>
+
 <script>
   // 👉 Function na nagha-handle ng paglabas ng mga elements habang nag-scroll
   function revealOnScroll() {

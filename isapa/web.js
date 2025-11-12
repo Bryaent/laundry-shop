@@ -17,3 +17,20 @@
 
     // automatic change every 3 seconds
     setInterval(nextSlide, 3000);
+
+  const openFormBtn = document.getElementById('openFormBtn');
+  const franchiseMain = document.getElementById('franchiseMain');
+  const franchiseForm = document.getElementById('franchiseForm');
+  const thankYou = document.getElementById('thankYou');
+  const inquiryForm = document.getElementById('inquiryForm');
+
+  openFormBtn.addEventListener('click', () => {
+    franchiseMain.style.display = 'none';
+    franchiseForm.style.display = 'flex';
+  });
+
+  inquiryForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    franchiseForm.style.display = 'none';
+    thankYou.style.display = 'flex';
+  });
