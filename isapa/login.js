@@ -35,3 +35,4 @@ form.addEventListener('submit', function(event) {
 createBtn.addEventListener('click', function() {
   window.open("register.html", "_self"); // redirect to registration page
 });
+
