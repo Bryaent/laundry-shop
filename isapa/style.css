@@ -721,3 +721,26 @@ section {
   scroll-margin-top: 10px;
 }
 
+.franchise-back-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 20px;
+
+  /* POSITIONING (THIS MAKES IT PERFECTLY LEFT ALIGNED & CLEAN) */
+  display: block;
+  text-align: left;
+  width: 100%;
+
+  /* SPACING FROM LEFT SIDE (not too close, not too far) */
+  padding-left: 5px;
+
+  transition: 0.3s;
+}
+
+.franchise-back-btn:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
