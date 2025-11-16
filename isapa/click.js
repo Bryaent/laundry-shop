@@ -217,14 +217,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const backToPage5 = document.getElementById("backToPage5");
 
   submitOrderBtn.addEventListener("click", () => {
-    page6.classList.add("hidden");
-    page7.classList.remove("hidden");
+  page6.classList.add("hidden");
+  page7.classList.remove("hidden");
 
-    // Generate random ticket number
-    const ticketNum = Math.floor(1000 + Math.random() * 9000);
-    document.getElementById("ticketNumber").textContent = ticketNum;
-    console.log(`✅ Ticket Generated: ${ticketNum}`);
+  // Generate random ticket number
+  const ticketNum = Math.floor(1000 + Math.random() * 9000);
+  document.getElementById("ticketNumber").textContent = ticketNum;
+
+  // READ FINAL DETAILS
+  let name = document.getElementById("fullName").value;
+  let contact = document.getElementById("contactNumber").value;
+  let address = document.getElementById("completeAddress").value;
+  let payment = document.getElementById("paymentMode").value;
+
+  // READ SUMMARY TOTAL
+  let amount = document.getElementById("summaryTotal").textContent.replace("₱", "");
+
+  // GET EXISTING ORDERS
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  // SAVE ORDER
+  orders.push({
+    ticket: ticketNum,
+    name: name,
+    contact: contact,
+    address: address,
+    amount: amount,
+    service: fullService.classList.contains("active") ? "Full Service" : "Self Select",
+    status: "Pending"
   });
+
+  // SAVE BACK TO LOCAL STORAGE
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  console.log("Order saved:", orders);
+});
 
   backToPage5.addEventListener("click", () => {
     page6.classList.add("hidden");
