@@ -1,157 +1,129 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ======= PAGE ELEMENTS =======
-  const page1 = document.getElementById("kontainer"); // Page 1: Service selection
-  const page2 = document.getElementById("page2"); // Page 2: Detergent selection
-  const page3 = document.getElementById("page3"); // Page 3: Fabric conditioner selection
-  const page4 = document.getElementById("page4"); // Page 4: Load & extras
-  const page5 = document.getElementById("page5"); // Page 5: Summary
-  const page6 = document.getElementById("page6"); // Page 6: Contact details
-  const page7 = document.getElementById("page7"); // Page 7: Thank you / ticket
+  /* ===============================
+     FUNCTION: SET ACTIVE STEP
+  ================================= */
+  function setStep(stepNumber) {
+    for (let i = 1; i <= 6; i++) {
+      const circle = document.getElementById(`step${i}`);
+      if (circle) {
+        circle.classList.toggle("active", i === stepNumber);
+      }
+    }
+    // Update progress text
+    const progressCircle = document.getElementById("progressCircle");
+    if (progressCircle) progressCircle.textContent = `${stepNumber} / 6`;
+  }
 
-  // ======= PAGE 1 ELEMENTS =======
-  const fullService = document.getElementById("fullService"); // Full service button
-  const selfSelect = document.getElementById("selfSelect"); // Self-select button
-  const inclusions = document.getElementById("inclusions"); // Details for full service
-  const steps = document.getElementById("steps"); // Steps for self-select
-  const nextBtn = document.getElementById("nextBtn"); // Next button for page1
-  const stepBtns = document.querySelectorAll(".step-btn"); // Buttons for selecting steps
+  /* ===============================
+     PAGE ELEMENTS
+  ================================= */
+  const pages = {
+    1: document.getElementById("kontainer"),
+    2: document.getElementById("page2"),
+    3: document.getElementById("page3"),
+    4: document.getElementById("page4"),
+    5: document.getElementById("page5"),
+    6: document.getElementById("page6"),
+    7: document.getElementById("page7"),
+  };
 
-  // FULL SERVICE CLICK
+  function showPage(num) {
+    Object.values(pages).forEach(p => p.classList.add("hidden"));
+    pages[num].classList.remove("hidden");
+    if (num <= 6) setStep(num);
+  }
+
+  /* ===============================
+     PAGE 1: SERVICE
+  ================================= */
+  const fullService = document.getElementById("fullService");
+  const selfSelect = document.getElementById("selfSelect");
+  const inclusions = document.getElementById("inclusions");
+  const steps = document.getElementById("steps");
+  const nextBtn = document.getElementById("nextBtn");
+  const stepBtns = document.querySelectorAll(".step-btn");
+
   fullService.addEventListener("click", () => {
-    fullService.classList.add("active"); // Mark as selected
-    selfSelect.classList.remove("active"); // Remove selection from self-select
-    inclusions.classList.remove("hidden"); // Show inclusions info
-    steps.classList.add("hidden"); // Hide step buttons
-    nextBtn.classList.remove("hidden"); // Show next button
+    fullService.classList.add("active");
+    selfSelect.classList.remove("active");
+    inclusions.classList.remove("hidden");
+    steps.classList.add("hidden");
+    nextBtn.classList.remove("hidden");
   });
 
-  // SELF SELECT CLICK
   selfSelect.addEventListener("click", () => {
     selfSelect.classList.add("active");
     fullService.classList.remove("active");
-    inclusions.classList.add("hidden"); // Hide inclusions
-    steps.classList.remove("hidden"); // Show steps
+    inclusions.classList.add("hidden");
+    steps.classList.remove("hidden");
     nextBtn.classList.remove("hidden");
-    stepBtns.forEach(btn => btn.classList.remove("selected")); // Reset step selections
+    stepBtns.forEach(btn => btn.classList.remove("selected"));
   });
 
-  // TOGGLE STEP BUTTONS
   stepBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      btn.classList.toggle("selected"); // Mark/unmark step selection
-    });
+    btn.addEventListener("click", () => btn.classList.toggle("selected"));
   });
 
-  // NEXT (PAGE 1 → PAGE 2)
   nextBtn.addEventListener("click", () => {
     if (fullService.classList.contains("active") || selfSelect.classList.contains("active")) {
-      page1.classList.add("hidden"); // Hide page1
-      page2.classList.remove("hidden"); // Show page2
+      showPage(2);
     }
   });
 
-  // ======= PAGE 2 ELEMENTS =======
-  const detSelect = document.getElementById("detergentSelect"); // Detergent dropdown
-  const nextToFabcon = document.getElementById("nextToFabcon"); // Next button
-  const plusDet = document.getElementById("plusDet"); // Increase detergent qty
-  const minusDet = document.getElementById("minusDet"); // Decrease detergent qty
-  const detQtySpan = document.getElementById("detQty"); // Display qty
-  const backToPage1 = document.getElementById("backToPage1"); // Back button
+  /* ===============================
+     PAGE 2: DETERGENT
+  ================================= */
+  const detSelect = document.getElementById("detergentSelect");
+  const nextToFabcon = document.getElementById("nextToFabcon");
+  const plusDet = document.getElementById("plusDet");
+  const minusDet = document.getElementById("minusDet");
+  const detQtySpan = document.getElementById("detQty");
+  const backToPage1 = document.getElementById("backToPage1");
   let detQty = 1;
 
-  // Increase / decrease qty
-  plusDet.addEventListener("click", () => {
-    detQty++;
-    detQtySpan.textContent = detQty;
-  });
-  minusDet.addEventListener("click", () => {
-    if (detQty > 1) detQty--;
-    detQtySpan.textContent = detQty;
-  });
+  plusDet.addEventListener("click", () => detQtySpan.textContent = ++detQty);
+  minusDet.addEventListener("click", () => { if (detQty > 1) detQtySpan.textContent = --detQty; });
+  detSelect.addEventListener("change", () => nextToFabcon.classList.toggle("hidden", detSelect.value === ""));
+  nextToFabcon.addEventListener("click", () => showPage(3));
+  backToPage1.addEventListener("click", () => showPage(1));
 
-  // Show next button if detergent selected
-  detSelect.addEventListener("change", () => {
-    if (detSelect.value !== "") nextToFabcon.classList.remove("hidden");
-    else nextToFabcon.classList.add("hidden");
-  });
-
-  // NEXT / BACK
-  nextToFabcon.addEventListener("click", () => {
-    page2.classList.add("hidden");
-    page3.classList.remove("hidden");
-  });
-  backToPage1.addEventListener("click", () => {
-    page2.classList.add("hidden");
-    page1.classList.remove("hidden");
-  });
-
-  // ======= PAGE 3 ELEMENTS =======
-  const fabSelect = document.getElementById("fabconSelect"); // Fabric conditioner dropdown
-  const nextToDetails = document.getElementById("nextToDetails"); // Next button
-  const plusFab = document.getElementById("plusFab"); // Increase fab qty
-  const minusFab = document.getElementById("minusFab"); // Decrease fab qty
-  const fabQtySpan = document.getElementById("fabQty"); // Display qty
-  const backToPage2 = document.getElementById("backToPage2"); // Back button
-  const addBleach = document.getElementById("addBleach"); // Bleach checkbox
+  /* ===============================
+     PAGE 3: FABRIC CONDITIONER
+  ================================= */
+  const fabSelect = document.getElementById("fabconSelect");
+  const nextToDetails = document.getElementById("nextToDetails");
+  const plusFab = document.getElementById("plusFab");
+  const minusFab = document.getElementById("minusFab");
+  const fabQtySpan = document.getElementById("fabQty");
+  const backToPage2 = document.getElementById("backToPage2");
+  const addBleach = document.getElementById("addBleach");
   let fabQty = 1;
 
-  plusFab.addEventListener("click", () => {
-    fabQty++;
-    fabQtySpan.textContent = fabQty;
-  });
-  minusFab.addEventListener("click", () => {
-    if (fabQty > 1) fabQty--;
-    fabQtySpan.textContent = fabQty;
-  });
+  plusFab.addEventListener("click", () => fabQtySpan.textContent = ++fabQty);
+  minusFab.addEventListener("click", () => { if (fabQty > 1) fabQtySpan.textContent = --fabQty; });
+  fabSelect.addEventListener("change", () => nextToDetails.classList.toggle("hidden", fabSelect.value === ""));
+  nextToDetails.addEventListener("click", () => showPage(4));
+  backToPage2.addEventListener("click", () => showPage(2));
 
-  fabSelect.addEventListener("change", () => {
-    if (fabSelect.value !== "") nextToDetails.classList.remove("hidden");
-    else nextToDetails.classList.add("hidden");
-  });
-
-  nextToDetails.addEventListener("click", () => {
-    page3.classList.add("hidden");
-    page4.classList.remove("hidden");
-  });
-  backToPage2.addEventListener("click", () => {
-    page3.classList.add("hidden");
-    page2.classList.remove("hidden");
-  });
-
-  // ======= PAGE 4 ELEMENTS =======
-  const plusLoad = document.getElementById("plusLoad"); // Increase load qty
-  const minusLoad = document.getElementById("minusLoad"); // Decrease load qty
-  const loadQtySpan = document.getElementById("loadQty"); // Display qty
-  const finishBtn = document.getElementById("finishBtn"); // Finish button
-  const loadRadios = document.querySelectorAll("input[name='loadType']"); // Load type radios
-  const backToPage3 = document.getElementById("backToPage3"); // Back button
+  /* ===============================
+     PAGE 4: LOAD DETAILS
+  ================================= */
+  const plusLoad = document.getElementById("plusLoad");
+  const minusLoad = document.getElementById("minusLoad");
+  const loadQtySpan = document.getElementById("loadQty");
+  const finishBtn = document.getElementById("finishBtn");
+  const loadRadios = document.querySelectorAll("input[name='loadType']");
+  const backToPage3 = document.getElementById("backToPage3");
   let loadQty = 1;
 
-  plusLoad.addEventListener("click", () => {
-    loadQty++;
-    loadQtySpan.textContent = loadQty;
-  });
-  minusLoad.addEventListener("click", () => {
-    if (loadQty > 1) loadQty--;
-    loadQtySpan.textContent = loadQty;
-  });
+  plusLoad.addEventListener("click", () => loadQtySpan.textContent = ++loadQty);
+  minusLoad.addEventListener("click", () => { if (loadQty > 1) loadQtySpan.textContent = --loadQty; });
+  loadRadios.forEach(radio => radio.addEventListener("change", () => finishBtn.classList.remove("hidden")));
+  backToPage3.addEventListener("click", () => showPage(3));
 
-  loadRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      finishBtn.classList.remove("hidden"); // Show finish button kapag may selection
-    });
-  });
-
-  backToPage3.addEventListener("click", () => {
-    page4.classList.add("hidden");
-    page3.classList.remove("hidden");
-  });
-
-  // ======= PAGE 4 → PAGE 5 (SUMMARY) =======
   finishBtn.addEventListener("click", () => {
-    page4.classList.add("hidden");
-    page5.classList.remove("hidden");
+    showPage(5);
 
     const summaryTableBody = document.querySelector("#summaryTable tbody");
     const summaryTotal = document.getElementById("summaryTotal");
@@ -159,25 +131,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let total = 0;
 
     // SERVICE
-    let selectedService = fullService.classList.contains("active") ? "Full Service" : "Self Select";
+    const selectedService = fullService.classList.contains("active") ? "Full Service" : "Self Select";
     summaryTableBody.innerHTML += `<tr><td>1</td><td>${selectedService}</td><td>₱0</td></tr>`;
 
     // DETERGENT
-    const detValue = detSelect.value;
-    if (detValue && !detValue.includes("mine")) {
-      let detPrice = detValue.includes("₱25") ? 25 : 20;
-      let detTotal = detPrice * detQty;
+    if (detSelect.value && !detSelect.value.includes("mine")) {
+      const detPrice = detSelect.value.includes("₱25") ? 25 : 20;
+      const detTotal = detPrice * detQty;
       total += detTotal;
-      summaryTableBody.innerHTML += `<tr><td>${detQty}</td><td>${detValue}</td><td>₱${detTotal}</td></tr>`;
+      summaryTableBody.innerHTML += `<tr><td>${detQty}</td><td>${detSelect.value}</td><td>₱${detTotal}</td></tr>`;
     }
 
     // FABCON
-    const fabValue = fabSelect.value;
-    if (fabValue && !fabValue.includes("mine")) {
-      let fabPrice = 15;
-      let fabTotal = fabPrice * fabQty;
+    if (fabSelect.value && !fabSelect.value.includes("mine")) {
+      const fabTotal = 15 * fabQty;
       total += fabTotal;
-      summaryTableBody.innerHTML += `<tr><td>${fabQty}</td><td>${fabValue}</td><td>₱${fabTotal}</td></tr>`;
+      summaryTableBody.innerHTML += `<tr><td>${fabQty}</td><td>${fabSelect.value}</td><td>₱${fabTotal}</td></tr>`;
     }
 
     // BLEACH
@@ -189,85 +158,66 @@ document.addEventListener("DOMContentLoaded", () => {
     // LOAD
     const selectedLoad = document.querySelector("input[name='loadType']:checked");
     if (selectedLoad) {
-      let loadName = selectedLoad.value;
-      let loadPrice = loadName === "Regular Clothes" ? 100 : loadName === "Bedsheets" ? 120 : 150;
-      let loadTotal = loadPrice * loadQty;
+      const loadName = selectedLoad.value;
+      const loadPrice = loadName === "Regular Clothes" ? 100 :
+                        loadName === "Bedsheets" ? 120 : 150;
+      const loadTotal = loadPrice * loadQty;
       total += loadTotal;
       summaryTableBody.innerHTML += `<tr><td>${loadQty}</td><td>${loadName}</td><td>₱${loadTotal}</td></tr>`;
     }
 
-    summaryTotal.textContent = `₱${total}`; // Ipakita total sa summary
+    summaryTotal.textContent = `₱${total}`;
   });
 
-  // ======= PAGE 5 → PAGE 6 =======
+  /* ===============================
+     PAGE 5
+  ================================= */
   const toContactBtn = document.getElementById("toContactBtn");
   const backToPage4 = document.getElementById("backToPage4");
 
-  toContactBtn.addEventListener("click", () => {
-    page5.classList.add("hidden");
-    page6.classList.remove("hidden");
-  });
-  backToPage4.addEventListener("click", () => {
-    page5.classList.add("hidden");
-    page4.classList.remove("hidden");
-  });
+  toContactBtn.addEventListener("click", () => showPage(6));
+  backToPage4.addEventListener("click", () => showPage(4));
 
-  // ======= PAGE 6 → PAGE 7 (THANK YOU) =======
+  /* ===============================
+     PAGE 6 → PAGE 7
+  ================================= */
   const submitOrderBtn = document.getElementById("submitOrderBtn");
   const backToPage5 = document.getElementById("backToPage5");
 
   submitOrderBtn.addEventListener("click", () => {
-  page6.classList.add("hidden");
-  page7.classList.remove("hidden");
+    showPage(7);
 
-  // Generate random ticket number
-  const ticketNum = Math.floor(1000 + Math.random() * 9000);
-  document.getElementById("ticketNumber").textContent = ticketNum;
+    const ticketNum = Math.floor(1000 + Math.random() * 9000);
+    document.getElementById("ticketNumber").textContent = ticketNum;
 
-  // READ FINAL DETAILS
-  let name = document.getElementById("fullName").value;
-  let contact = document.getElementById("contactNumber").value;
-  let address = document.getElementById("completeAddress").value;
-  let payment = document.getElementById("paymentMode").value;
+    const name = document.getElementById("fullName").value;
+    const contact = document.getElementById("contactNumber").value;
+    const address = document.getElementById("completeAddress").value;
+    const amount = document.getElementById("summaryTotal").textContent.replace("₱", "");
 
-  // READ SUMMARY TOTAL
-  let amount = document.getElementById("summaryTotal").textContent.replace("₱", "");
-
-  // GET EXISTING ORDERS
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-  // SAVE ORDER
-  orders.push({
-    ticket: ticketNum,
-    name: name,
-    contact: contact,
-    address: address,
-    amount: amount,
-    service: fullService.classList.contains("active") ? "Full Service" : "Self Select",
-    status: "Pending"
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push({
+      ticket: ticketNum,
+      name,
+      contact,
+      address,
+      amount,
+      service: fullService.classList.contains("active") ? "Full Service" : "Self Select",
+      status: "Pending"
+    });
+    localStorage.setItem("orders", JSON.stringify(orders));
   });
 
-  // SAVE BACK TO LOCAL STORAGE
-  localStorage.setItem("orders", JSON.stringify(orders));
+  backToPage5.addEventListener("click", () => showPage(5));
 
-  console.log("Order saved:", orders);
-});
+  /* ===============================
+     TRACK BUTTON
+  ================================= */
+  const trackBtn = document.getElementById("trackBtn");
+  if (trackBtn) {
+    trackBtn.addEventListener("click", () => window.location.href = "tracklaundry.html");
+  }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4a359322815b15ad75021b341acbb115e9f113fb
-  backToPage5.addEventListener("click", () => {
-    page6.classList.add("hidden");
-    page5.classList.remove("hidden");
-  });
-
-});
-
-// ======= PAGE 7: TRACK MY LAUNDRY BUTTON =======
-const trackBtn = document.getElementById("trackBtn");
-
-trackBtn.addEventListener("click", () => {
-  // Redirect user to the tracking page
-  window.location.href = "tracklaundry.html"; // ✅ pangalan ng tracking page
+  // SHOW FIRST PAGE
+  showPage(1);
 });

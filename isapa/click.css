@@ -674,3 +674,20 @@ text-align: center;
   color: #e60000;
 }
 
+.progress-circle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-family: Poppins, sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
