@@ -1,168 +1,178 @@
-*{
-    margin: 0px;
-    padding: 0%;
-    max-width: 100%;
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
-   
 }
 
-body{
-    font-family: "Poppins", sans-serif; 
-    line-height: 1.6; /* Taas ng pagitan ng mga linya ng text */
-    scroll-behavior: smooth;
-   
+body {
+  font-family: 'Poppins', sans-serif;
+  background: url("franbg.png") no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  color: #222;
 }
+
+/* ================= HEADER ================= */
 header {
-  height: 80px;              /* ✅ fixed height – hindi gagalaw */
-  display: flex;
-  align-items: center;       /* centers vertically */
-  justify-content: space-between;
-  background-color: white;   /* your white box */
-  padding: 0 30px;           /* horizontal space only */
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-header h1{
-    font-size: 18px;       
-    margin-bottom: 5px;    /* Space sa ilalim ng h1 */
-}
-
-header button{
-    background: white;    
-     font-family: 'Poppins', sans-serif; 
-    color: black;       
-    border: none;          /* Alisin ang border */
-    padding: 5px 15px;     /* Vertical at horizontal na space sa loob ng button */
-    cursor: pointer;       /* Magiging pointer (kamay) ang mouse kapag naka-hover */
-    border-radius: 20px;
-    font-weight: bolder;
-}
-header button:hover{
-  color: #0094ff;
-}
-/* ========== NAVIGATION BAR ========== */
-nav{
-    background: white;               
-    padding: 10px;                    /* Space sa loob ng nav */
-    text-align: center;               /* Pantayin sa gitna yung content */
-    margin-bottom: -10px;
-}
-
-nav ul{
-    list-style: none;                 /* Alisin yung bilog/number sa list items */
-    display: flex;                    /* Gawing flexbox layout */
-    justify-content: center;          /* Pantayin sa gitna horizontally */
-    gap: 80px;                        /* Distansya sa pagitan ng mga items */
-}
-
-nav a{
-    text-decoration: none;            /* Alisin yung underline ng links */
-    color: black;                     /* Kulay ng text ng links */
-    font-weight: bold;                /* Gawing bold yung text */
-}
-
-nav a:hover{
-    color: #0088cc;                   /* Kapag naka-hover, magiging blue */
-}
-#Lugu img {
-  width: 90px;
-  height: 70px;
-  transform: scale(2.1);
-  transform-origin: center;
-  margin-top: 50px;
-  margin-bottom: 10px;
-  margin-left: 100px;
-  margin-right: 50px;
-}
-
-
-#Home{
-    background: url(Home-Background.png) no-repeat center center/cover;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    min-height: 100vh;
-    padding-left: 150px;
-    padding-top: 200px;
-    
-    
-}
-#Home, .home-text {
-    
-    color: white;
+    z-index: 1000;
 }
 
-.home-text h2 {
-   padding-bottom: 30px;
-   font-weight: bolder;
-   text-shadow: black;
-}
-
-#Franchise {
-    background: url(franbg.png) no-repeat center center/cover;
-    width: 100%;
-    min-height: 100vh;
+.header-left {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 80px;
+    gap: 15px;
+}
+
+/* CLEAN + RESPONSIVE LOGO */
+#Lugu img {
+    width: 70px;
+    height: auto;
+}
+
+/* TAGLINE */
+.tagline span {
+    font-weight: 600;
+    color: #003366;
+}
+
+.tagline button {
+    background-color: #0094ff;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tagline button:hover {
+    background-color: #0077cc;
+}
+
+/* ================= NAVIGATION ================= */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: #003366;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #0094ff;
+}
+
+/* Buttons */
+.account-btn {
+    background-color: #0094ff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.logout-btn {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+#Home {
+  background: url(Home-Background.png) no-repeat center center/cover;
+  width: 100%;
+  min-height: 100vh;
+  padding-left: 150px;
+  padding-top: 200px;
+}
+#Home,
+.home-text {
+  color: white;
+}
+.home-text h2 {
+  padding-bottom: 30px;
+  font-weight: bolder;
+  text-shadow: black;
+}
+#Franchise {
+  background: url(franbg.png) no-repeat center center/cover;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
 }
 .reveal {
   opacity: 0;
   transform: translateY(80px);
   transition: all 0.8s ease;
 }
-
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
 }
-.reveal:nth-child(1) { transition-delay: 0s; }
-.reveal:nth-child(2) { transition-delay: 0.2s; }
-.reveal:nth-child(3) { transition-delay: 0.4s; }
-.reveal:nth-child(4) { transition-delay: 0.4s; }
-
-
-.franchise-content{
+.reveal:nth-child(1) {
+  transition-delay: 0s;
+}
+.reveal:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.reveal:nth-child(3) {
+  transition-delay: 0.4s;
+}
+.reveal:nth-child(4) {
+  transition-delay: 0.4s;
+}
+.franchise-content {
   display: flex;
   align-items: center;
   gap: 60px;
   max-width: 1100px;
 }
-
 .franchise-logo {
   width: 350px;
   height: auto;
 }
-
 .franchise-text {
   color: #000;
   max-width: 600px;
 }
-
 .franchise-text h2 {
   font-size: 28px;
   color: #000;
   margin-bottom: 10px;
 }
-
 .franchise-text h3 {
   font-size: 22px;
   font-weight: 700;
   color: #0a0a0a;
   margin-bottom: 20px;
 }
-
 .franchise-text p {
   font-size: 16px;
   color: #333;
   line-height: 1.7;
   margin-bottom: 25px;
 }
-
 .partner-btn {
   background: #0077cc;
   color: white;
@@ -171,10 +181,9 @@ nav a:hover{
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
   transition: 0.3s ease;
 }
-
 .partner-btn:hover {
   background: #005fa3;
 }
@@ -184,42 +193,36 @@ nav a:hover{
   justify-content: center;
   background: white;
   border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   width: 850px;
   padding: 40px 50px;
   gap: 40px;
 }
-
 .form-logo img {
   width: 250px;
   height: auto;
 }
-
 .form-box {
   flex: 1;
   background: linear-gradient(to bottom right, #0094ff, #33ccff);
   padding: 30px 40px;
   border-radius: 15px;
   color: white;
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.3);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
 }
-
 .form-box h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 22px;
 }
-
 .input-group {
   margin-bottom: 15px;
 }
-
 .input-group label {
   display: block;
   font-weight: 600;
   margin-bottom: 5px;
 }
-
 .input-group input,
 .input-group textarea {
   width: 100%;
@@ -228,12 +231,10 @@ nav a:hover{
   border-radius: 8px;
   outline: none;
 }
-
 .full-width textarea {
   height: 80px;
   resize: none;
 }
-
 .send-btn {
   background: #005fa3;
   color: white;
@@ -245,13 +246,10 @@ nav a:hover{
   width: 100%;
   font-weight: bold;
 }
-
 .send-btn:hover {
   background: #003f73;
 }
-
 .thankyou-box {
-
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -260,35 +258,29 @@ nav a:hover{
   color: white;
   font-size: 30px;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
-
-#Service{
-    background: url(servicebg.png) no-repeat center center/cover;
-    min-height: 100vh;
-    width: 100%;
-    text-align: center;
-    padding: 80px;
-    font-family:"Poppins", sans-serif;
-    
-
+#Service {
+  background: url(servicebg.png) no-repeat center center/cover;
+  min-height: 100vh;
+  width: 100%;
+  text-align: center;
+  padding: 80px;
+  font-family: "Poppins", sans-serif;
 }
 .services-header h2 {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 10px;
 }
-
 .services-header h3 {
   font-size: 20px;
   font-weight: 600;
   line-height: 1.4;
 }
-
 .services-header h3 span {
   font-weight: 700;
 }
-
 .services-header p {
   font-size: 15px;
   color: #333;
@@ -296,7 +288,6 @@ nav a:hover{
   margin: 15px auto 40px;
   font-family: "Poppins", sans-serif;
 }
-
 .services-container {
   display: flex;
   justify-content: center;
@@ -304,38 +295,32 @@ nav a:hover{
   gap: 20px;
   flex-wrap: wrap;
 }
-
 .service-box {
   background: #fff;
   border-radius: 10px;
   padding: 25px 20px;
   width: 180px;
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
-
 .service-box:hover {
- transform: translateY(-5px);
+  transform: translateY(-5px);
 }
-  
 .service-box img {
   width: 70px;
   margin-bottom: 10px;
 }
-
 .service-box h4 {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 5px;
 }
-
 .service-box p {
   font-weight: 700;
   letter-spacing: 1px;
   border-top: 2px solid #000;
   padding-top: 5px;
 }
-
 .full-service-box {
   background: #0094ff;
   color: white;
@@ -343,32 +328,26 @@ nav a:hover{
   padding: 10px 20px;
   text-align: left;
   width: 180px;
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
-} 
-
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+}
 .full-service-box h3 {
   font-size: 20px;
   font-weight: 700;
 }
-
 .full-service-box h1 {
   font-size: 45px;
   font-weight: 800;
   margin: 10px 0 15px;
 }
-
 .full-service-box ul {
   list-style: none;
   padding: 0;
 }
-
 .full-service-box li {
   font-size: 14px;
   list-style: bullets;
   margin-bottom: 8px;
 }
-
-
 .book-btn {
   background-color: #007bff;
   color: white;
@@ -383,85 +362,68 @@ nav a:hover{
   left: 50%;
   transform: translateX(-50%);
 }
-
 .book-btn:hover {
   background-color: #0056b3;
 }
-
-
 #About {
   background: url(abawt.png) no-repeat center center/cover;
   min-height: 100vh;
   width: 100%;
-  display: flex;                /* Gawing side by side: image at text */
-  align-items: center;          /* Gitna vertically */
-  justify-content: center;      /* Gitna horizontally sa buong section */
-  gap: 100px;                   /* Layo ng image at text */
+  display: flex; /* Gawing side by side: image at text */
+  align-items: center; /* Gitna vertically */
+  justify-content: center; /* Gitna horizontally sa buong section */
+  gap: 100px; /* Layo ng image at text */
   padding: 100px;
 }
-
 .about-text {
   display: flex;
-  flex-direction: column;       /* Para si h2 nasa taas ng p */
+  flex-direction: column; /* Para si h2 nasa taas ng p */
   justify-content: center;
   font-size: 25px;
   color: black;
-  max-width: 500px;             /* Limit ang lapad ng text */
+  max-width: 500px; /* Limit ang lapad ng text */
 }
-
 .about-text h2 {
   font-weight: bold;
-  margin-bottom: 20px;          /* Agwat ng h2 sa paragraph */
+  margin-bottom: 20px; /* Agwat ng h2 sa paragraph */
 }
-
-
-
 .carousel {
-      width: 600px;
-      height: 350px;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      position: relative;
-      
-    }
-
-    .slides {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      transition: transform 1s ease;
-    }
-
-    .slides img {
-      width: 600px;
-      height: 350px;
-      object-fit: cover;
-    }
-
-    /* Optional: small dots indicator */
-    .dots {
-      position: absolute;
-      bottom: 15px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .dots span {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.6);
-      margin: 5px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .dots .active {
-      background: #fff;
-    }
-
-/* ===== CONTACT SECTION ===== */
+  width: 600px;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s ease;
+}
+.slides img {
+  width: 600px;
+  height: 350px;
+  object-fit: cover;
+} /* Optional: small dots indicator */
+.dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+.dots span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  margin: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dots .active {
+  background: #fff;
+} /* ===== CONTACT SECTION ===== */
 #Contact {
   background: linear-gradient(to bottom right, #a3d4ff, #eaf6ff);
   min-height: 100vh;
@@ -470,28 +432,23 @@ nav a:hover{
   justify-content: center;
   align-items: center;
 }
-
 .contact-wrapper {
   width: 100%;
   max-width: 1200px;
   text-align: center;
   color: #002b5b;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
-
 .contact-header h2 {
   font-size: 45px;
   font-weight: 800;
   color: #003366;
 }
-
 .contact-header p {
   font-size: 18px;
   color: #333;
   margin-bottom: 50px;
-}
-
-/* === Content Layout === */
+} /* === Content Layout === */
 .contact-content {
   display: flex;
   justify-content: space-between;
@@ -499,29 +456,27 @@ nav a:hover{
   gap: 80px;
   margin-bottom: 60px;
 }
-
-.contact-left, .contact-right {
+.contact-left,
+.contact-right {
   flex: 1;
   background: white;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 30px 40px;
   text-align: left;
 }
-
-.contact-left h3, .contact-right h3 {
+.contact-left h3,
+.contact-right h3 {
   color: #0077cc;
   margin-bottom: 15px;
   font-size: 22px;
 }
-
-.contact-left p, .contact-right p {
+.contact-left p,
+.contact-right p {
   font-size: 16px;
   margin-bottom: 20px;
   line-height: 1.6;
-}
-
-/* Facebook Button */
+} /* Facebook Button */
 .fb-link {
   display: inline-flex;
   align-items: center;
@@ -533,64 +488,52 @@ nav a:hover{
   font-weight: 600;
   transition: 0.3s;
 }
-
 .fb-link img {
   width: 28px;
   margin-right: 10px;
 }
-
 .fb-link:hover {
   background: #145dbf;
   transform: translateY(-2px);
-}
-
-/* Location Images */
+} /* Location Images */
 .location-images {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
 .location-images img {
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* === Ratings Section (Formal Look with Profile Photos) === */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+} /* === Ratings Section (Formal Look with Profile Photos) === */
 .ratings-wrapper {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 35px;
 }
-
 .rating-box {
   background: white;
   border: 1.5px solid #0077cc;
   border-radius: 15px;
   width: 250px;
   padding: 25px 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #003366;
   text-align: left;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
-
 .rating-box:hover {
   transform: translateY(-5px);
   background: #f0f8ff;
-}
-
-/* Header inside each rating */
+} /* Header inside each rating */
 .rating-header {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
   gap: 12px;
 }
-
 .rating-header img {
   width: 45px;
   height: 45px;
@@ -598,62 +541,50 @@ nav a:hover{
   object-fit: cover;
   border: 2px solid #0077cc;
 }
-
 .rating-header h4 {
   font-size: 17px;
   margin: 0;
   color: #003366;
 }
-
 .rating-header .stars {
   font-size: 14px;
   color: #f9b234;
   margin: 2px 0 0;
-}
-
-/* Review text */
+} /* Review text */
 .review-text {
   font-size: 15px;
   line-height: 1.5;
   color: #333;
   font-style: italic;
-}
-
-
- 
-/* ===== HEADER DESIGN ===== */
+} /* ===== HEADER DESIGN ===== */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
   padding: 15px 40px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
-
 .header-left {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-
 #Lugu img {
   width: 60px;
   height: 60px;
 }
-
 .tagline span {
   font-weight: 600;
   color: #003366;
   margin-right: 10px;
 }
-
 .tagline button {
   background-color: #0094ff;
   border: none;
@@ -664,12 +595,9 @@ header {
   cursor: pointer;
   transition: 0.3s;
 }
-
 .tagline button:hover {
   background-color: #0077cc;
-}
-
-/* ===== NAVIGATION ===== */
+} /* ===== NAVIGATION ===== */
 nav ul {
   list-style: none;
   display: flex;
@@ -677,69 +605,53 @@ nav ul {
   align-items: center;
   margin: 0;
 }
-
 nav a {
   text-decoration: none;
   color: #003366;
   font-weight: 600;
   transition: 0.3s;
 }
-
 nav a:hover {
   color: #0094ff;
-}
-
-/* ===== ACCOUNT & LOGOUT BUTTONS ===== */
+} /* ===== ACCOUNT & LOGOUT BUTTONS ===== */
 .account-btn {
   background-color: #0094ff;
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
 }
-
 .account-btn:hover {
   background-color: #0077cc;
 }
-
 .logout-btn {
   background-color: #ff4d4d;
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
 }
-
 .logout-btn:hover {
   background-color: #d93636;
 }
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 10px; /* adjust depende sa taas ng header mo */
 }
-
 section {
   scroll-margin-top: 10px;
 }
-
 .franchise-back-btn {
   background: none;
   border: none;
   font-size: 18px;
   color: #ffffff;
   cursor: pointer;
-  margin-bottom: 20px;
-
-  /* POSITIONING (THIS MAKES IT PERFECTLY LEFT ALIGNED & CLEAN) */
+  margin-bottom: 20px; /* POSITIONING (THIS MAKES IT PERFECTLY LEFT ALIGNED & CLEAN) */
   display: block;
   text-align: left;
-  width: 100%;
-
-  /* SPACING FROM LEFT SIDE (not too close, not too far) */
+  width: 100%; /* SPACING FROM LEFT SIDE (not too close, not too far) */
   padding-left: 5px;
-
   transition: 0.3s;
 }
-
 .franchise-back-btn:hover {
   color: #0056b3;
   text-decoration: underline;

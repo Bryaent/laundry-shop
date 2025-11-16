@@ -30,86 +30,107 @@
   </header>
   <style>
     
-    body {
-      font-family: "Poppins", sans-serif;
-      background: url('servicebg.png') no-repeat center center/cover;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
+    /* GLOBAL PAGE DESIGN */
+body {
+  font-family: "Poppins", sans-serif;
+  background: url('servicebg.png') no-repeat center center/cover;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 180px; /* para di sumabit sa fixed header */
+  min-height: 100vh;
+  text-align: center;
+}
 
-    .track-container {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      max-width: 400px;
-      width: 90%;
-    }
+/* TRACK CONTAINER */
+.track-container {
+  background: white;
+  padding: 40px 35px;
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.25);
+  max-width: 430px;
+  width: 95%;
+  text-align: center;
+  margin-top: 20px;
+}
 
-    input {
-      padding: 10px;
-      width: 80%;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
+/* INPUT */
+#ticketInput {
+  padding: 12px;
+  width: 90%;
+  border: 2px solid #bcdcff;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
 
-    button {
-      background: #0094ff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+#ticketInput:focus {
+  border-color: #0094ff;
+  box-shadow: 0 0 5px rgba(0,148,255,0.4);
+}
 
-    button:hover {
-      background: #0077cc;
-    }
+/* BUTTON */
+button {
+  background: linear-gradient(to bottom, #50aaff, #0070c9);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  transition: 0.3s;
+}
 
-    #trackResult {
-      margin-top: 20px;
-      text-align: left;
-    }
+button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(to bottom, #3c8fe0, #005fa3);
+}
 
-    .back-btn {
-  position: fixed;         /* stays on screen kahit mag-scroll */
-  top: 150px;              /* layo mula sa taas */
-  left: 135px;              /* layo mula sa kaliwang gilid */
+/* BACK BUTTON */
+.back-btn {
+  position: absolute;
+  top: 150px;
+  left: 135px;
   background: #0094ff;
   color: white;
   text-decoration: none;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 8px;
   font-weight: 600;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  transition: background 0.3s ease;
+  font-size: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  transition: 0.3s;
 }
 
 .back-btn:hover {
   background: #0077cc;
+}
 
-}
-.track-container {
-  position: relative; /* ✅ add this line */
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  max-width: 400px;
-  width: 90%;
-}
+/* RESULT BOX */
 #trackResult {
-  margin-top: 20px;
-  text-align: center; /* ✅ ito ang magce-center sa text */
+  margin-top: 25px;
+  padding: 20px;
+  background: #f7fbff;
+  border: 1px solid #d3e8ff;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 15px;
+  display: none; /* hidden until result appears */
 }
+
+#trackResult h3 {
+  color: #0077cc;
+  margin-bottom: 10px;
+}
+
+#trackResult p {
+  margin-bottom: 6px;
+}
+
 
 
   </style>
@@ -130,33 +151,40 @@
   </div>
 
   <script>
-    const form = document.getElementById("trackForm");
-    const resultBox = document.getElementById("trackResult");
+const form = document.getElementById("trackForm");
+const resultBox = document.getElementById("trackResult");
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
 
-      const code = document.getElementById("ticketInput").value.trim();
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  const code = document.getElementById("ticketInput").value.trim();
 
-      const allOrders = [...orders, ...history];
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
 
-      const match = allOrders.find(o => o.ticket === code);
+  const allOrders = [...orders, ...history];
 
-      if (match) {
-        resultBox.innerHTML = `
-          <h3>Tracking Details</h3>
-          <p><strong>Ticket #:</strong> ${match.ticket}</p>
-          <p><strong>Name:</strong> ${match.name}</p>
-          <p><strong>Service:</strong> ${match.service}</p>
-          <p><strong>Amount:</strong> ₱${match.amount}</p>
-          <p><strong>Status:</strong> ${match.status}</p>
-        `;
-      } else {
-        resultBox.innerHTML = <p style="color:red;">No record found for this tracking code.</p>;
-      }
-    });
-  </script>
+  const match = allOrders.find(o => o.ticket == code);
+
+  // Show the result box
+  resultBox.style.display = "block";
+
+  if (match) {
+    resultBox.innerHTML = `
+      <h3>Tracking Details</h3>
+      <p><strong>Ticket #:</strong> ${match.ticket}</p>
+      <p><strong>Name:</strong> ${match.name}</p>
+      <p><strong>Contact:</strong> ${match.contact}</p>
+      <p><strong>Address:</strong> ${match.address}</p>
+      <p><strong>Service:</strong> ${match.service}</p>
+      <p><strong>Amount:</strong> ₱${match.amount}</p>
+      <p><strong>Status:</strong> ${match.status}</p>
+    `;
+  } else {
+    resultBox.innerHTML = "<p style='color:red; text-align:center;'>No record found for this tracking code.</p>";
+  }
+});
+</script>
+
 </body>
 </html>
