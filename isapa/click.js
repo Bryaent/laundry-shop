@@ -253,6 +253,10 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Order saved:", orders);
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a359322815b15ad75021b341acbb115e9f113fb
   backToPage5.addEventListener("click", () => {
     page6.classList.add("hidden");
     page5.classList.remove("hidden");
