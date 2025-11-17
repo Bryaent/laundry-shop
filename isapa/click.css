@@ -459,6 +459,14 @@ select:focus {
 
 }
 
+.confirmed {
+    background: #28a745 !important; /* green */
+    color: white !important;
+}
+
+
+
+
 /* ✅ Center the whole page vertically and horizontally */
 #page5,
 #page6,
@@ -691,3 +699,35 @@ text-align: center;
   display: none;
 }
 
+.summary-actions { display:flex; gap:12px; justify-content:center; align-items:center; }
+
+.summary-edit-btn {
+  background: transparent;
+  border: 1px dashed #0077cc;
+  color: #0077cc;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.summary-edit-btn:hover { background:#eaf6ff; }
+
+.locked { opacity: 0.6; pointer-events: none; } /* ginagamit pagkatapos i-confirm */
+.summary-card.locked { box-shadow: none; opacity: 0.9; }
+
+.receipt-box {
+  background: white;
+  width: 320px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  text-align: left;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.receipt-box h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 700;
+}

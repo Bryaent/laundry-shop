@@ -195,10 +195,13 @@
           </tr>
         </tfoot>
       </table>
-    </div>
+    
+      <!-- sa loob ng page5, palitan ang old NEXT button ng ito -->
+<div class="summary-actions" style="margin-top:18px;">
+  <button id="editSummaryBtn" class="next-btn" style="background:#6c757d">Confirm (Review)</button>
+  <button id="toContactBtn" class="next-btn">NEXT</button>
+</div>
 
-    <button id="toContactBtn" class="next-btn">NEXT</button>
-  </div>
 </section>
 
 <!-- === PAGE 6: CONTACT, ADDRESS, PAYMENT === -->
@@ -239,10 +242,28 @@
     <div id="ticketNumber" class="ticket-number">####</div>
     <button id="trackBtn" class="track-btn">TRACK MY LAUNDRY</button>
   </div>
+
+  <div class="receipt-box" id="receiptBox">
+    <h3>Transaction Receipt</h3>
+    <p><strong>Ticket:</strong> <span id="r_ticket"></span></p>
+    <p><strong>Name:</strong> <span id="r_name"></span></p>
+    <p><strong>Contact:</strong> <span id="r_contact"></span></p>
+    <p><strong>Address:</strong> <span id="r_address"></span></p>
+    <p><strong>Payment:</strong> <span id="r_payment"></span></p>
+    <p><strong>Total Amount:</strong> ₱<span id="r_amount"></span></p>
+    <p><strong>Date:</strong> <span id="r_date"></span></p>
+
+    <button id="downloadReceipt" class="track-btn" style="margin-top:15px;">
+        DOWNLOAD RECEIPT
+    </button>
+</div>
+
 </section>
 
 
 <script src="click.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </body>
 
