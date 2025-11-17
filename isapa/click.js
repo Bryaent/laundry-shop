@@ -90,29 +90,32 @@ document.addEventListener("DOMContentLoaded", () => {
   ------------------------- */
 
   function showPage(n) {
-  // Hide all pages
-  Object.values(pages).forEach(p => p && p.classList.add("hidden"));
+    // Hide all pages
+    Object.values(pages).forEach(p => p && p.classList.add("hidden"));
 
-  // Show target page
-  if (pages[n]) pages[n].classList.remove("hidden");
+    // Show target page
+    if (pages[n]) pages[n].classList.remove("hidden");
 
-  // === UPDATE PROGRESS CIRCLE ===
-  const progressCircle = document.getElementById("progressCircle");
+    // === UPDATE PROGRESS CIRCLE ===
+    const progressCircle = document.getElementById("progressCircle");
 
-  // If page is 1 to 6 → show progress
-  if (n >= 1 && n <= 6) {
-    progressCircle.textContent = `${n} / 6`;
-    progressCircle.classList.remove("hidden");
+    // If page is 1 to 6 → show progress
+    if (progressCircle) {
+      if (n >= 1 && n <= 6) {
+        progressCircle.textContent = `${n} / 6`;
+        progressCircle.classList.remove("hidden");
+      } else if (n === 7) {
+        progressCircle.classList.add("hidden");
+      }
+    }
+
+    // When showing page 1, ensure next button visibility/state matches current selection
+    if (n === 1) {
+      updateNextBtnInitialState();
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
-
-  // If page 7 (ticket) → hide progress
-  if (n === 7) {
-    progressCircle.classList.add("hidden");
-  }
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
 
   function getOptionTextWithPrice(selectEl) {
     if (!selectEl) return "";
@@ -177,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <td>1</td>
       <td>${serviceText}</td>
       <td>₱0</td>
-      <td><button class="summary-edit-btn" data-page="1" data-service="${fullService.classList.contains("active")}">Edit</button></td>
+      <td><button class="summary-edit-btn" data-page="1" data-service="${fullService && fullService.classList.contains("active")}">Edit</button></td>
     `;
     summaryTableBody.appendChild(trService);
 
@@ -274,8 +277,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const idx = opts.findIndex(o => o.textContent.trim() === detText);
     if (idx >= 0) detSelect.selectedIndex = idx;
     detQty = qty || 1;
-    detQtySpan.textContent = detQty;
-    nextToFabcon.classList.remove("hidden");
+    if (detQtySpan) detQtySpan.textContent = detQty;
+    if (nextToFabcon) nextToFabcon.classList.remove("hidden");
   }
 
   function prefillFab(fabText, qty, bleach) {
@@ -284,31 +287,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const idx = opts.findIndex(o => o.textContent.trim() === fabText);
     if (idx >= 0) fabSelect.selectedIndex = idx;
     fabQty = qty || 1;
-    fabQtySpan.textContent = fabQty;
-    addBleach.checked = !!bleach;
-    nextToDetails.classList.remove("hidden");
+    if (fabQtySpan) fabQtySpan.textContent = fabQty;
+    if (addBleach) addBleach.checked = !!bleach;
+    if (nextToDetails) nextToDetails.classList.remove("hidden");
   }
 
   function prefillLoad(type, qty) {
     loadRadios.forEach(r => r.checked = (r.value === type));
     loadQty = qty || 1;
-    loadQtySpan.textContent = loadQty;
-    finishBtn.classList.remove("hidden");
+    if (loadQtySpan) loadQtySpan.textContent = loadQty;
+    if (finishBtn) finishBtn.classList.remove("hidden");
   }
 
   function prefillService(isFull) {
     if (isFull) {
-      fullService.classList.add("active");
-      selfSelect.classList.remove("active");
-      inclusions.classList.remove("hidden");
-      stepsBox.classList.add("hidden");
+      if (fullService) fullService.classList.add("active");
+      if (selfSelect) selfSelect.classList.remove("active");
+      if (inclusions) inclusions.classList.remove("hidden");
+      if (stepsBox) stepsBox.classList.add("hidden");
+      // Next should be visible & enabled for full service
+      if (nextBtn) {
+        nextBtn.classList.remove("hidden");
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = "1";
+      }
     } else {
-      selfSelect.classList.add("active");
-      fullService.classList.remove("active");
-      inclusions.classList.add("hidden");
-      stepsBox.classList.remove("hidden");
+      if (selfSelect) selfSelect.classList.add("active");
+      if (fullService) fullService.classList.remove("active");
+      if (inclusions) inclusions.classList.add("hidden");
+      if (stepsBox) stepsBox.classList.remove("hidden");
+      // Next visible but we'll validate steps to decide enabled state
+      if (nextBtn) {
+        nextBtn.classList.remove("hidden");
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = "0.5";
+      }
     }
-    nextBtn.classList.remove("hidden");
   }
 
   /* -------------------------
@@ -341,59 +355,166 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------
+     SELF-SELECT VALIDATION
+     Rules:
+     - Fold only -> invalid
+     - Wash + Fold (without Dry) -> invalid
+     - Any combo containing Wash or Dry -> valid
+  ------------------------- */
+  function getSelectedStepNames() {
+    const steps = $$(".step-btn");
+    return steps
+      .filter(s => s.classList.contains("selected"))
+      .map(s => s.textContent.trim());
+  }
+
+  function validateSelfSelectSteps() {
+    const selected = getSelectedStepNames();
+
+    // if nothing selected -> invalid
+    if (!selected || selected.length === 0) return false;
+
+    // Fold only -> invalid
+    if (selected.length === 1 && selected.includes("Fold")) return false;
+
+    // Wash + Fold only (no Dry) -> invalid
+    if (selected.includes("Wash") && selected.includes("Fold") && !selected.includes("Dry")) {
+      return false;
+    }
+
+    // otherwise valid
+    return true;
+  }
+
+  function updateNextBtnStateForSelfSelect() {
+    if (!nextBtn) return;
+    // show nextBtn when selfSelect active, but enable/disable per validation
+    if (selfSelect && selfSelect.classList.contains("active")) {
+      nextBtn.classList.remove("hidden");
+      if (validateSelfSelectSteps()) {
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = "1";
+      } else {
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = "0.5";
+      }
+    }
+  }
+
+  function updateNextBtnInitialState() {
+    // Called when showing page 1: set nextBtn based on which service is active (or hidden)
+    if (!nextBtn) return;
+
+    // If fullService active -> show & enable
+    if (fullService && fullService.classList.contains("active")) {
+      nextBtn.classList.remove("hidden");
+      nextBtn.disabled = false;
+      nextBtn.style.opacity = "1";
+      return;
+    }
+
+    // If selfSelect active -> show but validate
+    if (selfSelect && selfSelect.classList.contains("active")) {
+      nextBtn.classList.remove("hidden");
+      if (validateSelfSelectSteps()) {
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = "1";
+      } else {
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = "0.5";
+      }
+      return;
+    }
+
+    // otherwise hide nextBtn (default)
+    nextBtn.classList.add("hidden");
+    nextBtn.disabled = true;
+    nextBtn.style.opacity = "0.5";
+  }
+
+  /* -------------------------
      Event wiring: page1
   ------------------------- */
   if (fullService) {
     fullService.addEventListener("click", () => {
       fullService.classList.add("active");
-      selfSelect.classList.remove("active");
-      inclusions && inclusions.classList.remove("hidden");
-      stepsBox && stepsBox.classList.add("hidden");
-      nextBtn && nextBtn.classList.remove("hidden");
-    });
-  }
-  if (selfSelect) {
-    selfSelect.addEventListener("click", () => {
-      selfSelect.classList.add("active");
-      fullService.classList.remove("active");
-      inclusions && inclusions.classList.add("hidden");
-      stepsBox && stepsBox.classList.remove("hidden");
-      nextBtn && nextBtn.classList.remove("hidden");
+      if (selfSelect) selfSelect.classList.remove("active");
+      if (inclusions) inclusions.classList.remove("hidden");
+      if (stepsBox) stepsBox.classList.add("hidden");
+
+      // ensure next visible & enabled
+      if (nextBtn) {
+        nextBtn.classList.remove("hidden");
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = "1";
+      }
+
+      // clear step selections
       $$(".step-btn").forEach(btn => btn.classList.remove("selected"));
     });
   }
-  $$(".step-btn").forEach(btn => btn.addEventListener("click", () => btn.classList.toggle("selected")));
-  nextBtn && nextBtn.addEventListener("click", () => {
-    if ((fullService && fullService.classList.contains("active")) || (selfSelect && selfSelect.classList.contains("active"))) {
-      showPage(2);
-    }
+
+  if (selfSelect) {
+    selfSelect.addEventListener("click", () => {
+      selfSelect.classList.add("active");
+      if (fullService) fullService.classList.remove("active");
+      if (inclusions) inclusions.classList.add("hidden");
+      if (stepsBox) stepsBox.classList.remove("hidden");
+
+      // reset step selection
+      $$(".step-btn").forEach(btn => btn.classList.remove("selected"));
+
+      // show next but disabled until valid
+      if (nextBtn) {
+        nextBtn.classList.remove("hidden");
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = "0.5";
+      }
+    });
+  }
+
+  // Step button toggles (and update next state)
+  $$(".step-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("selected");
+      updateNextBtnStateForSelfSelect();
+    });
   });
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      // only proceed if visible & enabled
+      if (!nextBtn.classList.contains("hidden") && !nextBtn.disabled) {
+        showPage(2);
+      }
+    });
+  }
 
   /* -------------------------
      Event wiring: page2
   ------------------------- */
-  if (plusDet) plusDet.addEventListener("click", () => { detQty++; detQtySpan.textContent = detQty; });
-  if (minusDet) minusDet.addEventListener("click", () => { if (detQty > 1) detQty--; detQtySpan.textContent = detQty; });
-  if (detSelect) detSelect.addEventListener("change", () => { if (detSelect.value !== "") nextToFabcon.classList.remove("hidden"); else nextToFabcon.classList.add("hidden"); });
+  if (plusDet) plusDet.addEventListener("click", () => { detQty++; if (detQtySpan) detQtySpan.textContent = detQty; });
+  if (minusDet) minusDet.addEventListener("click", () => { if (detQty > 1) detQty--; if (detQtySpan) detQtySpan.textContent = detQty; });
+  if (detSelect) detSelect.addEventListener("change", () => { if (nextToFabcon) nextToFabcon.classList.toggle("hidden", detSelect.value === ""); });
   if (nextToFabcon) nextToFabcon.addEventListener("click", () => showPage(3));
   if (backToPage1) backToPage1.addEventListener("click", () => showPage(1));
 
   /* -------------------------
      Event wiring: page3
   ------------------------- */
-  if (plusFab) plusFab.addEventListener("click", () => { fabQty++; fabQtySpan.textContent = fabQty; });
-  if (minusFab) minusFab.addEventListener("click", () => { if (fabQty > 1) fabQty--; fabQtySpan.textContent = fabQty; });
-  if (fabSelect) fabSelect.addEventListener("change", () => { if (fabSelect.value !== "") nextToDetails.classList.remove("hidden"); else nextToDetails.classList.add("hidden"); });
+  if (plusFab) plusFab.addEventListener("click", () => { fabQty++; if (fabQtySpan) fabQtySpan.textContent = fabQty; });
+  if (minusFab) minusFab.addEventListener("click", () => { if (fabQty > 1) fabQty--; if (fabQtySpan) fabQtySpan.textContent = fabQty; });
+  if (fabSelect) fabSelect.addEventListener("change", () => { if (nextToDetails) nextToDetails.classList.toggle("hidden", fabSelect.value === ""); });
   if (nextToDetails) nextToDetails.addEventListener("click", () => showPage(4));
   if (backToPage2) backToPage2.addEventListener("click", () => showPage(2));
 
   /* -------------------------
      Event wiring: page4
   ------------------------- */
-  if (plusLoad) plusLoad.addEventListener("click", () => { loadQty++; loadQtySpan.textContent = loadQty; });
-  if (minusLoad) minusLoad.addEventListener("click", () => { if (loadQty > 1) loadQty--; loadQtySpan.textContent = loadQty; });
+  if (plusLoad) plusLoad.addEventListener("click", () => { loadQty++; if (loadQtySpan) loadQtySpan.textContent = loadQty; });
+  if (minusLoad) minusLoad.addEventListener("click", () => { if (loadQty > 1) loadQty--; if (loadQtySpan) loadQtySpan.textContent = loadQty; });
   if (loadRadios && loadRadios.length) {
-    loadRadios.forEach(r => r.addEventListener("change", () => finishBtn && finishBtn.classList.remove("hidden")));
+    loadRadios.forEach(r => r.addEventListener("change", () => { if (finishBtn) finishBtn.classList.remove("hidden"); }));
   }
   if (backToPage3) backToPage3.addEventListener("click", () => showPage(3));
 
@@ -416,12 +537,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (toContactBtn) {
-    toContactBtn.addEventListener("click", () => {
-      // NEXT to contact page (page6) — we DO NOT require confirmation to proceed
-      showPage(6);
-    });
-  }
+  if (toContactBtn) toContactBtn.addEventListener("click", () => {
+    // NEXT to contact page (page6) — we DO NOT require confirmation to proceed
+    showPage(6);
+  });
   if (backToPage4) backToPage4.addEventListener("click", () => showPage(4));
 
   /* -------------------------
@@ -465,7 +584,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (r_amount) r_amount.textContent = amount;
       if (r_date) r_date.textContent = (new Date()).toLocaleString();
 
-      // reset confirmation flag? keep as is (user already confirmed or not)
       // show ticket page
       showPage(7);
     });
