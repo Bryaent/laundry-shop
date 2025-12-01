@@ -1,14 +1,8 @@
-/* click.js
-   Clean, organized, plug-and-play script for the laundry multi-step flow,
-   summary edit, confirm, receipt fill, and PDF download.
-   Author: ChatGPT (tailored for your HTML)
-*/
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* -------------------------
-     Helper: safe query
-  ------------------------- */
+
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
@@ -78,9 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const trackBtn = $("#trackBtn");
 
-  /* -------------------------
-     Local state
-  ------------------------- */
+ 
   let detQty = 1, fabQty = 1, loadQty = 1;
   // track whether confirmed
   let isConfirmed = false;
@@ -267,9 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* -------------------------
-     Prefill helpers (used by Edit)
-  ------------------------- */
+
   function prefillDetergent(detText, qty) {
     if (!detSelect) return;
     // find option index by matching text
@@ -325,9 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* -------------------------
-     Update Confirm UI (locking & color)
-  ------------------------- */
+// confirm
   function updateConfirmUI() {
     if (!editSummaryBtn) return;
     if (isConfirmed) {
@@ -354,13 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* -------------------------
-     SELF-SELECT VALIDATION
-     Rules:
-     - Fold only -> invalid
-     - Wash + Fold (without Dry) -> invalid
-     - Any combo containing Wash or Dry -> valid
-  ------------------------- */
+  // invalid pag wash and fold lang
   function getSelectedStepNames() {
     const steps = $$(".step-btn");
     return steps
@@ -388,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateNextBtnStateForSelfSelect() {
     if (!nextBtn) return;
-    // show nextBtn when selfSelect active, but enable/disable per validation
+    // show nextBtn when selfSelect active,
     if (selfSelect && selfSelect.classList.contains("active")) {
       nextBtn.classList.remove("hidden");
       if (validateSelfSelectSteps()) {
@@ -402,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateNextBtnInitialState() {
-    // Called when showing page 1: set nextBtn based on which service is active (or hidden)
+   // set nextBtn 
     if (!nextBtn) return;
 
     // If fullService active -> show & enable
@@ -602,7 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* -------------------------
      Download receipt (html2canvas + jspdf)
-     Hide the download button before capture so it's not included.
+  
   ------------------------- */
   if (downloadReceiptBtn && receiptBox) {
     downloadReceiptBtn.addEventListener("click", async () => {
@@ -649,8 +631,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (fabSelect) fabSelect.addEventListener("change", () => { /* nothing */ });
   if (addBleach) addBleach.addEventListener("change", () => { /* nothing */ });
 
-  // optional: update total in real-time (if you want)
-  // const watchInputs = [detSelect, fabSelect, addBleach, ...loadRadios];
-  // watchInputs.forEach(el => el && el.addEventListener('change', () => {/*update UI*/}));
 
-}); // DOMContentLoaded end
+ 
+
+}); 
