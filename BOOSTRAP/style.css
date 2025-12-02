@@ -220,6 +220,7 @@ form.example::after {
     align-items: end;
     height: 100vh;
     width: 100vh;
+    border-radius: 500px;
 }
 #AboutME p{
     background-color: rgb(53, 41, 47);

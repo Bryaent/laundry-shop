@@ -2,35 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="estyle.css">
+    <title>Toggle Box Example</title>
+
+    <style>
+        /* Button style */
+        .toggle-btn {
+            padding: 10px 20px;
+            background: #007bff;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Hidden box */
+        .panel {
+            margin-top: 10px;
+            padding: 15px;
+            width: 220px;
+            background: #f2f2f2;
+            border-radius: 6px;
+            display: none; /* default: hidden */
+        }
+    </style>
 </head>
+
 <body>
-    
 
+    <button class="toggle-btn" onclick="togglePanel()">Click Me</button>
 
-
-<section id="AboutME">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
-                <h1>About Me</h1>
-                <img src="images/picko2.jpg" alt="Bryant" class="profile-img">
-                <p class="bio">Hi, I'm Bryant, a Computer Science student at University of Makati. I'm passionate about web development, listening to others, and multi-tasking. I love creating clean, functional websites and learning new technologies.</p>
-                <h3>My Skills</h3>
-                <ul class="skills-list">
-                    <li><i class="fas fa-code"></i> Web Layouting</li>
-                    <li><i class="fas fa-headphones"></i> Listening</li>
-                    <li><i class="fas fa-tasks"></i> Multi-Tasking</li>
-                </ul>
-                <div class="contact-links">
-                    <a href="mailto:brondero.1088@umak.edu.ph" class="btn btn-primary"><i class="fas fa-envelope"></i> Email Me</a>
-                    <a href="https://www.facebook.com/imrondero" target="_blank" class="btn btn-outline-primary"><i class="fab fa-facebook"></i> Facebook</a>
-                </div>
-            </div>
-        </div>
+    <div id="infoPanel" class="panel">
+        <p>Hello! This box shows up when you click the button.</p>
     </div>
-</section>
-</html>
+
+    <script>
+        function togglePanel() {
+            const panel = document.getElementById("infoPanel");
+
+            // Toggle show/hide
+            panel.style.display = panel.style.display === "none" || panel.style.display === ""
+                ? "block"
+                : "none";
+        }
+    </script>
+
 </body>
+</html>
