@@ -37,8 +37,10 @@ header {
 
 /* CLEAN + RESPONSIVE LOGO */
 #Lugu img {
-    width: 70px;
-    height: auto;
+    height: 50px;     /* adjust this (40–70px depending on your header) */
+    width: auto;      /* keeps aspect ratio (fixes distortion) */
+    object-fit: contain;
+    display: block;
 }
 
 /* TAGLINE */
@@ -106,11 +108,7 @@ nav a:hover {
 #Home,
 .home-text {
   color: white;
-}
-.home-text h2 {
-  padding-bottom: 30px;
-  font-weight: bolder;
-  text-shadow: black;
+  font-size: 20px;
 }
 #Franchise {
   background: url(img/franbg.png) no-repeat center center/cover;
@@ -155,6 +153,7 @@ nav a:hover {
 .franchise-text {
   color: #000;
   max-width: 600px;
+  font-size: 20px;
 }
 .franchise-text h2 {
   font-size: 28px;
@@ -168,7 +167,7 @@ nav a:hover {
   margin-bottom: 20px;
 }
 .franchise-text p {
-  font-size: 16px;
+  font-size: 20px;
   color: #333;
   line-height: 1.7;
   margin-bottom: 25px;
@@ -266,33 +265,23 @@ nav a:hover {
   width: 100%;
   text-align: center;
   padding: 100px 60px;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 /* HEADER */
-.services-header h2 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-}
-
-.services-header h2::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 2px;
-  background: #000000;
-  margin: 10px auto 20px;
-}
-
-.services-header p {
-  font-size: 16px;
+.services-header {
+  font-size: 20px;
   max-width: 800px;
   margin: 0 auto 60px;
   color: #080000;
+  margin-buttom: -25px;
 }
 
+.services-header-p {
+  font-size: 20px;
+  max-width: 800px;
+  margin: 0 auto 60px;
+}
 /* CONTAINER */
 .services-container {
   display: flex;
@@ -321,7 +310,9 @@ nav a:hover {
 /* ICON */
 .service-box img {
   width: 50px;
-  margin-bottom: 15px;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
 }
 
 /* PRICE */
@@ -486,7 +477,7 @@ nav a:hover {
 .footer-title {
   font-size: 26px; /* ❗ bawas konti */
   font-weight: 700;
-  color: #2c3e63;
+  color: #003366;
   margin-bottom: 15px;
 }
 
@@ -499,8 +490,10 @@ nav a:hover {
 
 /* SOCIAL */
 .social-icons img {
-  width: 30px;
+  width: 50px;
+  height: auto;
   margin-top: 10px;
+  margin-left: -10px;
 }
 
 /* RIGHT SIDE (IMAGES SA KANAN) */
@@ -550,14 +543,14 @@ nav a:hover {
 }
 
 .testimonial-title {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: 700;
-  color: #1e3a5f;
+  color: #003366;
   margin-bottom: 10px;
 }
 
 .testimonial-sub {
-  font-size: 15px;
+  font-size: 20px;
   color: #444;
   margin-bottom: 30px;
 }
@@ -580,6 +573,7 @@ nav a:hover {
   width: 45px;
   height: 45px;
   border-radius: 50%;
+   object-fit: cover;
 }
 
 .review-header h4 {
@@ -619,8 +613,8 @@ header {
   gap: 20px;
 }
 #Lugu img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
 }
 .tagline span {
   font-weight: 600;
@@ -633,12 +627,14 @@ header {
   color: #fff;
   font-weight: 600;
   border-radius: 25px;
-  padding: 8px 18px;
+  padding: 12px 18px;
   cursor: pointer;
   transition: 0.3s;
+  font-size: 15px;
 }
 .tagline button:hover {
   background-color: #0077cc;
+  color: #42a2e6;
 } /* ===== NAVIGATION ===== */
 nav ul {
   list-style: none;
@@ -679,7 +675,7 @@ html {
   scroll-padding-top: 10px; /* adjust depende sa taas ng header mo */
 }
 section {
-  scroll-margin-top: 10px;
+  scroll-margin-top: 70px;
 }
 .franchise-back-btn {
   background: none;
