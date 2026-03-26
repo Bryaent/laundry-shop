@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: url("franbg.png") no-repeat center center fixed;
+  background: url("img/franbg.png") no-repeat center center fixed;
   background-size: cover;
   margin: 0;
   padding: 0;
@@ -97,7 +97,7 @@ nav a:hover {
 }
 
 #Home {
-  background: url(Home-Background.png) no-repeat center center/cover;
+  background: url(img/Home-Background.png) no-repeat center center/cover;
   width: 100%;
   min-height: 100vh;
   padding-left: 150px;
@@ -113,7 +113,7 @@ nav a:hover {
   text-shadow: black;
 }
 #Franchise {
-  background: url(franbg.png) no-repeat center center/cover;
+  background: url(img/franbg.png) no-repeat center center/cover;
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -261,7 +261,7 @@ nav a:hover {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 #Service {
-  background: url(servicebg.png) no-repeat center center/cover;
+  background: url(img/servicebg.png) no-repeat center center/cover;
   min-height: 100vh;
   width: 100%;
   text-align: center;
@@ -366,7 +366,7 @@ nav a:hover {
   background-color: #0056b3;
 }
 #About {
-  background: url(abawt.png) no-repeat center center/cover;
+  background: url(img/abawt.png) no-repeat center center/cover;
   min-height: 100vh;
   width: 100%;
   display: flex; /* Gawing side by side: image at text */
@@ -509,54 +509,74 @@ nav a:hover {
 .ratings-wrapper {
   display: flex;
   justify-content: center;
+  gap: 25px;
   flex-wrap: wrap;
-  gap: 35px;
+  padding: 60px 20px;
+  background-color: #e6f2ff; /* light blue background */
+  text-align: center;
 }
+
 .rating-box {
-  background: white;
-  border: 1.5px solid #0077cc;
+  background: #ffffff;
+  padding: 25px;
+  width: 280px;
   border-radius: 15px;
-  width: 250px;
-  padding: 25px 20px;
-  font-family: "Poppins", sans-serif;
-  color: #003366;
-  text-align: left;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  border-top: 5px solid #4da6ff; /* blue accent */
 }
+
 .rating-box:hover {
-  transform: translateY(-5px);
-  background: #f0f8ff;
-} /* Header inside each rating */
+  transform: translateY(-8px);
+}
+
 .rating-header {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-  gap: 12px;
+  gap: 15px;
+  margin-bottom: 15px;
 }
+
 .rating-header img {
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #0077cc;
 }
+
 .rating-header h4 {
-  font-size: 17px;
   margin: 0;
-  color: #003366;
+  font-size: 16px;
+  color: #1e3a5f;
 }
+
 .rating-header .stars {
-  font-size: 14px;
-  color: #f9b234;
-  margin: 2px 0 0;
-} /* Review text */
+  color: #ffb400;
+  margin-top: 5px;
+}
+
 .review-text {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+/* TESTIMONIAL SECTION HEADER */
+.testimonial-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e3a5f;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.testimonial-sub {
+  color: #555;
+  text-align: center;
+  margin-bottom: 40px;
   font-size: 15px;
-  line-height: 1.5;
-  color: #333;
-  font-style: italic;
-} /* ===== HEADER DESIGN ===== */
+}
+/* ===== HEADER DESIGN ===== */
 header {
   display: flex;
   justify-content: space-between;
