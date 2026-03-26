@@ -261,66 +261,82 @@ nav a:hover {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 #Service {
-  background: url(img/servicebg.png) no-repeat center center/cover;
+ background: url(img/servicebg.png) no-repeat center center/cover;
   min-height: 100vh;
   width: 100%;
   text-align: center;
-  padding: 80px;
-  font-family: "Poppins", sans-serif;
+  padding: 100px 60px;
+  color: white;
 }
+
+/* HEADER */
 .services-header h2 {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   margin-bottom: 10px;
+  letter-spacing: 1px;
 }
-.services-header h3 {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
+
+.services-header h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: #ccc;
+  margin: 10px auto 20px;
 }
-.services-header h3 span {
-  font-weight: 700;
-}
+
 .services-header p {
-  font-size: 15px;
-  color: #333;
-  max-width: 650px;
-  margin: 15px auto 40px;
-  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  max-width: 800px;
+  margin: 0 auto 60px;
+  color: #080000;
 }
+
+/* CONTAINER */
 .services-container {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 20px;
+  gap: 30px;
   flex-wrap: wrap;
 }
+
+/* SERVICE CARD */
 .service-box {
-  background: #fff;
-  border-radius: 10px;
-  padding: 25px 20px;
-  width: 180px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
+  background: #e9e9e9;
+  border-radius: 8px;
+  padding: 40px 25px;
+  width: 260px;
+  text-align: left;
+  transition: 0.3s ease;
 }
+
 .service-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
 }
+
+/* ICON */
 .service-box img {
-  width: 70px;
-  margin-bottom: 10px;
+  width: 40px;
+  margin-bottom: 20px;
 }
+
+/* TITLE */
 .service-box h4 {
   font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.service-box p {
   font-weight: 700;
-  letter-spacing: 1px;
-  border-top: 2px solid #000;
-  padding-top: 5px;
+  color: #2c3e63;
+  margin-bottom: 15px;
 }
+
+/* DESCRIPTION */
+.service-box p {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
 .full-service-box {
   background: #0094ff;
   color: white;
