@@ -10,97 +10,182 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("img/franbg.png") no-repeat center center/cover;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
 
-/* Container that centers everything */
-.login-container {
+/* MAIN CONTAINER */
+.container {
   display: flex;
+  width: 900px;
+  height: 550px;
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+/* LEFT PANEL */
+.left-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #0077cc, #00c6ff);
+  color: white;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-}
-
-/* The main login box */
-.login-box {
-  background: rgba(222, 216, 216, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(15px);
-  border-radius: 25px;
-  padding: 40px 35px;
-  width: 350px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  color: rgb(0, 0, 0);
+  padding: 40px;
   text-align: center;
 }
 
-.login-box h1 {
+.left-panel h2 {
   font-size: 28px;
-  margin-bottom: 25px;
-  letter-spacing: 2px;
+  margin-bottom: 10px;
 }
 
-/* Input field styling */
-.input-group {
+.left-panel p {
+  font-size: 14px;
   margin-bottom: 20px;
+}
+
+.left-panel img {
+  width: 200px;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 80%;
+}
+
+form h2 {
+  margin-bottom: 20px;
+}
+
+/* INPUT */
+.input-group {
+  margin-bottom: 15px;
 }
 
 .input-group input,
 .input-group select {
   width: 100%;
-  padding: 12px 15px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 30px;
-  background: transparent;
-  color: rgb(0, 0, 0);
-  font-size: 15px;
-  outline: none;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
-.input-group input::placeholder {
-  color: rgba(5, 4, 4, 0.8);
-}
-
-.input-group select {
-  appearance: none;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Remember me */
-.options {
-  text-align: left;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-/* Buttons */
-.btn, .btn-secondary {
+/* LOGIN BUTTON */
+.login-btn {
   width: 100%;
   padding: 12px;
   border: none;
-  border-radius: 30px;
-  font-size: 16px;
+  border-radius: 10px;
+  background: #0094ff;
+  color: white;
+  font-weight: 600;
   cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background: #0077cc;
+}
+
+/* DIVIDER */
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 14px;
+  color: #888;
+}
+
+/* SOCIAL */
+.social-login button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* GOOGLE */
+.google-btn {
+  background: linear-gradient(135deg, #ffffff, #f1f1f1);
+  border: 1px solid #ddd;
+  color: #444;
+  font-weight: 600;
   transition: 0.3s;
 }
 
-.btn {
-  background-color: white;
-  color: #333;
-  margin-bottom: 15px;
+.google-btn i {
+  margin-right: 10px;
+  font-size: 16px;
+
+  /* GOOGLE COLORS */
+  background: linear-gradient(45deg, 
+    #4285F4,  /* Blue */
+    #34A853,  /* Green */
+    #FBBC05,  /* Yellow */
+    #EA4335   /* Red */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.btn:hover {
-  background-color: #e5e5e5;
+.google-btn:hover {
+  background: linear-gradient(135deg, #4285F4, #34A853);
+  color: white;
+  border: none;
 }
 
-.btn-secondary {
+.google-btn:hover i {
+  -webkit-text-fill-color: white;
+}
+
+/* FACEBOOK */
+.facebook-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #1877f2; /* Facebook blue text */
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+/* ICON */
+.facebook-btn i {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #1877f2;
+}
+
+/* HOVER EFFECT */
+.facebook-btn:hover {
+  background: linear-gradient(135deg, #1877f2, #3b5998);
+  color: white;
+  border: none;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.facebook-btn:hover i {
+  color: white;
+}
+
+/* REGISTER */
+.register-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
   background: transparent;
-  color: rgb(4, 3, 3);
-  border: 2px solid white;
-}
-
-.btn-secondary:hover {
-  background-color: white;
-  color: #333;
+  color: #0094ff;
+  cursor: pointer;
+  margin-top: 10px;
 }

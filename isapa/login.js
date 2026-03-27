@@ -1,41 +1,54 @@
-// ===== LOGIN FORM LOGIC =====
-
-// Kunin ang form at "Create Account" button
+// ================= LOGIN JS =================
 const form = document.getElementById('loginForm');
-const createBtn = document.querySelector('.btn-secondary');
 
-// Kapag sinubmit ang login form
 form.addEventListener('submit', function(event) {
-  event.preventDefault(); // Iwas reload ng page
+  event.preventDefault();
 
-  // Kunin ang mga input values
-  const username = document.getElementById('username').value.trim();
+  // Kunin input at i-trim at gawing lowercase para consistent
+  const username = document.getElementById('username').value.trim().toLowerCase();
   const password = document.getElementById('password').value.trim();
   const loginType = document.getElementById('loginType').value;
 
-  // Suriin ang login type at credentials
+  // ================= ADMIN LOGIN =================
   if (loginType === "admin") {
-    // Para sa admin login
     if (username === "admin" && password === "admin123") {
-      window.open("admin.html", "_self"); // Redirect sa admin page
+      localStorage.setItem("loggedInUser", username);
+      window.location.href = "admin.html";
     } else {
-      alert("Invalid admin credentials!"); // Mali ang admin login
+      alert("Invalid admin credentials!");
     }
-  } 
+  }
+
+  // ================= CUSTOMER LOGIN =================
   else if (loginType === "customer") {
-    // Para sa customer login
-    if (username === "customer" && password === "customer1234") {
-      window.open("index.html", "_self"); // Redirect sa customer home page
-    } else {
-      alert("Invalid customer credentials!"); // Mali ang customer login
+    // Kunin user mula sa localStorage gamit lowercase username
+    const storedUser = localStorage.getItem("user_" + username);
+
+    if (!storedUser) {
+      alert("User not found! Please register first.");
+      return;
     }
-  } 
+
+    const userData = JSON.parse(storedUser);
+
+    // Check password at role
+    if (userData.password === password && userData.role === "customer") {
+      localStorage.setItem("loggedInUser", username);
+      window.location.href = "index.html"; // Redirect sa homepage ng customer
+    } else if (userData.role !== "customer") {
+      alert("This account is not a customer account!");
+    } else {
+      alert("Invalid credentials!");
+    }
+  }
+
+  // ================= LOGIN TYPE NOT SELECTED =================
   else {
-    alert("Please select login type!"); // Walang napiling login type
+    alert("Please select login type!");
   }
 });
 
-// Kapag pinindot ang "Create Account" button
-createBtn.addEventListener('click', function() {
-  window.open("register.html", "_self"); // Redirect sa registration page
+// ================= CREATE ACCOUNT BUTTON =================
+document.querySelector(".register-btn").addEventListener("click", function() {
+  window.location.href = "register.html";
 });
