@@ -280,7 +280,7 @@ nav a:hover {
   max-width: 800px;
   margin: 0 auto 60px;
   color: #080000;
-  margin-bottom: -25px;
+  margin-bottom: 25px;
 }
 
 .services-header-p {
