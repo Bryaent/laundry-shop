@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track Your Laundry</title>
+  <link rel="stylesheet" href="style.css">
+  <header>
+    <div class="header-left">
+      <div id="Lugu">
+        <img src="img/Logo.png" alt="Logo">
+      </div>
+      <div class="tagline">
+        <span>FAST AND FRESH LAUNDRY JUST</span>
+          <a href="click.html">
+          <button>CLICK AWAY!</button>
+        </a>
+      </div>
+    </div>
+<nav>
+      <ul>
+<li><a href="index.html">HOME</a></li>
+<li><a href="franchise.html">FRANCHISE</a></li>
+<li><a href="service.html">SERVICE</a></li>
+<li><a href="about.html">ABOUT US</a></li>
+<li><a href="contact.html">CONTACT US</a></li>
+<li><a href="account.html" class="account-btn active">ACCOUNT</a></li>
+<li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+    </ul>
+    </nav>
+  </header>
+  <style>
+    
+    /* GLOBAL PAGE DESIGN */
+body {
+  font-family: "Poppins", sans-serif;
+  background: url('servicebg.png') no-repeat center center/cover;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 180px; /* para di sumabit sa fixed header */
+  min-height: 100vh;
+  text-align: center;
+}
+
+/* TRACK CONTAINER */
+.track-container {
+  background: white;
+  padding: 40px 35px;
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.25);
+  max-width: 430px;
+  width: 95%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* INPUT */
+#ticketInput {
+  padding: 12px;
+  width: 90%;
+  border: 2px solid #bcdcff;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+
+#ticketInput:focus {
+  border-color: #0094ff;
+  box-shadow: 0 0 5px rgba(0,148,255,0.4);
+}
+
+/* BUTTON */
+button {
+  background: linear-gradient(to bottom, #50aaff, #0070c9);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(to bottom, #3c8fe0, #005fa3);
+}
+
+/* BACK BUTTON */
+.back-btn {
+  position: absolute;
+  top: 150px;
+  left: 135px;
+  background: #0094ff;
+  color: white;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background: #0077cc;
+}
+
+/* RESULT BOX */
+#trackResult {
+  margin-top: 25px;
+  padding: 20px;
+  background: #f7fbff;
+  border: 1px solid #d3e8ff;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 15px;
+  display: none; /* hidden until result appears */
+}
+
+#trackResult h3 {
+  color: #0077cc;
+  margin-bottom: 10px;
+}
+
+#trackResult p {
+  margin-bottom: 6px;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div class="track-container">
+    <a href="booknow.html" class="back-btn">← Back</a>
+    <h2>Track Your Laundry</h2>
+    <p>Enter your ticket number to check your order status.</p>
+
+    <form id="trackForm">
+      <input type="text" id="ticketInput" placeholder="Enter ticket number" required>
+      <br>
+      <button type="submit">Track</button>
+    </form>
+
+    <div id="trackResult"></div>
+  </div>
+
+  <script>
+const form = document.getElementById("trackForm");
+const resultBox = document.getElementById("trackResult");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const code = document.getElementById("ticketInput").value.trim();
+
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+
+  const allOrders = [...orders, ...history];
+
+  const match = allOrders.find(o => o.ticket == code);
+
+  // Show the result box
+  resultBox.style.display = "block";
+
+  if (match) {
+    resultBox.innerHTML = `
+      <h3>Tracking Details</h3>
+      <p><strong>Ticket #:</strong> ${match.ticket}</p>
+      <p><strong>Name:</strong> ${match.name}</p>
+      <p><strong>Contact:</strong> ${match.contact}</p>
+      <p><strong>Address:</strong> ${match.address}</p>
+      <p><strong>Service:</strong> ${match.service}</p>
+      <p><strong>Amount:</strong> ₱${match.amount}</p>
+      <p><strong>Status:</strong> ${match.status}</p>
+    `;
+  } else {
+    resultBox.innerHTML = "<p style='color:red; text-align:center;'>No record found for this tracking code.</p>";
+  }
+});
+</script>
+
+</body>
+</html>

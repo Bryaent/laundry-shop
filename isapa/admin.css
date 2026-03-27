@@ -1,0 +1,146 @@
+/* BODY */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: url("img/servicebg.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* HEADER */
+#adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px 30px; /* ⬅️ mas manipis na */
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#Lugu img {
+  height: 50px;
+}
+
+.header-right {
+  display: flex;
+}
+
+.btn.logout {
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* MAIN FULL WIDTH */
+main {
+  width: 95%;
+  max-width: 1400px;
+  margin: auto;
+  padding-top: 20px;
+}
+
+/* TOP CONTROLS */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.top-controls input,
+.top-controls select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  margin: 0 10px;
+  cursor: pointer;
+  background: #eee;
+}
+
+.tab.active {
+  background: #0078d4;
+  color: white;
+}
+
+/* CARD FULL WIDTH */
+.card {
+  width: 100%;
+  background: rgba(255,255,255,0.95);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background: #0078d4;
+  color: white;
+  position: sticky;
+  top: 0;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* STATUS */
+.status.pending { background: orange; color: white; padding:5px 10px; border-radius:5px;}
+.status.inprogress { background: blue; color: white; padding:5px 10px; border-radius:5px;}
+.status.completed { background: green; color: white; padding:5px 10px; border-radius:5px;}
+
+/* BUTTONS */
+.btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn.delete { background: red; color: white;}
+.btn.completed { background: green; color: white;}
+.btn.in-progress { background: orange; color: white;}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .top-controls {
+    flex-direction: column;
+  }
+}
+
+.card {
+  backdrop-filter: blur(10px);
+}

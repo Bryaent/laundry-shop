@@ -1,0 +1,759 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+html, body {
+  background: url("img/servicebg.png") no-repeat center center / cover;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+/* ===== HEADER (UPDATED SAME AS MAIN) ===== */
+header {
+  display: flex;
+  justify-content: space-between; /* ⬅️ hindi na centered */
+  align-items: center;
+  background: #ffffff; /* ⬅️ white na tulad sa kaliwa */
+  color: #003366;
+  padding: 15px 40px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+  position: fixed; /* ⬅️ sticky header */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* LEFT SIDE (logo + text + button) */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* LOGO */
+#Lugu img {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+/* TEXT */
+header span {
+  font-weight: 600;
+  font-size: 15px;
+  color: #003366;
+}
+
+/* BUTTON */
+header button {
+  background: #0094ff;
+  color: #ffffff;
+  border: none;
+  padding: 6px 16px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+header button:hover {
+  background: #0077cc;
+}
+
+
+
+/* ===== NAVIGATION ===== */
+nav {
+  background: transparent; /* ⬅️ wala nang separate bar */
+  padding: 0;
+  border: none;
+}
+
+nav ul {
+  display: flex;
+  justify-content: flex-end; /* ⬅️ nasa kanan na */
+  gap: 25px;
+  list-style: none;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #003366;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+nav a:hover {
+  color: #0077cc;
+}
+
+/* ✅ PARA DI MATAGO CONTENT */
+body {
+  padding-top: 90px;
+}
+
+/* QUESTION SECTION */
+.question {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.question h2 {
+  font-size: 2em;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.question p {
+  font-size: 20px;
+  color: #333;
+}
+
+/* SERVICE CONTAINER */
+.container {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 90px;
+  flex-wrap: wrap;
+}
+
+/* SERVICE BOXES */
+.container .box {
+  background: white;
+  text-align: center;
+  height: 170px;
+  width: 420px;
+  border-radius: 20px;
+  font-size: 1.5em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.container .box h3 {
+  padding-top: 20px;
+  margin-bottom: 10px;
+  color: #0088cc;
+}
+
+.container .box p {
+  font-size: 18px;
+  color: #333;
+}
+
+/* REMOVE DEFAULT BUTTON LOOK */
+.container button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* JS-RELATED STATES */
+.hidden {
+  display: none;
+}
+
+.active .box {
+  border: 3px solid #0088cc;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,136,204,0.3);
+}
+
+.step-btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: 2px solid #0088cc;
+  background: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step-btn:hover {
+  background: #0088cc;
+  color: white;
+}
+
+.step-btn.selected {
+  background: #0088cc;
+  color: white;
+}
+
+/* NEXT BUTTON */
+#nextBtn {
+  margin-top: 20px;
+  display: block;
+  background: #0088cc;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+#nextBtn:hover {
+  background: #006fa3;
+}
+
+.options-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+.option {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 30px 50px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.option:hover {
+  border: 2px solid #0088cc;
+  box-shadow: 0 0 15px rgba(0,136,204,0.2);
+}
+
+/* === Below Options Centered === */
+.below-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centers all horizontally */
+  text-align: center;
+  margin-top: 30px;
+}
+
+.below-options p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.step-buttons button {
+  background-color: #0088cc;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.step-buttons button:hover {
+  background-color: #006fa8;
+}
+
+.next-btn {
+  background-color: #0088cc;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.next-btn:hover {
+  background-color: #006fa8;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Selected state styling */
+.step-btn.selected {
+  background-color: #006fa8;
+  border: 2px solid #004f7f;
+}
+.step-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.step-btn {
+  border: 2px solid transparent;  /* no border initially */
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 0.3s ease;
+}
+
+.step-btn.selected {
+  border: 4px solid #0088cc;      /* blue border when selected */
+  color: white;
+}
+
+/* === Dropdown and Quantity Styles === */
+select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.quantity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.quantity button {
+  background: #0088cc;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+textarea {
+  margin-top: 10px;
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+/* === Back Arrow Button === */
+.back-btn {
+  position: absolute;
+  left: 50px;
+  top: 160px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #0088cc;
+  transition: 0.3s ease;
+}
+.back-btn:hover {
+  color: #005f87;
+}
+
+/* === Enhanced Dropdown === */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg fill='%230088cc' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  border: 2px solid #0088cc;
+  border-radius: 12px;
+  padding: 12px 40px 12px 15px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+select:hover {
+  border-color: #006fa3;
+  box-shadow: 0 0 10px rgba(0,136,204,0.2);
+}
+
+select:focus {
+  outline: none;
+  border-color: #006fa3;
+  box-shadow: 0 0 10px rgba(0,136,204,0.4);
+}
+
+/* Smooth dropdown appearance */
+select option {
+  padding: 10px;
+}
+
+/* === Quantity Controls Animation === */
+.quantity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.quantity button {
+  background: linear-gradient(135deg, #0088cc, #00b0f0);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
+}
+
+.quantity button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #00b0f0, #0088cc);
+  box-shadow: 0 6px 10px rgba(0,136,204,0.3);
+}
+
+.quantity span {
+  min-width: 20px;
+  display: inline-block;
+  text-align: center;
+}
+
+/* === Page Transition === */
+section {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+section:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-btn {
+  position: absolute;
+  left: 60px;
+  top: 150px;
+  background: white;
+  border: 2px solid #0088cc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  color: #0088cc;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,136,204,0.2);
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #0088cc;
+  color: white;
+  transform: scale(1.1);
+}
+
+select:focus {
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.97); }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+
+}
+
+.confirmed {
+    background: #28a745 !important; /* green */
+    color: white !important;
+}
+
+
+
+
+/* ✅ Center the whole page vertically and horizontally */
+#page5,
+#page6,
+#page7 {
+display: flex;
+flex-direction: column;
+align-items: center; /* center horizontally */
+justify-content: flex-start; /* content starts from top */
+padding-top: 10px; /* ⬆️ mas mataas placement */
+min-height: 100vh;
+text-align: center;
+box-sizing: border-box;
+}
+
+
+#summaryTable {
+width: 100%;
+border-collapse: collapse;
+font-size: 16px;
+}
+
+#summaryTable th, #summaryTable td {
+padding: 10px;
+text-align: left;
+border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+#summaryTable thead th {
+background: transparent;
+font-weight: 700;
+}
+
+.contact-form {
+width: 90%;
+max-width: 900px;
+background: rgba(255,255,255,0.95);
+padding: 30px;
+border-radius: 20px;
+box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+margin: 0 auto; /* ✅ center horizontally */
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.contact-form .form-row {
+display: flex;
+gap: 15px;
+margin-bottom: 12px;
+width: 100%;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form select {
+flex: 1;
+padding: 10px 12px;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 15px;
+}
+
+.contact-form label {
+display:block;
+margin: 10px 0 6px;
+font-weight: 600;
+}
+
+.contact-form .note {
+font-size: 13px;
+color: #666;
+margin-top: 8px;
+margin-bottom: 16px;
+text-align: center;
+}
+/* === PAGE 7 DESIGN (Ticket Page) === */
+.ticket-page {
+  background: linear-gradient(to bottom, #a3d4ff, #ffffff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+}
+
+.ticket-container {
+  background: transparent;
+  padding: 40px;
+  border-radius: 15px;
+  max-width: 600px;
+}
+
+.ticket-container h2 {
+  font-size: 24px;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.subtext {
+  font-style: italic;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.ticket-number {
+  font-size: 100px;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 20px;
+  border-bottom: 5px solid #000;
+  display: inline-block;
+  line-height: 1;
+}
+
+.ticket-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.track-btn {
+  background: linear-gradient(to bottom, #50aaff, #0070c9);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 35px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
+}
+
+.track-btn:hover {
+  background: linear-gradient(to bottom, #0070c9, #005fa8);
+  transform: translateY(-2px);
+}
+
+
+/* White background box for Total Breakdown table */
+.summary-card {
+  background: rgba(255, 255, 255, 0.95); /* white with slight transparency */
+  padding: 25px 40px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  margin: 20px auto; /* center horizontally and add top margin */
+}
+/* White box style for the table */
+.summary-card {
+  background: #fff;
+  padding: 20px 35px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* White box style for the table */
+.summary-card {
+  background: #fff;
+  padding: 20px 35px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Table layout */
+#summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+#summaryTable th,
+#summaryTable td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Header style */
+#summaryTable th {
+  font-weight: 700;
+  text-align: left;
+  background: transparent;
+}
+
+/* Center the Quantity column */
+#summaryTable th:first-child,
+#summaryTable td:first-child {
+  text-align: center;
+}
+
+/* Right-align and color red for Price column */
+#summaryTable th:last-child,
+#summaryTable td:last-child {
+  text-align: right;
+  color: #e60000;
+}
+
+/* Total row */
+#summaryTable tfoot td {
+  border-top: 2px solid #d0d0d0;
+  font-weight: 700;
+  color: #e60000;
+}
+
+.progress-circle {
+  position: fixed;
+  top: 110px; /* ✅ ito na yung tamang baba */
+  left: 20px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-family: Poppins, sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+.progress-circle{
+  top: 110px;
+}
+.hidden {
+  display: none;
+}
+
+.summary-actions { display:flex; gap:12px; justify-content:center; align-items:center; }
+
+.summary-edit-btn {
+  background: transparent;
+  border: 1px dashed #0077cc;
+  color: #0077cc;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.summary-edit-btn:hover { background:#eaf6ff; }
+
+.locked { opacity: 0.6; pointer-events: none; } /* ginagamit pagkatapos i-confirm */
+.summary-card.locked { box-shadow: none; opacity: 0.9; }
+
+.receipt-box {
+  background: white;
+  width: 320px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  text-align: left;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.receipt-box h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
