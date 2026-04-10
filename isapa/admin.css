@@ -2,7 +2,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
-  background: url("img/servicebg.png") no-repeat center center fixed;
+  background: url('img/servicebg.png') no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -185,4 +185,8 @@ td:last-child {
   .top-controls {
     flex-direction: column;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 511430225402f397c8b4b736c250bfeba462e652
