@@ -11,14 +11,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px 30px; /* ⬅️ mas manipis na */
+  padding: 1px 30px;
   background: white;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
-
 
 .header-left {
   display: flex;
@@ -28,6 +27,7 @@ body {
 
 #Lugu img {
   height: 50px;
+  width: auto;
 }
 
 .header-right {
@@ -43,7 +43,7 @@ body {
   cursor: pointer;
 }
 
-/* MAIN FULL WIDTH */
+/* MAIN */
 main {
   width: 95%;
   max-width: 1400px;
@@ -88,59 +88,101 @@ main {
   color: white;
 }
 
-/* CARD FULL WIDTH */
+/* CARD */
 .card {
   width: 100%;
   background: rgba(255,255,255,0.95);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow-x: auto;
+  backdrop-filter: blur(10px);
+  overflow-x: hidden; /* no scroll */
 }
 
 /* TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
+  table-layout: fixed;
 }
 
 thead {
   background: #0078d4;
   color: white;
-  position: sticky;
-  top: 0;
 }
 
-th, td {
-  padding: 12px;
+th,
+td {
+  padding: 10px;
   border-bottom: 1px solid #ddd;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
 }
+
+/* COLUMN WIDTH CONTROL */
+th:nth-child(1) { width: 8%; }   /* # */
+th:nth-child(2) { width: 18%; }  /* Name */
+th:nth-child(3) { width: 15%; }  /* Contact */
+th:nth-child(4) { width: 15%; }  /* Service */
+th:nth-child(5) { width: 12%; }  /* Amount */
+th:nth-child(6) { width: 12%; }  /* Status */
+th:nth-child(7) { width: 20%; }  /* Action */
 
 /* STATUS */
-.status.pending { background: orange; color: white; padding:5px 10px; border-radius:5px;}
-.status.inprogress { background: blue; color: white; padding:5px 10px; border-radius:5px;}
-.status.completed { background: green; color: white; padding:5px 10px; border-radius:5px;}
+.status.pending,
+.status.inprogress,
+.status.completed {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
 
-/* BUTTONS */
+.status.pending { background: orange; }
+.status.inprogress { background: blue; }
+.status.completed { background: green; }
+
+/* ACTION COLUMN */
+td:last-child {
+  white-space: nowrap;
+}
+
+/* BUTTONS (HORIZONTAL) */
 .btn {
-  padding: 6px 10px;
+  display: inline-block;
+  padding: 4px 6px;
+  font-size: 11px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin: 2px;
 }
 
-.btn.delete { background: red; color: white;}
-.btn.completed { background: green; color: white;}
-.btn.in-progress { background: orange; color: white;}
+.btn.delete {
+  background: red;
+  color: white;
+}
+
+.btn.completed {
+  background: green;
+  color: white;
+}
+
+.btn.in-progress {
+  background: orange;
+  color: white;
+}
+
+/* EMPTY TEXT */
+.empty {
+  text-align: center;
+  color: #555;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .top-controls {
     flex-direction: column;
   }
-}
-
-.card {
-  backdrop-filter: blur(10px);
 }
