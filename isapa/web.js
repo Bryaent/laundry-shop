@@ -6,9 +6,13 @@ let index = 0; // Kasalukuyang slide index
 // Ipakita ang slide base sa index
 function showSlide(i) {
   index = i;
-  slides.style.transform = `translateX(${-index * 600}px)`; // I-slide sa tamang position
-  dots.forEach(dot => dot.classList.remove('active')); // Alisin ang active sa lahat ng dots
-  dots[index].classList.add('active'); // Lagyan ng active ang current dot
+
+  const slideWidth = document.querySelector('.carousel').clientWidth;
+
+  slides.style.transform = `translateX(${-index * slideWidth}px)`;
+
+  dots.forEach(dot => dot.classList.remove('active'));
+  dots[index].classList.add('active');
 }
 
 // Pumunta sa next slide

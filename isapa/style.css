@@ -499,7 +499,7 @@ nav a:hover {
   position: absolute;
   width: 390px;
   height: 280px;
-  background: url("img/a4.png") center/cover no-repeat;
+  background: url("img/A1.jpg") center/cover no-repeat;
   border-radius: 20px;
   top: 55px;
   left: 130px;
@@ -532,6 +532,7 @@ nav a:hover {
   width: 300px;
   height: 190px;
   object-fit: cover;
+  flex-shrink: 0; /* FIX: para hindi magsiksikan images */
 }
 
 .dots {
