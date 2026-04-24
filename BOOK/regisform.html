@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+
+<h2>REGISTRATION FORM</h2>
+
+<form method="POST" action="page2.php">
+
+<table>
+
+<!-- Name fields inline -->
+<tr>
+    <td>Complete Name:</td>
+    <td>
+        <input type="text" name="lastname" placeholder="Last Name" size="15" required>
+        <input type="text" name="firstname" placeholder="First Name" size="15" required>
+        <input type="text" name="mi" placeholder="M.I." size="3">
+    </td>
+</tr>
+
+<tr>
+    <td>Address:</td>
+    <td><input type="text" name="address" size="50"></td>
+</tr>
+
+<tr>
+    <td>Contact Number:</td>
+    <td><input type="text" name="contact" size="20"></td>
+</tr>
+
+<tr>
+    <td>Date of Birth:</td>
+    <td><input type="date" name="dob"></td>
+</tr>
+
+<tr>
+    <td>Gender:</td>
+    <td>
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female
+    </td>
+</tr>
+
+<!-- Office Address & Phone inline -->
+<tr>
+    <td>Office Details:</td>
+    <td>
+        <input type="text" name="office_address" placeholder="Office Address" size="30">
+        <input type="text" name="office_phone" placeholder="Office Phone" size="20">
+    </td>
+</tr>
+
+<!-- Position & Employment Status inline -->
+<tr>
+    <td>Position & Status:</td>
+    <td>
+        <input type="text" name="position" placeholder="Position" size="20">
+        <select name="status">
+            <option value="Permanent">Permanent</option>
+            <option value="Casual">Casual</option>
+        </select>
+    </td>
+</tr>
+
+<!-- Monthly Salary Dropdown -->
+<tr>
+    <td>Monthly Salary:</td>
+    <td>
+        <select name="salary">
+            <option value="Below Php10,000.00">Below Php10,000.00</option>
+            <option value="Php10,000.00 - Php20,000.00">Php10,000.00 - Php20,000.00</option>
+            <option value="Php30,000.00 - Php40,000.00">Php30,000.00 - Php40,000.00</option>
+            <option value="Php50,000.00 - Php60,000.00">Php50,000.00 - Php60,000.00</option>
+            <option value="Php70,000.00 - Php80,000.00">Php70,000.00 - Php80,000.00</option>
+            <option value="Php90,000.00 - Php100,000.00">Php90,000.00 - Php100,000.00</option>
+        </select>
+    </td>
+</tr>
+
+<tr>
+    <td>Co-Borrower:</td>
+    <td><input type="text" name="coborrower" size="50"></td>
+</tr>
+
+<tr>
+    <td colspan="2">
+        <button type="submit">Submit Registration</button>
+        <button type="reset">Clear Form</button>
+    </td>
+</tr>
+
+</table>
+
+</form>
+
+</body>
+</html>
