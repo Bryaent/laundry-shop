@@ -1,0 +1,6 @@
+.vs/
+*.sqlite
+*.log
+node_modules/
+vendor/
+.env
