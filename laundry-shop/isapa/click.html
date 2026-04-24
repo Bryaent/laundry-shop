@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="click.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+   <div class="progress-circle" id="progressCircle">1 / 6</div>
+  <header>
+  <div class="header-left">
+    <div id="Lugu">
+      <img src="img/Logo.png" alt="Logo">
+    </div>
+
+    <div class="tagline">
+      <span>FAST AND FRESH LAUNDRY JUST</span>
+      <a href="click.html">
+        <button>CLICK AWAY!</button>
+      </a>
+    </div>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html#Home">HOME</a></li>
+      <li><a href="index.html#Franchise">FRANCHISE</a></li>
+      <li><a href="index.html#Service">SERVICE</a></li>
+      <li><a href="index.html#About">ABOUT US</a></li>
+      <li><a href="index.html#Contact">CONTACT US</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+
+  <section id="kontainer">
+    <div class="question">
+      <h2>1. What service do you want?</h2>
+      <p>Pick one main option. If you choose Self-Select,<br>pick any combination of Wash, Dry, Fold</p>
+    </div>
+
+    <div class="container">
+      <button id="fullService" class="service-btn">
+        <div class="box">
+          <h3>Full Service</h3>
+          <p>We will handle <br> everything for you</p>
+        </div>
+      </button>
+
+      <button id="selfSelect" class="service-btn">
+        <div class="box">
+          <h3>Self Select</h3>
+          <p>Choose whichever steps you<br> want below</p>
+        </div>
+      </button>
+    </div>
+
+    <!-- Below Options Section -->
+    <section class="below-options">
+      <div id="inclusions" class="hidden">
+        <p>Inclusions: Wash & Dry & Fold, Detergent, Fabric Conditioner, Fabric Cologne</p>
+      </div>
+
+      <div id="steps" class="step-buttons hidden">
+        <button class="step-btn">Wash</button>
+        <button class="step-btn">Dry</button>
+        <button class="step-btn">Fold</button>
+      </div>
+
+      <button id="nextBtn" class="next-btn hidden">Next</button>
+    </section>
+  </section> <!-- ✅ close kontainer here -->
+
+
+  <!-- === PAGE 2: PICK LIQUID DETERGENT === -->
+  <section id="page2" class="hidden">
+    <button class="back-btn" id="backToPage1">←</button>
+    <div class="question">
+      <h2>2. Pick Your Liquid Detergent</h2>
+      <p>TIP: 1 sachet can cover up to 4 kilograms of laundry.</p>
+    </div>
+
+    <div class="below-options">
+      <label for="detergentSelect">Liquid Detergent:</label>
+      <select id="detergentSelect">
+        <option value="">-- Select Detergent --</option>
+        <option value="Surf Rose Fresh 64mL">Surf Rose Fresh 64mL ₱20</option>
+        <option value="Surf Cherry Blossom 64mL">Surf Cherry Blossom 64mL ₱20</option>
+        <option value="Ariel Twin Sunrise Fresh 64g">Ariel Twin Sunrise Fresh 64g ₱25</option>
+        <option value="Ariel Twin Downy 64g">Ariel Twin Downy 64g ₱25</option>
+        <option value="I have mine (liquid only)">I have mine (liquid only)</option>
+      </select>
+
+      <div class="quantity">
+        <button id="minusDet">−</button>
+        <span id="detQty">1</span>
+        <button id="plusDet">+</button>
+      </div>
+
+      <button id="nextToFabcon" class="next-btn hidden">Next</button>
+    </div>
+  </section>
+
+  <!-- === PAGE 3: PICK FABRIC CONDITIONER === -->
+  <section id="page3" class="hidden">
+    <button class="back-btn" id="backToPage2">←</button>
+    <div class="question">
+      <h2>3. Choose Your Fabric Conditioner</h2>
+      <p>TIP: 1 sachet can cover up to 4 kilograms of laundry.</p>
+    </div>
+
+    <div class="below-options">
+      <label for="fabconSelect">Fabric Conditioner:</label>
+      <select id="fabconSelect">
+        <option value="">-- Select Fabric Conditioner --</option>
+        <option value="Surf Luxe Perfume 40mL">Surf Luxe Perfume 40mL ₱15</option>
+        <option value="Surf Blossom Fresh 40mL">Surf Blossom Fresh 40mL ₱15</option>
+        <option value="Del Shower Fresh 33mL">Del Shower Fresh 33mL ₱15</option>
+        <option value="Del Lavender Breeze 33mL">Del Lavender Breeze 33mL ₱15</option>
+        <option value="I have mine">I have mine</option>
+      </select>
+
+      <div class="quantity">
+        <button id="minusFab">−</button>
+        <span id="fabQty">1</span>
+        <button id="plusFab">+</button>
+      </div>
+
+      <div>
+        <input type="checkbox" id="addBleach">
+        <label for="addBleach">Add Bleach</label>
+      </div>
+
+      <button id="nextToDetails" class="next-btn hidden">Next</button>
+    </div>
+  </section>
+
+  <!-- === PAGE 4: LAUNDRY DETAILS === -->
+  <section id="page4" class="hidden">
+    <button class="back-btn" id="backToPage3">←</button>
+    <div class="question">
+      <h2>Laundry Details</h2>
+    </div>
+
+    <div class="below-options">
+      <div class="load-type">
+        <label>Type of Load:</label><br>
+        <label><input type="radio" name="loadType" value="Regular Clothes"> Regular Clothes (8kg max)</label>
+        <label><input type="radio" name="loadType" value="Bedsheets"> Bedsheets (5kg max)</label>
+        <label><input type="radio" name="loadType" value="Comforter"> Comforter (3kg max)</label>
+      </div>
+
+      <div class="quantity">
+        <label>Number of Loads:</label><br>
+        <button id="minusLoad">−</button>
+        <span id="loadQty">1</span>
+        <button id="plusLoad">+</button>
+      </div>
+
+      <textarea id="specialNotes" placeholder="e.g., Separate whites, etc."></textarea>
+
+      <button id="finishBtn" class="finishBtn">Finish</button>
+    </div>
+  </section>
+
+  
+
+
+<!-- === PAGE 5: TOTAL BREAKDOWN / SUMMARY === -->
+<section id="page5" class="hidden">
+  <button class="back-btn" id="backToPage4">←</button>
+  <div class="question">
+    <h2>Total Breakdown</h2>
+  </div>
+
+  <div class="below-options">
+    <div class="summary-card">
+      <table id="summaryTable">
+        <thead>
+          <tr>
+            <th>Quantity</th>
+            <th>Item</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+         
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td style="text-align: right; font-weight:700;">Total:</td>
+            <td id="summaryTotal" style="font-weight:700;">₱0</td>
+          </tr>
+        </tfoot>
+      </table>
+    
+      <!-- sa loob ng page5, palitan ang old NEXT button ng ito -->
+<div class="summary-actions" style="margin-top:18px;">
+  <button id="editSummaryBtn" class="next-btn" style="background:#6c757d">Confirm (Review)</button>
+  <button id="toContactBtn" class="next-btn">NEXT</button>
+</div>
+
+</section>
+
+<!-- === PAGE 6: CONTACT, ADDRESS, PAYMENT === -->
+<section id="page6" class="hidden">
+  <button class="back-btn" id="backToPage5">←</button>
+  <div class="question">
+    <h2>Contact, Address, and Payment Details</h2>
+  </div>
+
+  <div class="below-options contact-form">
+    <div class="form-row">
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="text" id="contactNumber" placeholder="Contact Number" required>
+    </div>
+    <div class="form-row">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="completeAddress" placeholder="Complete Address" required>
+    </div>
+
+    <label for="paymentMode">Mode of Payment</label>
+    <select id="paymentMode">
+      <option value="cod">Cash Upon Delivery</option>
+      <option value="gcash">GCash</option>
+      <option value="bank">Bank Transfer</option>
+    </select>
+
+    <p class="note">Note: Pickup/Delivery Fee is stated on the date of delivery by the rider.</p>
+
+    <button id="submitOrderBtn" class="next-btn">NEXT</button>
+  </div>
+</section>
+
+<!-- === PAGE 7: CONFIRMATION / TICKET === -->
+<section id="page7" class="hidden ticket-page">
+  <div class="ticket-container">
+    <h2>Thank you for entrusting your laundry to us! Here’s your ticket number:</h2>
+    <p class="subtext">Ticket number is also sent to your Email. We’ll keep you updated!</p>
+    <div id="ticketNumber" class="ticket-number">####</div>
+    <button id="trackBtn" class="track-btn">TRACK MY LAUNDRY</button>
+  </div>
+
+  <div class="receipt-box" id="receiptBox">
+    <h3>Transaction Receipt</h3>
+    <p><strong>Ticket:</strong> <span id="r_ticket"></span></p>
+    <p><strong>Name:</strong> <span id="r_name"></span></p>
+    <p><strong>Contact:</strong> <span id="r_contact"></span></p>
+    <p><strong>Address:</strong> <span id="r_address"></span></p>
+    <p><strong>Payment:</strong> <span id="r_payment"></span></p>
+    <p><strong>Total Amount:</strong> ₱<span id="r_amount"></span></p>
+    <p><strong>Date:</strong> <span id="r_date"></span></p>
+
+    <button id="downloadReceipt" class="track-btn" style="margin-top:15px;">
+        DOWNLOAD RECEIPT
+    </button>
+</div>
+
+</section>
+
+
+<script src="click.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</body>
+
+</html>

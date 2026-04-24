@@ -1,0 +1,531 @@
+
+*{
+   margin: 0px;                 /* Alisin lahat ng default margin ng browser */
+   padding: 0px;                /* Alisin lahat ng default padding ng browser */
+   box-sizing: border-box;      /* Para kasama ang padding at border sa total width/height */
+}
+
+
+html, body{
+    font-family: "Poppins", sans-serif; 
+    line-height: 1.6; /* Taas ng pagitan ng mga linya ng text */
+    scroll-behavior: smooth;         
+    overflow-x: hidden;          
+}
+
+
+header{
+    background: #0088cc;   
+    color: white;         
+    text-align: center;    /* Pantayin ang laman sa gitna horizontally */
+    padding: 10px;         /* Space sa loob ng header (lahat sides) */
+}
+
+header h1{
+    font-size: 18px;       
+    margin-bottom: 5px;    /* Space sa ilalim ng h1 */
+}
+
+header button{
+    background: white;    
+     font-family: 'Poppins', sans-serif; 
+    color: black;       
+    border: none;          /* Alisin ang border */
+    padding: 5px 15px;     /* Vertical at horizontal na space sa loob ng button */
+    cursor: pointer;       /* Magiging pointer (kamay) ang mouse kapag naka-hover */
+    border-radius: 20px;
+    font-weight: bolder;
+}
+header button:hover{
+  color: #0094ff;
+}
+
+/* ========== NAVIGATION BAR ========== */
+nav{
+    background: white;               
+    padding: 10px;                    /* Space sa loob ng nav */
+    border-bottom: 1px solid #ddd;    /* Manipis na guhit sa ibaba (gray) */
+    text-align: center;               /* Pantayin sa gitna yung content */
+}
+
+nav ul{
+    list-style: none;                 /* Alisin yung bilog/number sa list items */
+    display: flex;                    /* Gawing flexbox layout */
+    justify-content: center;          /* Pantayin sa gitna horizontally */
+    gap: 80px;                        /* Distansya sa pagitan ng mga items */
+}
+
+nav a{
+    text-decoration: none;            /* Alisin yung underline ng links */
+    color: black;                     /* Kulay ng text ng links */
+    font-weight: bold;                /* Gawing bold yung text */
+}
+
+nav a:hover{
+    color: #0088cc;                   /* Kapag naka-hover, magiging blue */
+}
+
+/* ========== MAIN SECTION (Hero Section) ========== */
+#home {
+    height: 100vh;                        /* Buong taas ng screen (viewport height) */
+    width: 100%;     
+    display: flex;                      /* Buong lapad ng screen */
+    align-items: center;                  /* Pantayin vertically yung laman (dahil flexbox) */
+    padding-left: 100px;                  /* Space sa kaliwa ng laman */
+    padding-right: 60px;                 /* Space sa kanan ng laman */
+}
+
+/* ========== MAIN HEADING (Hero Text) ========== */
+
+
+
+#home{
+    background:url(Home-Background.png)  no-repeat center center/cover;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+.hero-text{
+    position: relative;  /*para lang siyang display flex*/
+    z-index: 1;
+    max-width: 600px;
+    left: 60px;
+    top: -30px;
+}
+.hero-text h2 {
+    display: flex;
+    align-items: center;
+    color: white;                      
+    font-size: 32px;
+    font-weight: 700;                     /* Bold (mas makapal) */
+    line-height: 1.4;                     /* Distansya ng lines sa h2 */
+    max-width: 600px;                     /* Limitahan ang lapad (para di sobrang wide) */
+    margin-bottom: 20px;                  /* Space sa ilalim (bago yung paragraph) */
+    margin-top: -20px;                    /* Itaas konti yung h2 */
+    font-family: 'Poppins', sans-serif;   /* Gumamit ng Poppins font */
+}
+.hero-text p{
+    display: flex;
+    color: white;
+    display: flex;
+    text-align: left;
+    line-height: 1.8;
+}
+#franchise{
+    background: url("franbg.png") no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+}
+.franchise-content {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  max-width: 1100px;
+}
+
+.franchise-logo {
+  width: 350px;
+  height: auto;
+}
+
+.franchise-text {
+  color: #000;
+  max-width: 600px;
+}
+
+.franchise-text h2 {
+  font-size: 28px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.franchise-text h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 20px;
+}
+
+.franchise-text p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.partner-btn {
+  background: #0077cc;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
+}
+
+.partner-btn:hover {
+  background: #005fa3;
+}
+#service{
+    background: url("servicebg.png") no-repeat center center/cover;
+    height: 100vh;
+    text-align: center;
+    padding: 80px;
+    font-family:"Poppins", sans-serif;
+
+}
+.services-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.services-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.services-header h3 span {
+  font-weight: 700;
+}
+
+.services-header p {
+  font-size: 15px;
+  color: #333;
+  max-width: 650px;
+  margin: 15px auto 40px;
+  font-family: "Poppins", sans-serif;
+}
+
+.services-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.service-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px 20px;
+  width: 180px;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+}
+
+.service-box img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.service-box h4 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.service-box p {
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-top: 2px solid #000;
+  padding-top: 5px;
+}
+
+.service-full {
+  background: #0094ff;
+  color: white;
+  border-radius: 10px;
+  padding: 30px 25px;
+  text-align: left;
+  width: 240px;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+}
+
+.service-full h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.service-full h1 {
+  font-size: 45px;
+  font-weight: 800;
+  margin: 10px 0 15px;
+}
+
+.service-full ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service-full li {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.book-btn {
+  margin-top: 40px;
+  background: linear-gradient(to bottom, #0094ff, #0066cc);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.book-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to bottom, #007adb, #004fa3);
+}
+#aboutus{
+    background: url("abawt.png") no-repeat center center/cover; 
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    margin-top: 95px;
+   display: flex;              /* gawin flex container */
+  flex-direction: column;     /* para naka-vertical */
+  justify-content: center;    /* center vertically */
+  align-items: center;        /* center horizontally */
+  text-align: center;   
+}
+ .abawtus .h2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+
+}
+.abawtus .p{
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* === Main Layout === */
+.services-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* === Small Service Boxes === */
+.service-box {
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  transition: transform 0.3s ease;
+}
+
+.service-box:hover {
+  transform: translateY(-5px);
+}
+
+.service-box img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.service-box h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.service-box .desc {
+  font-size: 14px;
+  color: #444;
+  margin: 8px 0 12px 0;
+  line-height: 1.4;
+}
+
+.service-box p:last-child {
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #007bff;
+  margin-top: 5px;
+  border-top: 2px solid #000;
+  display: inline-block;
+  padding-top: 5px;
+}
+
+/* === Full Service Blue Box === */
+.full-service-box {
+  background: #007bff;
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px 25px;
+  width: 200px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.full-service-box h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.full-service-box h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.full-service-box ul {
+  list-style: none;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.full-service-box li::before {
+  content: "› ";
+  font-weight: bold;
+}
+
+.service-box {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 220px;              
+  height: 270px;             
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+}
+
+.service-box img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.service-box h4 {
+  font-size: 18px;
+  margin: 8px 0;
+}
+
+.service-box .desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+  flex-grow: 1;              
+}
+
+.service-box p:last-child {
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 8px;
+}
+
+.contactus{
+   background: url(contactbg.jpg) no-repeat center center/cover;
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+   padding-left: -5px;
+   padding-right: -5px;
+   
+
+}
+.contactus {
+  padding: 50px;
+}
+
+.contact-container {
+  display: flex;              /* para magkatabi left at right */
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;            /* para responsive sa maliit na screen */
+}
+
+.left-side, .right-side {
+  width: 50%;
+  
+}
+.right-side{
+  padding-right: 70px;
+}
+.left-side{
+  padding-left: 70px
+}
+h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: white;
+}
+
+p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: white;
+}
+
+.fb-img{
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.map-img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  margin-top: 10px;
+  
+}
+.ratings-section{
+  margin: 0;
+  padding: 0;
+
+}
+.container-ratings{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+
+}
+.container-ratings p{
+  color: black;
+  font-family: "Poppins" sans-serif;
+}
+.container-ratings .box{
+  display: flex;
+  justify-content: center;
+  margin-top: -55rem;
+  background: lightblue;
+  border-radius: 20px;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+}
+

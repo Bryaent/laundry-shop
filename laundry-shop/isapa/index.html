@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>M & M Laundry Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <div class="header-left">
+      <div id="Lugu">
+        <img src="img/Logo.png" alt="Logo">
+      </div>
+      <div class="tagline">
+        <span>FAST AND FRESH LAUNDRY JUST</span>
+        <a href="click.html">
+          <button>CLICK AWAY!</button>
+        </a>
+      </div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#Home">HOME</a></li>
+        <li><a href="#Franchise">FRANCHISE</a></li>
+        <li><a href="#Service">SERVICE</a></li>
+        <li><a href="#About">ABOUT US</a></li>
+        <li><a href="#Contact">CONTACT US</a></li>
+        <li><a href="account.html" class="account-btn">ACCOUNT</a></li>
+        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="Home">
+    <div class="home-text">
+      <h1>Fast, Fresh and Hassle-Free Laundry<br>Right at Your Fingertips</h1>
+      <br>
+      <p>
+        Book your laundry pickup or drop-off in just a few<br>
+        clicks, track every stage of your order in real-time<br>
+        from washing to drying to ready-for-pickup and<br>
+        enjoy clear, upfront pricing with no hidden fees.<br>
+        Our platform is designed to make laundry day<br>
+        stress-free, giving you more time to focus on what<br>
+        matters most while we handle the rest.
+      </p>
+    </div>
+  </section>
+
+  <section id="Franchise" class="reveal">
+    <div class="franchise-content" id="franchiseMain">
+      <img src="img/Logo.png" alt="M and M Laundry Shop Logo" class="franchise-logo">
+      <div class="franchise-text">
+        <h1>Franchise</h1>
+        <h2>Join the M & M Laundry Shop Family<br>Your Fresh Start to Business Success!</h2>
+        <p>
+          Step into a growing community with M & M Laundry Shop! Partner with us and discover
+          the opportunities for growth, innovation, and positive impact on your local area.
+          Together, we’ll help you build a thriving business and turn clean clothes into a
+          clean path to success — your journey begins with M & M today!
+        </p>
+        <button class="partner-btn" id="openFormBtn">BE OUR PARTNER</button>
+      </div>
+    </div>
+
+    <div class="franchise-form" id="franchiseForm" style="display: none;">
+      <div class="form-container">
+        <div class="form-logo">
+          <img src="img/Logo.png" alt="M and M Laundry Shop Logo">
+        </div>
+        <div class="form-box">
+          <button type="button" id="backBtn" class="franchise-back-btn">⬅ Back</button>
+          <h2>Franchise Inquiry Form</h2>
+          <form id="inquiryForm">
+            <div class="input-group">
+              <label>Full Name</label>
+              <input type="text" id="fullName" required>
+            </div>
+
+            <div class="input-group">
+              <label>Email</label>
+              <input type="email" id="email" required>
+            </div>
+
+            <div class="input-group">
+              <label>Contact Number</label>
+              <input type="text" id="contact" required>
+            </div>
+
+            <div class="input-group full-width">
+              <label>Message <span style="color:red">*</span></label>
+              <textarea id="message" required></textarea>
+            </div>
+
+            <button type="submit" class="send-btn">SEND INQUIRY</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="thankyou-box" id="thankYou" style="display: none;">
+      <h2>Thank you for inquiring!</h2>
+    </div>
+  </section>
+
+  <section id="Service" class="reveal">
+    <div class="services-header">
+      <h1>Our Services</h1>
+    </div>
+
+    <div class="services-header-p">
+      <p>
+        Enjoy a hassle-free laundry experience as we wash, dry, and neatly fold your clothes
+        with care. Each load is handled with the right cleaning products to keep your garments fresh,
+        soft, and ready to wear.
+      </p>
+    </div>
+
+    <div class="services-container">
+      <div class="service-box">
+        <img src="img/Wash logo (1).png" alt="Wash">
+        <h4>₱60</h4>
+        <p>Washing your clothes to remove dirt and stains.</p>
+        <span>WASH</span>
+      </div>
+
+      <div class="service-box">
+        <img src="img/Dry logo (1).png" alt="Dry">
+        <h4>₱65</h4>
+        <p>Carefully drying clothes for softness and freshness.</p>
+        <span>DRY</span>
+      </div>
+
+      <div class="service-box">
+        <img src="img/Fold logo (1).png" alt="Fold">
+        <h4>₱30</h4>
+        <p>Neatly folding your clothes, ready to wear.</p>
+        <span>FOLD</span>
+      </div>
+
+      <div class="full-service-box">
+        <h4>FULL SERVICE</h4>
+        <h1>₱185</h1>
+        <ul>
+          <li>Wash & Dry & Fold</li>
+          <li>Detergent</li>
+          <li>Fabric Conditioner</li>
+          <li>Fabric Cologne</li>
+        </ul>
+      </div>
+    </div>
+
+    <a href="booknow.html" class="book-btn">BOOK NOW</a>
+  </section>
+
+  <section id="About" class="reveal">
+    <div class="about-container">
+
+      <div class="about-image">
+        <div class="carousel">
+          <div class="slides">
+            <img src="img/A1.jpg" alt="Image 1">
+            <img src="img/A2.jpg" alt="Image 2">
+            <img src="img/A3.jpg" alt="Image 3">
+            <img src="img/A4.jpg" alt="Image 4">
+          </div>
+
+          <div class="dots">
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <a href="booknow.html" class="about-book-card">
+          <span class="about-book-icon">➜</span>
+          <div class="about-book-text">
+            <h3>BOOK NOW</h3>
+            <p>Quick, easy, and convenient laundry service.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="about-text">
+        <h4>M & M Laundry Shop</h4>
+        <h1>ABOUT US</h1>
+
+        <p>
+          We are a family-run laundry shop that offers fast, clean, and reliable service.
+          Our goal is to make laundry simple, easy, and stress-free for every customer.
+        </p>
+
+        <div class="about-icons">
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <div class="about-feature-content">
+              <h3>Fast Service</h3>
+              <p>We work quickly while keeping your clothes clean and fresh.</p>
+            </div>
+          </div>
+
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <div class="about-feature-content">
+              <h3>Quality Care</h3>
+              <p>Your clothes are handled with care using proper cleaning products.</p>
+            </div>
+          </div>
+
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <div class="about-feature-content">
+              <h3>Convenience</h3>
+              <p>Book online and enjoy an easier way to manage your laundry.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="Contact" class="reveal">
+    <div class="contact-wrapper">
+
+      <div class="ratings-section">
+        <div class="ratings-container">
+
+          <div class="ratings-image">
+            <img src="img/smell1.jpg" alt="Laundry">
+          </div>
+
+          <div class="ratings-content">
+            <div class="testimonial-title">
+              <h1>Fresh laundry, happy customers!</h1>
+            </div>
+
+            <div class="testimonial-sub">
+              <p>
+                Every wash is handled with attention to detail, leaving clothes spotless, fresh, and ready to wear.
+              </p>
+            </div>
+
+            <div class="review-item">
+              <div class="review-header">
+                <img src="img/rico.jpg" alt="Rico Blanco">
+                <div>
+                  <h4>Rico Blanco</h4>
+                  <span class="role">Customer</span>
+                </div>
+              </div>
+              <p>"Bilis ng service, grabe! Mabait din yung staff."</p>
+            </div>
+
+            <div class="review-item">
+              <div class="review-header">
+                <img src="img/lea.jpg" alt="Lea Salonga">
+                <div>
+                  <h4>Lea Salonga</h4>
+                  <span class="role">Customer</span>
+                </div>
+              </div>
+              <p>"Laging mabango at maayos ang pagkakaplantsa."</p>
+            </div>
+
+            <div class="review-item">
+              <div class="review-header">
+                <img src="img/vice.jpg" alt="Vice Ganda">
+                <div>
+                  <h4>Vice Ganda</h4>
+                  <span class="role">Customer</span>
+                </div>
+              </div>
+              <p>"On time palagi yung delivery — super convenient!"</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-content">
+        <div class="contact-footer">
+          <div class="contact-content">
+
+            <div class="contact-left">
+              <h2 class="footer-title">M and M Laundry</h2>
+
+              <p>
+                <strong>Location:</strong> 244 Market Avenue, Brgy. San Miguel<br>
+                Pasig City, Philippines
+              </p>
+
+              <p>
+                <strong>Contact Number 1:</strong> 0968-301-0566<br>
+                <strong>Contact Number 2:</strong> 0993-822-4989
+              </p>
+
+              <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=61572294501937" target="_blank">
+                  <img src="img/fb.webp" alt="Facebook Page">
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-right">
+              <div class="location-images">
+                <img src="img/a4.png" alt="Shop Image">
+                <img src="img/mapweb.png" alt="Map Image">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function revealOnScroll() {
+      const reveals = document.querySelectorAll(".reveal");
+
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (
+          elementTop < windowHeight - elementVisible ||
+          window.scrollY + windowHeight >= document.body.scrollHeight - 100
+        ) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    revealOnScroll();
+  </script>
+
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+      if (confirm("Are you sure you want to log out?")) {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+
+  <script src="web.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <h2>Welcome to M&M Laundry</h2>
+    <p>Fast, Fresh & Hassle-Free Laundry Service</p>
+    <img src="img/Logo.png" alt="logo">
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+
+    <!-- FIXED FORM -->
+    <form id="loginForm" action="login.php" method="POST">
+
+  <h2>Login</h2>
+
+  <div class="input-group">
+    <input type="text" id="username" name="username" placeholder="Username" required>
+  </div>
+
+  <div class="input-group">
+    <input type="password" id="password" name="password" placeholder="Password" required>
+  </div>
+
+  <button type="submit" class="login-btn">Login</button>
+
+  <p class="divider">OR</p>
+
+  <div class="social-login">
+    <button type="button" class="google-btn">
+      <i class="fab fa-google"></i> Login with Google
+    </button>
+
+    <button type="button" class="facebook-btn">
+      <i class="fab fa-facebook-f"></i> Login with Facebook
+    </button>
+  </div>
+
+  <button type="button" class="register-btn" onclick="window.location.href='register.html'">
+    Create Account
+  </button>
+
+</form>
+  </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>
