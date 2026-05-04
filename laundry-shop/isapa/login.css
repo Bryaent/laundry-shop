@@ -189,3 +189,34 @@ form h2 {
   cursor: pointer;
   margin-top: 10px;
 }
+.admin-icon-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+
+  border: none;
+  background: #0094ff;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.admin-icon-btn:hover {
+  background: #0077cc;
+  transform: scale(1.1);
+}
+
+.admin-icon-btn i {
+  font-size: 18px;
+}
+
