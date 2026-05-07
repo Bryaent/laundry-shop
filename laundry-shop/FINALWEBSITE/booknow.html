@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
+
   <title>Book Now | M & M Laundry</title>
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="booknow.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 
   <header>
+
     <div class="header-left">
 
       <div id="Lugu">
@@ -20,26 +24,47 @@
       </div>
 
       <div class="tagline">
+
         <span>FAST AND FRESH LAUNDRY JUST</span>
 
         <a href="click.html">
           <button>CLICK AWAY!</button>
         </a>
+
       </div>
 
     </div>
 
     <nav>
+
       <ul>
+
         <li><a href="index.html#Home">HOME</a></li>
+
         <li><a href="index.html#Franchise">FRANCHISE</a></li>
+
         <li><a href="index.html#Service">SERVICE</a></li>
+
         <li><a href="index.html#About">ABOUT US</a></li>
+
         <li><a href="index.html#Contact">CONTACT US</a></li>
-        <li><a href="account.html" class="account-btn">ACCOUNT</a></li>
-        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+
+        <li>
+          <a href="account.html" class="account-btn">
+            ACCOUNT
+          </a>
+        </li>
+
+        <li>
+          <a href="#" id="logoutBtn" class="logout-btn">
+            LOGOUT
+          </a>
+        </li>
+
       </ul>
+
     </nav>
+
   </header>
 
   <main class="booknow-page">
@@ -50,17 +75,25 @@
       <div class="tab-buttons">
 
         <a href="click.html">
-          <button class="tab-btn active">Book a Service</button>
+
+          <button id="bookTab" class="tab-btn active">
+            Book a Service
+          </button>
+
         </a>
 
         <a href="tracklaundry.html">
-          <button class="tab-btn">Track Your Laundry</button>
+
+          <button id="trackTab" class="tab-btn">
+            Track Your Laundry
+          </button>
+
         </a>
 
       </div>
 
       <!-- BOOK SECTION -->
-      <div id="bookSection" class="tab-content active">
+      <div id="bookService" class="tab-content active">
 
         <div class="kiosk-layout">
 
@@ -68,33 +101,51 @@
           <div class="steps-panel">
 
             <div class="step-box active-step">
+
               <span>1</span>
+
               <p>Choose Service</p>
+
             </div>
 
             <div class="step-box">
+
               <span>2</span>
+
               <p>Select Soap</p>
+
             </div>
 
             <div class="step-box">
+
               <span>3</span>
+
               <p>Fabric Conditioner</p>
+
             </div>
 
             <div class="step-box">
+
               <span>4</span>
+
               <p>Pickup Details</p>
+
             </div>
 
             <div class="step-box">
+
               <span>5</span>
+
               <p>Payment</p>
+
             </div>
 
             <div class="step-box">
+
               <span>6</span>
+
               <p>Confirmation</p>
+
             </div>
 
           </div>
@@ -103,6 +154,7 @@
           <div class="products-panel">
 
             <h2>Select Your Laundry Soap</h2>
+
             <p class="select-text">
               Choose your preferred detergent product.
             </p>
@@ -111,56 +163,80 @@
 
               <!-- PRODUCT 1 -->
               <div class="product-card">
+
                 <img src="img/ariel.png" alt="Ariel">
 
                 <h3>Ariel</h3>
 
-                <button>Select</button>
+                <button class="select-product-btn">
+                  Select
+                </button>
+
               </div>
 
               <!-- PRODUCT 2 -->
               <div class="product-card">
+
                 <img src="img/tide.png" alt="Tide">
 
                 <h3>Tide</h3>
 
-                <button>Select</button>
+                <button class="select-product-btn">
+                  Select
+                </button>
+
               </div>
 
               <!-- PRODUCT 3 -->
               <div class="product-card">
+
                 <img src="img/breeze.png" alt="Breeze">
 
                 <h3>Breeze</h3>
 
-                <button>Select</button>
+                <button class="select-product-btn">
+                  Select
+                </button>
+
               </div>
 
               <!-- PRODUCT 4 -->
               <div class="product-card">
+
                 <img src="img/surf.png" alt="Surf">
 
                 <h3>Surf</h3>
 
-                <button>Select</button>
+                <button class="select-product-btn">
+                  Select
+                </button>
+
               </div>
 
               <!-- PRODUCT 5 -->
               <div class="product-card">
+
                 <img src="img/pride.png" alt="Pride">
 
                 <h3>Pride</h3>
 
-                <button>Select</button>
+                <button class="select-product-btn">
+                  Select
+                </button>
+
               </div>
 
               <!-- PRODUCT 6 -->
               <div class="product-card">
+
                 <img src="img/wings.png" alt="Wings">
 
                 <h3>Wings</h3>
 
-                <button>Select</button>
+                <button class="select-product-btn">
+                  Select
+                </button>
+
               </div>
 
             </div>
@@ -172,7 +248,7 @@
       </div>
 
       <!-- TRACK SECTION -->
-      <div id="trackSection" class="tab-content">
+      <div id="trackLaundry" class="tab-content">
 
         <h2>Track Your Laundry</h2>
 
@@ -186,7 +262,7 @@
           placeholder="Enter Tracking Code"
         >
 
-        <button onclick="trackLaundry()">
+        <button id="trackBtn">
           Track
         </button>
 
@@ -233,7 +309,9 @@
 
       <!-- ERROR -->
       <div id="trackError" class="hidden error-msg">
+
         ❌ Ticket not found. Please check your ticket number.
+
       </div>
 
     </section>
@@ -241,21 +319,23 @@
   </main>
 
   <!-- JS -->
-  <script src="js/booknow.js"></script>
+  <script src="booknow.js"></script>
 
   <script>
 
-    document.getElementById("logoutBtn").addEventListener("click", function () {
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", function () {
 
-      if (confirm("Are you sure you want to log out?")) {
+        if (confirm("Are you sure you want to log out?")) {
 
-        localStorage.removeItem("loggedInUser");
+          localStorage.removeItem("loggedInUser");
 
-        window.location.href = "login.html";
+          window.location.href = "login.html";
 
-      }
+        }
 
-    });
+      });
 
   </script>
 
