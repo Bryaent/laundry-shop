@@ -322,134 +322,349 @@ nav a:hover {
 }
 
 /* ================= SERVICE ================= */
+/* ================= SERVICE SECTION ================= */
+
 #Service {
-  background: url(img/servicebg.png) no-repeat center center/cover;
-  min-height: 100vh;
+  background: linear-gradient(to bottom, #eef5ff, #dbeafe);
+  min-height: auto;
   width: 100%;
-  text-align: center;
-  padding: 100px 60px;
-  color: rgb(0, 0, 0);
+  padding: 70px 8% 60px;
   position: relative;
+  overflow: hidden;
 }
 
+/* ================= LEFT TEXT ================= */
+
 .services-header {
-  font-size: 20px;
-  max-width: 800px;
-  margin: 0 auto 25px;
-  color: #080000;
+  text-align: left;
+  max-width: 360px;
+  margin-bottom: 18px;
+}
+
+.services-header h1 {
+  font-size: 52px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: #111827;
 }
 
 .services-header-p {
-  font-size: 20px;
-  max-width: 800px;
-  margin: 0 auto 60px;
+  max-width: 360px;
+  text-align: left;
 }
+
+.services-header-p p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #6b7280;
+}
+
+/* ================= BOX LAYOUT ================= */
 
 .services-container {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 30px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  gap: 22px;
+
+  justify-content: end;
+  align-items: start;
+
+  margin-left: 420px;
+  margin-top: -220px;
+  margin-bottom: 20px;
 }
 
+/* ================= SERVICE BOX ================= */
+
 .service-box {
-  background: #f0f0f0;
-  border-radius: 10px;
-  padding: 25px 20px;
+  background: #fff;
+  border-radius: 22px;
+
+  padding: 20px 16px;
+
   width: 200px;
+  min-height: 250px;
+
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.07),
+    0 3px 8px rgba(0,0,0,0.04);
+
+  transition: all 0.35s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* TOP BLUE LINE */
+.service-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 5px;
+  width: 100%;
+
+  background: #0094ff;
+}
+
+/* HOVER EFFECT */
+.service-box:hover {
+  transform: translateY(-8px) scale(1.03);
+
+  box-shadow:
+    0 18px 35px rgba(0, 148, 255, 0.20),
+    0 10px 18px rgba(0,0,0,0.08);
+}
+
+/* ICON */
+.service-box img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+
+  margin-bottom: 8px;
+
   transition: 0.3s ease;
 }
 
-.service-box:hover {
-  transform: translateY(-8px);
+.service-box:hover img {
+  transform: scale(1.1);
 }
 
-.service-box img {
-  width: 50px;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 10px;
-}
-
+/* PRICE */
 .service-box h4 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #555;
-  display: inline-block;
-  padding-bottom: 5px;
-  color: #000000;
-}
-
-.service-box p {
-  font-size: 14px;
-  color: #000000;
-  margin: 10px 0;
-}
-
-.service-box span {
-  display: block;
-  margin-top: 10px;
-  font-weight: 700;
-  color: #222;
-}
-
-.full-service-box {
-  background: #0094ff;
-  color: white;
-  border-radius: 10px;
-  padding: 10px 20px;
-  text-align: left;
-  width: 180px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
-}
-
-.full-service-box h3 {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.full-service-box h1 {
-  font-size: 45px;
+  font-size: 26px;
   font-weight: 800;
-  margin: 10px 0 15px;
-}
+  color: #111827;
 
-.full-service-box ul {
-  list-style: none;
-  padding: 0;
-}
-
-.full-service-box li {
-  font-size: 14px;
-  list-style: bullets;
   margin-bottom: 8px;
 }
 
-.book-btn {
-  background-color: #0094ff;
+.service-box h4::after {
+  content: "";
+
+  display: block;
+
+  width: 36px;
+  height: 3px;
+
+  background: #0094ff;
+
+  margin: 8px auto 0;
+
+  border-radius: 10px;
+}
+
+/* DESCRIPTION */
+.service-box p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b7280;
+
+  margin: 10px 0;
+
+  flex-grow: 1;
+}
+
+/* LABEL */
+.service-box span {
+  display: inline-block;
+
+  margin-top: auto;
+
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+
+  color: #0094ff;
+  background: rgba(0, 148, 255, 0.1);
+
+  padding: 7px 15px;
+
+  border-radius: 30px;
+
+  transition: 0.3s ease;
+}
+
+.service-box:hover span {
+  background: #0094ff;
   color: white;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-weight: 600;
+}
+
+/* ================= FULL SERVICE BOX ================= */
+
+.full-service-box {
+  background: linear-gradient(135deg, #0094ff, #0066cc);
+  color: white;
+
+  border-radius: 22px;
+
+  padding: 20px 18px;
+
+  width: 200px;
+  min-height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  box-shadow:
+    0 12px 24px rgba(0, 148, 255, 0.22);
+
+  position: relative;
+  overflow: hidden;
+
+  transition: all 0.35s ease;
   cursor: pointer;
-  transition: all 0.3s ease;
+}
+
+/* DESIGN CIRCLE */
+.full-service-box::before {
+  content: "";
+
   position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 15px;
+
+  top: -40px;
+  right: -40px;
+
+  width: 120px;
+  height: 120px;
+
+  background: rgba(255,255,255,0.12);
+
+  border-radius: 50%;
+}
+
+.full-service-box:hover {
+  transform: translateY(-8px) scale(1.03);
+
+  box-shadow:
+    0 20px 40px rgba(0, 148, 255, 0.30);
+}
+
+.full-service-box h4 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  z-index: 2;
+}
+
+.full-service-box h1 {
+  font-size: 42px;
+  margin-bottom: 15px;
+  z-index: 2;
+}
+
+.full-service-box ul {
+  padding-left: 18px;
+  z-index: 2;
+}
+
+.full-service-box li {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+/* ================= BOOK BUTTON ================= */
+
+.book-btn {
+  display: block;
+
+  width: fit-content;
+
+  margin-left: auto;
+  margin-right: 90px;
+  margin-top: 12px;
+
+  background: linear-gradient(135deg, #0094ff, #0066cc);
+  color: white;
+
+  padding: 12px 30px;
+
+  border-radius: 50px;
+
+  font-size: 14px;
+  font-weight: 700;
+
   text-decoration: none;
+
+  transition: all 0.3s ease;
+
+  box-shadow:
+    0 10px 20px rgba(0,148,255,0.22);
 }
 
 .book-btn:hover {
-  background-color: #0077cc;
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 28px rgba(0,148,255,0.30);
+
+  background: linear-gradient(135deg, #0084e6, #005bb5);
 }
 
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1100px) {
+
+  .services-header,
+  .services-header-p {
+    max-width: 100%;
+    text-align: center;
+    margin: auto;
+  }
+
+  .services-container {
+    grid-template-columns: repeat(2, 200px);
+
+    justify-content: center;
+
+    margin-left: 0;
+    margin-top: 50px;
+  }
+
+  .services-header h1 {
+    font-size: 42px;
+  }
+
+  .book-btn {
+    margin: 30px auto 0;
+  }
+}
+
+@media (max-width: 600px) {
+
+  #Service {
+    padding: 70px 20px;
+  }
+
+  .services-container {
+    grid-template-columns: 1fr;
+  }
+
+  .service-box,
+  .full-service-box {
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+  }
+
+  .services-header h1 {
+    font-size: 36px;
+  }
+
+  .services-header-p p {
+    font-size: 15px;
+  }
+}
 /* ================= ABOUT ================= */
 #About {
   background: linear-gradient(to bottom right, #eaf6ff, #ffffff);
