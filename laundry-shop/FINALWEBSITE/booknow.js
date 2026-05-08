@@ -28,6 +28,7 @@ if (bookTab && trackTab && bookService && trackLaundry) {
 
 }
 
+
 // === TRACKING FUNCTION ===
 const trackBtn = document.getElementById("trackBtn");
 const ticketInput = document.getElementById("ticketInput");
@@ -41,10 +42,8 @@ if (trackBtn) {
     const ticket = ticketInput.value.trim();
 
     if (!ticket) {
-
       alert("Please enter your ticket number.");
       return;
-
     }
 
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -59,9 +58,7 @@ if (trackBtn) {
       trackError.classList.add("hidden");
 
       document.getElementById("ticketDisplay").textContent = found.ticket;
-
       document.getElementById("nameDisplay").textContent = found.name;
-
       document.getElementById("contactDisplay").textContent = found.contact;
 
       document.getElementById("serviceDisplay").textContent =
@@ -80,26 +77,24 @@ if (trackBtn) {
       trackResult.classList.remove("hidden");
 
     } else {
-
       trackResult.classList.add("hidden");
-
       trackError.classList.remove("hidden");
-
     }
 
   });
 
 }
 
+
 // ===== KIOSK STEP SYSTEM =====
 
 let stepBoxes = document.querySelectorAll(".step-box");
-
 const productsPanel = document.querySelector(".products-panel");
-
 let currentStep = 1;
 
-// STEP CONTENTS
+
+// ===== STEP CONTENTS (UPDATED WITH IMAGES) =====
+
 const stepContents = {
 
   1: {
@@ -107,12 +102,12 @@ const stepContents = {
     text: "Choose your preferred detergent product.",
 
     items: [
-      "Ariel",
-      "Tide",
-      "Breeze",
-      "Surf",
-      "Pride",
-      "Wings"
+      { name: "Ariel", img: "img/Ariel.jpg" },
+      { name: "Tide", img: "img/tide.jpg" },
+      { name: "Breeze", img: "img/breeze.jpg" },
+      { name: "Surf", img: "img/surf.jpg" },
+      { name: "Pride", img: "img/pride.jpg" },
+      { name: "Wings", img: "img/wings.jpg" }
     ]
   },
 
@@ -121,12 +116,12 @@ const stepContents = {
     text: "Choose your preferred fabric conditioner.",
 
     items: [
-      "Downy",
-      "Del",
-      "Champion",
-      "Surf Fabcon",
-      "Breeze Fabcon",
-      "Personal Choice"
+      { name: "Downy", img: "img/downy.jpg" },
+      { name: "Del", img: "img/del.jpg" },
+      { name: "Champion", img: "img/champ.jpg" },
+      { name: "Surf Fabcon", img: "img/serf.jpg" },
+      { name: "Lala Fabcon", img: "img/lala.jpg" },
+      { name: "Personal Choice", img: "img/placeholder.jpg" }
     ]
   },
 
@@ -135,12 +130,12 @@ const stepContents = {
     text: "Choose your wash preference.",
 
     items: [
-      "Quick Wash",
-      "Deep Clean",
-      "Premium Wash",
-      "Eco Wash",
-      "Cold Wash",
-      "Hot Wash"
+      { name: "Quick Wash", img: "img/quick.jpg" },
+      { name: "Deep Clean", img: "img/deep.jpg" },
+      { name: "Premium Wash", img: "img/premium.jpg" },
+      { name: "Eco Wash", img: "img/eco.jpg" },
+      { name: "Cold Wash", img: "img/cold.jpg" },
+      { name: "Hot Wash", img: "img/hot.jpg" }
     ]
   },
 
@@ -149,12 +144,12 @@ const stepContents = {
     text: "Choose your pickup schedule.",
 
     items: [
-      "Morning",
-      "Afternoon",
-      "Evening",
-      "Express Pickup",
-      "Store Pickup",
-      "Home Delivery"
+      { name: "Morning", img: "img/morning.jpg" },
+      { name: "Afternoon", img: "img/afternoon.jpg" },
+      { name: "Evening", img: "img/evening.jpg" },
+      { name: "Express Pickup", img: "img/express.jpg" },
+      { name: "Store Pickup", img: "img/A1.jpg" },
+      { name: "Home Delivery", img: "img/home.png" }
     ]
   },
 
@@ -163,12 +158,12 @@ const stepContents = {
     text: "Choose your payment method.",
 
     items: [
-      "Cash",
-      "GCash",
-      "Maya",
-      "Credit Card",
-      "Debit Card",
-      "Online Banking"
+      { name: "Cash", img: "img/cash.jpg" },
+      { name: "GCash", img: "img/gcash.jpg" },
+      { name: "Maya", img: "img/maya.jpg" },
+      { name: "Credit Card", img: "img/card.jpg" },
+      { name: "Debit Card", img: "img/debit.jpg" },
+      { name: "Online Banking", img: "img/online.jpg" }
     ]
   },
 
@@ -177,16 +172,17 @@ const stepContents = {
     text: "Review and confirm your laundry order.",
 
     items: [
-      "Soap Selected",
-      "Fabcon Selected",
-      "Wash Selected",
-      "Pickup Selected",
-      "Payment Selected",
-      "Confirm Order"
+      { name: "Soap Selected", img: "img/check.png" },
+      { name: "Fabcon Selected", img: "img/check.png" },
+      { name: "Wash Selected", img: "img/check.png" },
+      { name: "Pickup Selected", img: "img/check.png" },
+      { name: "Payment Selected", img: "img/check.png" },
+      { name: "Confirm Order", img: "img/confirm.png" }
     ]
   }
 
 };
+
 
 // ===== STEP CLICK FUNCTION =====
 
@@ -199,106 +195,75 @@ function activateStepClicks() {
     step.style.cursor = "pointer";
 
     step.onclick = () => {
-
       currentStep = index + 1;
-
       updateStepUI();
-
     };
 
   });
 
 }
 
+
 // ===== UPDATE UI =====
 
 function updateStepUI() {
 
   // ACTIVE STEP
-  stepBoxes.forEach(step => {
-
-    step.classList.remove("active-step");
-
-  });
+  stepBoxes.forEach(step => step.classList.remove("active-step"));
 
   if (stepBoxes[currentStep - 1]) {
-
     stepBoxes[currentStep - 1].classList.add("active-step");
-
   }
 
-  // LOAD CONTENT
   const data = stepContents[currentStep];
 
   productsPanel.innerHTML = `
-
     <h2>${data.title}</h2>
-
-    <p class="select-text">
-      ${data.text}
-    </p>
+    <p class="select-text">${data.text}</p>
 
     <div class="products-grid">
 
       ${data.items.map(item => `
-
         <div class="product-card">
-
           <div>
-
-            <img src="img/product-placeholder.png" alt="${item}">
-
-            <h3>${item}</h3>
-
+            <img src="${item.img}" alt="${item.name}">
+            <h3>${item.name}</h3>
           </div>
 
           <button class="select-product-btn">
             Select
           </button>
-
         </div>
-
       `).join("")}
 
     </div>
-
   `;
 
   // BUTTON EVENTS
-  const selectButtons =
-    document.querySelectorAll(".select-product-btn");
+  const selectButtons = document.querySelectorAll(".select-product-btn");
 
   selectButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
       if (currentStep < 6) {
-
         currentStep++;
-
         updateStepUI();
-
       } else {
-
         alert("Laundry Service Confirmed!");
-
       }
 
     });
 
   });
 
-  // RE-ACTIVATE STEP CLICKS
   activateStepClicks();
-
 }
+
 
 // ===== INITIAL LOAD =====
 
 if (productsPanel) {
-
   updateStepUI();
-
   activateStepClicks();
-
 }
