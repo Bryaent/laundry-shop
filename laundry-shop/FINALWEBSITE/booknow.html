@@ -3,253 +3,84 @@
 <head>
 
   <meta charset="UTF-8">
-
   <title>Book Now | M & M Laundry</title>
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="booknow.css">
-
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-  <header>
+<header>
+  <div class="header-left">
+    <div id="Lugu">
+      <img src="img/Logo.png" alt="Logo">
+    </div>
 
-    <div class="header-left">
+    <div class="tagline">
+      <span>FAST AND FRESH LAUNDRY JUST</span>
+      <a href="click.html">
+        <button>CLICK AWAY!</button>
+      </a>
+    </div>
+  </div>
 
-      <div id="Lugu">
-        <img src="img/Logo.png" alt="Logo">
-      </div>
+  <nav>
+    <ul>
+      <li><a href="index.html#Home">HOME</a></li>
+      <li><a href="index.html#Franchise">FRANCHISE</a></li>
+      <li><a href="index.html#Service">SERVICE</a></li>
+      <li><a href="index.html#About">ABOUT US</a></li>
+      <li><a href="index.html#Contact">CONTACT US</a></li>
+      <li><a href="account.html" class="account-btn">ACCOUNT</a></li>
+      <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+    </ul>
+  </nav>
+</header>
 
-      <div class="tagline">
+<main class="booknow-page">
 
-        <span>FAST AND FRESH LAUNDRY JUST</span>
+  <section class="booknow-container">
 
-        <a href="click.html">
-          <button>CLICK AWAY!</button>
-        </a>
+    <div id="bookService" class="tab-content active">
+
+      <div class="kiosk-layout">
+
+        <!-- LEFT STEPS -->
+        <div class="steps-panel">
+
+          <div class="step-box active-step"><span>1</span><p>Select Soap</p></div>
+          <div class="step-box"><span>2</span><p>Select Fabric Conditioner</p></div>
+          <div class="step-box"><span>3</span><p>Select Wash Type</p></div>
+          <div class="step-box"><span>4</span><p>Pickup Details</p></div>
+          <div class="step-box"><span>5</span><p>Payment</p></div>
+          <div class="step-box"><span>6</span><p>Confirmation</p></div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="products-panel"></div>
 
       </div>
 
     </div>
 
-    <nav>
-
-      <ul>
-
-        <li><a href="index.html#Home">HOME</a></li>
-
-        <li><a href="index.html#Franchise">FRANCHISE</a></li>
-
-        <li><a href="index.html#Service">SERVICE</a></li>
-
-        <li><a href="index.html#About">ABOUT US</a></li>
-
-        <li><a href="index.html#Contact">CONTACT US</a></li>
-
-        <li>
-          <a href="account.html" class="account-btn">
-            ACCOUNT
-          </a>
-        </li>
-
-        <li>
-          <a href="#" id="logoutBtn" class="logout-btn">
-            LOGOUT
-          </a>
-        </li>
-
-      </ul>
-
-    </nav>
-
-  </header>
-
-  <main class="booknow-page">
-
-    <section class="booknow-container">
-
-      <!-- BOOK SECTION -->
-      <div id="bookService" class="tab-content active">
-
-        <div class="kiosk-layout">
-
-          <!-- LEFT SIDE -->
-          <div class="steps-panel">
-
-            <div class="step-box active-step">
-
-              <span>1</span>
-
-              <p>Choose Service</p>
-
-            </div>
-
-            <div class="step-box">
-
-              <span>2</span>
-
-              <p>Select Soap</p>
-
-            </div>
-
-            <div class="step-box">
-
-              <span>3</span>
-
-              <p>Fabric Conditioner</p>
-
-            </div>
-
-            <div class="step-box">
-
-              <span>4</span>
-
-              <p>Pickup Details</p>
-
-            </div>
-
-            <div class="step-box">
-
-              <span>5</span>
-
-              <p>Payment</p>
-
-            </div>
-
-            <div class="step-box">
-
-              <span>6</span>
-
-              <p>Confirmation</p>
-
-            </div>
-
-          </div>
-
-          <!-- RIGHT SIDE -->
-          <div class="products-panel">
-
-            <h2>Select Your Laundry Soap</h2>
-
-            <p class="select-text">
-              Choose your preferred detergent product.
-            </p>
-
-            <div class="products-grid">
-
-              <!-- PRODUCT 1 -->
-              <div class="product-card">
-
-                <img src="img/Ariel.jpg" alt="Ariel">
-
-                <h3>Ariel</h3>
-
-                <button class="select-product-btn">
-                  Select
-                </button>
-
-              </div>
-
-              <!-- PRODUCT 2 -->
-              <div class="product-card">
-
-                <img src="img/tide.jpg" alt="Tide">
-
-                <h3>Tide</h3>
-
-                <button class="select-product-btn">
-                  Select
-                </button>
-
-              </div>
-
-              <!-- PRODUCT 3 -->
-              <div class="product-card">
-
-                <img src="img/breeze.jpg" alt="Breeze">
-
-                <h3>Breeze</h3>
-
-                <button class="select-product-btn">
-                  Select
-                </button>
-
-              </div>
-
-              <!-- PRODUCT 4 -->
-              <div class="product-card">
-
-                <img src="img/surf.jpg" alt="Surf">
-
-                <h3>Surf</h3>
-
-                <button class="select-product-btn">
-                  Select
-                </button>
-
-              </div>
-
-              <!-- PRODUCT 5 -->
-              <div class="product-card">
-
-                <img src="img/pride.jpg" alt="Pride">
-
-                <h3>Pride</h3>
-
-                <button class="select-product-btn">
-                  Select
-                </button>
-
-              </div>
-
-              <!-- PRODUCT 6 -->
-              <div class="product-card">
-
-                <img src="img/wings.jpg" alt="Wings">
-
-                <h3>Wings</h3>
-
-                <button class="select-product-btn">
-                  Select
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- JS -->
-  <script src="booknow.js"></script>
-
-  <script>
-
-    document
-      .getElementById("logoutBtn")
-      .addEventListener("click", function () {
-
-        if (confirm("Are you sure you want to log out?")) {
-
-          localStorage.removeItem("loggedInUser");
-
-          window.location.href = "login.html";
-
-        }
-
-      });
-
-  </script>
+  </section>
+
+</main>
+
+<script src="booknow.js"></script>
+
+<script>
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  if (confirm("Are you sure you want to log out?")) {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+  }
+});
+</script>
 
 </body>
 </html>

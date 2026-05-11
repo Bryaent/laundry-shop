@@ -141,6 +141,7 @@ button:hover {
     <h2>Track Your Laundry</h2>
     <p>Enter your ticket number to check your order status.</p>
 
+
     <form id="trackForm">
       <input type="text" id="ticketInput" placeholder="Enter ticket number" required>
       <br>
@@ -151,39 +152,96 @@ button:hover {
   </div>
 
   <script>
-const form = document.getElementById("trackForm");
-const resultBox = document.getElementById("trackResult");
 
+const form =
+  document.getElementById("trackForm");
+
+const resultBox =
+  document.getElementById("trackResult");
+
+// ================= AUTO TICKET =================
+const params =
+  new URLSearchParams(window.location.search);
+
+const autoTicket =
+  params.get("ticket");
+
+if (autoTicket) {
+
+  document.getElementById(
+    "ticketInput"
+  ).value = autoTicket;
+}
+
+// ================= TRACK =================
 form.addEventListener("submit", function(e) {
+
   e.preventDefault();
 
-  const code = document.getElementById("ticketInput").value.trim();
+  const code =
+    document.getElementById("ticketInput")
+    .value
+    .trim();
 
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  const orders =
+    JSON.parse(localStorage.getItem("orders")) || [];
 
-  const allOrders = [...orders, ...history];
+  const match =
+    orders.find(o => o.ticket === code);
 
-  const match = allOrders.find(o => o.ticket == code);
-
-  // Show the result box
   resultBox.style.display = "block";
 
   if (match) {
+
     resultBox.innerHTML = `
       <h3>Tracking Details</h3>
-      <p><strong>Ticket #:</strong> ${match.ticket}</p>
-      <p><strong>Name:</strong> ${match.name}</p>
-      <p><strong>Contact:</strong> ${match.contact}</p>
-      <p><strong>Address:</strong> ${match.address}</p>
-      <p><strong>Service:</strong> ${match.service}</p>
-      <p><strong>Amount:</strong> ₱${match.amount}</p>
-      <p><strong>Status:</strong> ${match.status}</p>
+
+      <p><strong>Ticket:</strong>
+      ${match.ticket}</p>
+
+      <p><strong>Name:</strong>
+      ${match.name}</p>
+
+      <p><strong>Address:</strong>
+      ${match.address}</p>
+
+      <p><strong>Service:</strong>
+      ${match.service}</p>
+
+      <p><strong>Soap:</strong>
+      ${match.soap}</p>
+
+      <p><strong>Fabcon:</strong>
+      ${match.fabcon}</p>
+
+      <p><strong>Payment:</strong>
+      ${match.payment}</p>
+
+      <p><strong>Amount:</strong>
+      ₱${match.amount}</p>
+
+      <p><strong>Status:</strong>
+      ${match.status}</p>
     `;
+
   } else {
-    resultBox.innerHTML = "<p style='color:red; text-align:center;'>No record found for this tracking code.</p>";
+
+    resultBox.innerHTML = `
+      <p style="color:red;">
+        No record found.
+      </p>
+    `;
   }
 });
+
+// ================= AUTO TRACK =================
+if (autoTicket) {
+
+  form.dispatchEvent(
+    new Event("submit")
+  );
+}
+
 </script>
 
 </body>

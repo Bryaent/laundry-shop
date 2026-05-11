@@ -1,218 +1,326 @@
-// === TAB SWITCH ===
-const bookTab = document.getElementById("bookTab");
-const trackTab = document.getElementById("trackTab");
-const bookService = document.getElementById("bookService");
-const trackLaundry = document.getElementById("trackLaundry");
-
-if (bookTab && trackTab && bookService && trackLaundry) {
-
-  bookTab.addEventListener("click", () => {
-
-    bookTab.classList.add("active");
-    trackTab.classList.remove("active");
-
-    bookService.classList.add("active");
-    trackLaundry.classList.remove("active");
-
-  });
-
-  trackTab.addEventListener("click", () => {
-
-    trackTab.classList.add("active");
-    bookTab.classList.remove("active");
-
-    trackLaundry.classList.add("active");
-    bookService.classList.remove("active");
-
-  });
-
-}
-
-
-// === TRACKING FUNCTION ===
-const trackBtn = document.getElementById("trackBtn");
-const ticketInput = document.getElementById("ticketInput");
-const trackResult = document.getElementById("trackResult");
-const trackError = document.getElementById("trackError");
-
-if (trackBtn) {
-
-  trackBtn.addEventListener("click", () => {
-
-    const ticket = ticketInput.value.trim();
-
-    if (!ticket) {
-      alert("Please enter your ticket number.");
-      return;
-    }
-
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
-
-    const allOrders = [...orders, ...history];
-
-    const found = allOrders.find(o => String(o.ticket) === ticket);
-
-    if (found) {
-
-      trackError.classList.add("hidden");
-
-      document.getElementById("ticketDisplay").textContent = found.ticket;
-      document.getElementById("nameDisplay").textContent = found.name;
-      document.getElementById("contactDisplay").textContent = found.contact;
-
-      document.getElementById("serviceDisplay").textContent =
-        found.service || "Laundry Service";
-
-      document.getElementById("amountDisplay").textContent =
-        "₱" + (parseFloat(found.amount) || 0).toLocaleString();
-
-      const statusEl = document.getElementById("statusDisplay");
-
-      statusEl.textContent = found.status;
-
-      statusEl.className =
-        "status " + found.status.toLowerCase().replace(" ", "");
-
-      trackResult.classList.remove("hidden");
-
-    } else {
-      trackResult.classList.add("hidden");
-      trackError.classList.remove("hidden");
-    }
-
-  });
-
-}
-
-
 // ===== KIOSK STEP SYSTEM =====
-
 let stepBoxes = document.querySelectorAll(".step-box");
 const productsPanel = document.querySelector(".products-panel");
 let currentStep = 1;
+let isConfirmed = false; // ✅ Lock system
 
+// ===== USER SELECTIONS =====
+const selections = {
+  1: null,
+  2: null,
+  3: null,
+  4: null,
+  5: null
+};
 
-// ===== STEP CONTENTS (UPDATED WITH IMAGES) =====
+// ===== EXTRA ORDER DATA =====
+let orderQuantity = 1;
+let kg = 1;
+let deliveryFee = 0;
 
+// ===== STEP CONTENTS WITH PRICES =====
 const stepContents = {
-
   1: {
     title: "Select Your Laundry Soap",
     text: "Choose your preferred detergent product.",
-
     items: [
-      { name: "Ariel", img: "img/Ariel.jpg" },
-      { name: "Tide", img: "img/tide.jpg" },
-      { name: "Breeze", img: "img/breeze.jpg" },
-      { name: "Surf", img: "img/surf.jpg" },
-      { name: "Pride", img: "img/pride.jpg" },
-      { name: "Wings", img: "img/wings.jpg" }
+      { name: "Ariel", img: "img/Ariel.jpg", price: 20 },
+      { name: "Tide", img: "img/tide.jpg", price: 25 },
+      { name: "Breeze", img: "img/breeze.jpg", price: 18 },
+      { name: "Surf", img: "img/surf.jpg", price: 15 },
+      { name: "Pride", img: "img/pride.jpg", price: 17 },
+      { name: "Wings", img: "img/wings.jpg", price: 16 }
     ]
   },
 
   2: {
     title: "Select Fabric Conditioner",
     text: "Choose your preferred fabric conditioner.",
-
     items: [
-      { name: "Downy", img: "img/downy.jpg" },
-      { name: "Del", img: "img/del.jpg" },
-      { name: "Champion", img: "img/champ.jpg" },
-      { name: "Surf Fabcon", img: "img/serf.jpg" },
-      { name: "Lala Fabcon", img: "img/lala.jpg" },
-      { name: "Personal Choice", img: "img/placeholder.jpg" }
+      { name: "Downy", img: "img/downy.jpg", price: 30 },
+      { name: "Del", img: "img/del.jpg", price: 20 },
+      { name: "Champion", img: "img/champ.jpg", price: 22 },
+      { name: "Surf Fabcon", img: "img/serf.jpg", price: 18 },
+      { name: "Lala Fabcon", img: "img/lala.jpg", price: 15 },
+      { name: "Personal Choice", img: "img/placeholder.jpg", price: 10 }
     ]
   },
 
   3: {
     title: "Select Wash Type",
     text: "Choose your wash preference.",
-
     items: [
-      { name: "Quick Wash", img: "img/quick.jpg" },
-      { name: "Deep Clean", img: "img/deep.jpg" },
-      { name: "Premium Wash", img: "img/premium.jpg" },
-      { name: "Eco Wash", img: "img/eco.jpg" },
-      { name: "Cold Wash", img: "img/cold.jpg" },
-      { name: "Hot Wash", img: "img/hot.jpg" }
+      { name: "Quick Wash", img: "img/quick.jpg", price: 50 },
+      { name: "Deep Clean", img: "img/deep.jpg", price: 80 },
+      { name: "Premium Wash", img: "img/premium.jpg", price: 120 },
+      { name: "Eco Wash", img: "img/eco.jpg", price: 60 },
+      { name: "Cold Wash", img: "img/cold.jpg", price: 40 },
+      { name: "Hot Wash", img: "img/hot.jpg", price: 70 }
     ]
   },
 
   4: {
     title: "Pickup Details",
     text: "Choose your pickup schedule.",
-
     items: [
-      { name: "Morning", img: "img/morning.jpg" },
-      { name: "Afternoon", img: "img/afternoon.jpg" },
-      { name: "Evening", img: "img/evening.jpg" },
-      { name: "Express Pickup", img: "img/express.jpg" },
-      { name: "Store Pickup", img: "img/A1.jpg" },
-      { name: "Home Delivery", img: "img/home.png" }
+      { name: "Morning", img: "img/morning.jpg", price: 0 },
+      { name: "Afternoon", img: "img/afternoon.jpg", price: 0 },
+      { name: "Evening", img: "img/evening.jpg", price: 0 },
+      { name: "Express Pickup", img: "img/express.jpg", price: 50 },
+      { name: "Store Pickup", img: "img/A1.jpg", price: 0 },
+      { name: "Home Delivery", img: "img/home.png", price: 40 }
     ]
   },
 
   5: {
     title: "Select Payment",
     text: "Choose your payment method.",
-
     items: [
-      { name: "Cash", img: "img/cash.jpg" },
-      { name: "GCash", img: "img/gcash.jpg" },
-      { name: "Maya", img: "img/maya.jpg" },
-      { name: "Credit Card", img: "img/card.jpg" },
-      { name: "Debit Card", img: "img/debit.jpg" },
-      { name: "Online Banking", img: "img/online.jpg" }
-    ]
-  },
-
-  6: {
-    title: "Order Confirmation",
-    text: "Review and confirm your laundry order.",
-
-    items: [
-      { name: "Soap Selected", img: "img/check.png" },
-      { name: "Fabcon Selected", img: "img/check.png" },
-      { name: "Wash Selected", img: "img/check.png" },
-      { name: "Pickup Selected", img: "img/check.png" },
-      { name: "Payment Selected", img: "img/check.png" },
-      { name: "Confirm Order", img: "img/confirm.png" }
+      { name: "Cash", img: "img/cash.jpg", price: 0 },
+      { name: "GCash", img: "img/gcash.jpg", price: 5 },
+      { name: "Maya", img: "img/maya.jpg", price: 5 },
+      { name: "Credit Card", img: "img/card.jpg", price: 10 },
+      { name: "Debit Card", img: "img/debit.jpg", price: 5 },
+      { name: "Online Banking", img: "img/online.jpg", price: 15 }
     ]
   }
-
 };
 
+// ===== TOTAL =====
+function getSubtotal() {
+  let total = 0;
+  for (let i = 1; i <= 5; i++) {
+    if (selections[i]) total += selections[i].price;
+  }
+  return total;
+}
 
-// ===== STEP CLICK FUNCTION =====
+function getTotal() {
+  let base = getSubtotal() * orderQuantity;
+  let kgCharge = kg > 8 ? 5 : 0;
+  return base + kgCharge + deliveryFee;
+}
 
+// ===== STEP CHECKS =====
+function updateStepChecks() {
+  stepBoxes.forEach((step, index) => {
+    const span = step.querySelector("span");
+    const stepNum = index + 1;
+
+    if (stepNum <= 5 && selections[stepNum]) {
+      span.textContent = "✔";
+      span.style.background = "#28a745";
+    } else if (stepNum === 6 && isConfirmed) {
+      span.textContent = "✔";
+      span.style.background = "#28a745";
+    } else {
+      span.textContent = stepNum;
+      span.style.background = "#0094ff";
+    }
+  });
+}
+
+// ✅ LOCK STEPS FUNCTION
+function lockPreviousSteps() {
+  stepBoxes.forEach((step, index) => {
+    const stepNum = index + 1;
+    
+    if (stepNum < 6 && isConfirmed) {
+      step.style.pointerEvents = "none";
+      step.style.opacity = "0.6";
+      step.style.cursor = "not-allowed";
+    } else if (stepNum === 6 && isConfirmed) {
+      step.style.pointerEvents = "none";
+      step.style.opacity = "1";
+      step.style.cursor = "default";
+    }
+  });
+}
+
+// ===== STEP CLICK (LOCKED) =====
 function activateStepClicks() {
-
   stepBoxes = document.querySelectorAll(".step-box");
 
   stepBoxes.forEach((step, index) => {
-
-    step.style.cursor = "pointer";
-
     step.onclick = () => {
-      currentStep = index + 1;
+      const stepNum = index + 1;
+      
+      if (isConfirmed || stepNum >= currentStep) {
+        return; // Locked!
+      }
+      
+      currentStep = stepNum;
       updateStepUI();
     };
-
   });
-
 }
 
+// ===== EXTRA CONTROLS =====
+function updateKg(val) {
+  kg = val < 1 ? 1 : parseInt(val);
+  if (isConfirmed) renderConfirmation();
+  else updateConfirmationLive();
+}
 
-// ===== UPDATE UI =====
+function togglePickup(type) {
+  deliveryFee = type === "delivery" ? 40 : 0;
+  if (isConfirmed) renderConfirmation();
+  else updateConfirmationLive();
+}
 
+// ✅ FULL DROPDOWN CUSTOMIZATION IN CONFIRMATION
+function renderConfirmation() {
+  isConfirmed = true;
+  lockPreviousSteps();
+  updateStepChecks();
+
+  let html = `
+  <div class="confirm-layout">
+
+    <!-- LEFT FORM -->
+    <div class="confirm-form">
+
+      <h2>✅ Customize Your Order</h2>
+      <p style="color:#28a745; font-weight:600;">🔒 Steps locked! Customize quantities & details below:</p>
+
+      <input id="custName" placeholder="Full Name *" required>
+      <input id="custAddress" placeholder="Address *" required>
+
+      <label>Pickup Type</label>
+      <select id="pickupType" onchange="togglePickup(this.value)">
+        <option value="store" ${deliveryFee === 0 ? 'selected' : ''}>Store Pickup (Free)</option>
+        <option value="delivery" ${deliveryFee === 40 ? 'selected' : ''}>Home Delivery (+₱40)</option>
+      </select>
+
+      <label>Pickup Time</label>
+      <select id="pickupTime">
+        <option>8:00 AM</option>
+        <option>10:00 AM</option>
+        <option>12:00 PM</option>
+        <option>2:00 PM</option>
+        <option>4:00 PM</option>
+        <option>6:00 PM</option>
+      </select>
+
+      <label>Kilograms</label>
+      <div class="qty-control" style="margin-bottom:12px;">
+        <button onclick="updateKg(${kg-1})" ${kg <= 1 ? 'disabled' : ''}>-</button>
+        <input type="number" id="kgInput" value="${kg}" min="1" style="width:80px;" onchange="updateKg(this.value)">
+        <button onclick="updateKg(${kg+1})">+</button>
+      </div>
+      ${kg > 8 ? `<p style="color:red; font-size:14px;">⚠️ +₱5 extra charge (above 8kg)</p>` : ""}
+
+      <label>Order Quantity</label>
+      <div class="qty-control">
+        <button onclick="changeQty(-1)">-</button>
+        <input type="text" value="${orderQuantity}" id="qtyDisplay" readonly>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SUMMARY - FULL DROPDOWNS ✅ -->
+    <div class="confirmation-box">
+
+      <h2>📋 Final Selections</h2>
+      <p style="color:#666; font-size:14px;">Click dropdowns to customize your choices:</p>
+
+  `;
+
+  // ✅ FULL DROPDOWN FOR ALL 5 STEPS
+  for (let i = 1; i <= 5; i++) {
+    const data = stepContents[i];
+    
+    html += `
+      <div style="margin-bottom:15px; padding:12px; background:#f8f9ff; border-radius:10px;">
+        <div style="font-weight:700; color:#0094ff; margin-bottom:8px; font-size:16px;">
+          ${data.title}
+        </div>
+        
+        <select onchange="updateSelection(${i}, this.value)" style="width:100%; padding:12px; border:2px solid #0094ff; border-radius:10px; font-size:15px; font-weight:600;">
+          ${data.items.map(item => `
+            <option value="${item.name}" ${selections[i]?.name === item.name ? "selected" : ""}>
+              ${item.name} - ₱${item.price}
+            </option>
+          `).join("")}
+        </select>
+      </div>
+    `;
+  }
+
+  html += `
+      <hr style="margin: 25px 0;">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:#e3f2fd; border-radius:12px; margin-bottom:20px;">
+        <strong style="font-size:22px;">🧺 GRAND TOTAL:</strong>
+        <span id="totalLive" style="font-size:28px; font-weight:700; color:#0094ff;">
+          ₱${getTotal().toLocaleString()}
+        </span>
+      </div>
+
+      <button class="select-product-btn confirm-btn" onclick="confirmFinalOrder()" style="margin-bottom:15px;">
+        ✅ CONFIRM FINAL ORDER
+      </button>
+
+      <div style="padding:15px; background:#fff3cd; border:1px solid #ffeaa7; border-radius:10px; font-size:14px; color:#856404;">
+        <strong>ℹ️ Info:</strong> All selections above are now <strong>FINAL</strong> after confirmation!
+      </div>
+
+    </div>
+  </div>
+  `;
+
+  productsPanel.innerHTML = html;
+  
+  // Update live total immediately
+  updateConfirmationLive();
+}
+
+// ===== LIVE UPDATE =====
+function updateConfirmationLive() {
+  const el = document.getElementById("totalLive");
+  if (el) el.textContent = "₱" + getTotal().toLocaleString();
+}
+
+// ✅ DROPDOWN SELECTION - WORKS IN CONFIRMATION
+function updateSelection(step, value) {
+  const item = stepContents[step].items.find(i => i.name === value);
+  selections[step] = item;
+
+  updateStepChecks();
+  
+  // Re-render to show updated selections + total
+  if (isConfirmed) {
+    renderConfirmation();
+  } else {
+    updateConfirmationLive();
+  }
+}
+
+// ===== QTY =====
+function changeQty(val) {
+  orderQuantity += val;
+  if (orderQuantity < 1) orderQuantity = 1;
+
+  if (isConfirmed) {
+    renderConfirmation();
+  } else {
+    updateConfirmationLive();
+  }
+}
+
+// ===== MAIN UI =====
 function updateStepUI() {
-
-  // ACTIVE STEP
-  stepBoxes.forEach(step => step.classList.remove("active-step"));
-
+  stepBoxes.forEach(s => s.classList.remove("active-step"));
   if (stepBoxes[currentStep - 1]) {
     stepBoxes[currentStep - 1].classList.add("active-step");
+  }
+
+  updateStepChecks();
+
+  if (currentStep === 6) {
+    renderConfirmation();
+    return;
   }
 
   const data = stepContents[currentStep];
@@ -222,48 +330,116 @@ function updateStepUI() {
     <p class="select-text">${data.text}</p>
 
     <div class="products-grid">
-
-      ${data.items.map(item => `
+      ${data.items.map((item, index) => `
         <div class="product-card">
-          <div>
-            <img src="${item.img}" alt="${item.name}">
-            <h3>${item.name}</h3>
-          </div>
-
-          <button class="select-product-btn">
+          <img src="${item.img}">
+          <h3>${item.name}</h3>
+          <p>₱${item.price}</p>
+          <button onclick="selectItem(${currentStep}, ${index})">
             Select
           </button>
         </div>
       `).join("")}
+    </div>
 
+    <div style="margin-top:20px; font-weight:700; color:#0094ff;">
+      Total: ₱${getTotal().toLocaleString()}
     </div>
   `;
-
-  // BUTTON EVENTS
-  const selectButtons = document.querySelectorAll(".select-product-btn");
-
-  selectButtons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-      if (currentStep < 6) {
-        currentStep++;
-        updateStepUI();
-      } else {
-        alert("Laundry Service Confirmed!");
-      }
-
-    });
-
-  });
-
-  activateStepClicks();
 }
 
-
-// ===== INITIAL LOAD =====
-
-if (productsPanel) {
+// ===== SELECT ITEM =====
+function selectItem(step, index) {
+  selections[step] = stepContents[step].items[index];
+  currentStep++;
   updateStepUI();
-  activateStepClicks();
 }
+
+// ===== FINAL ORDER CONFIRMATION =====
+function confirmFinalOrder() {
+
+  const name = document.getElementById("custName")?.value;
+  const address = document.getElementById("custAddress")?.value;
+
+  if (!name || !address) {
+    alert("❌ Please fill in your name and address!");
+    return;
+  }
+
+  // ===== GENERATE TICKET =====
+  const ticketNumber =
+  Math.floor(100 + Math.random() * 900).toString();
+
+  // ===== ORDER OBJECT =====
+  const newOrder = {
+    ticket: ticketNumber,
+    name: name,
+    contact: "N/A",
+    address: address,
+
+    service: selections[3]
+      ? selections[3].name
+      : "Laundry Service",
+
+    soap: selections[1]
+      ? selections[1].name
+      : "",
+
+    fabcon: selections[2]
+      ? selections[2].name
+      : "",
+
+    pickup: selections[4]
+      ? selections[4].name
+      : "",
+
+    payment: selections[5]
+      ? selections[5].name
+      : "",
+
+    kg: kg,
+    quantity: orderQuantity,
+
+    amount: getTotal(),
+
+    status: "Pending",
+
+    pickupType:
+      deliveryFee === 40
+        ? "Home Delivery"
+        : "Store Pickup",
+
+    pickupTime:
+      document.getElementById("pickupTime")
+        ? document.getElementById("pickupTime").value
+        : ""
+  };
+
+  // ===== SAVE TO LOCAL STORAGE =====
+  let orders =
+    JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.push(newOrder);
+
+  localStorage.setItem(
+    "orders",
+    JSON.stringify(orders)
+  );
+
+  // ===== SUCCESS =====
+  alert(
+    "🎉 ORDER CONFIRMED!\n\n" +
+    "Ticket Number: " + ticketNumber +
+    "\n\nCustomer: " + name +
+    "\nTotal: ₱" + getTotal() +
+    "\n\nYou can now track your laundry."
+  );
+
+  // ===== REDIRECT =====
+  window.location.href =
+    "tracklaundry.html?ticket=" + ticketNumber;
+}
+
+// ===== INITIALIZE =====
+updateStepUI();
+activateStepClicks();

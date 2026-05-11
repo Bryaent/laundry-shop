@@ -1,160 +1,194 @@
 const ordersTable = document.querySelector("#ordersTable tbody");
-const historyTable = document.querySelector("#historyTable tbody");
-const liveTab = document.getElementById("liveTab");
-const historyTab = document.getElementById("historyTab");
-const liveOrders = document.getElementById("liveOrders");
-const orderHistory = document.getElementById("orderHistory");
 
-// ✅ NEW (search + filter)
 const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
 
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
-let history = JSON.parse(localStorage.getItem("orderHistory")) || [];
 
-// ===================== RENDER LIVE =====================
+// ===================== RENDER ORDERS =====================
 function renderOrders() {
+
+  orders = JSON.parse(localStorage.getItem("orders")) || [];
+
   ordersTable.innerHTML = "";
 
   if (orders.length === 0) {
-    ordersTable.innerHTML = `<tr><td colspan="7" class="empty">No live orders yet.</td></tr>`;
+
+    ordersTable.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center; padding:20px;">
+          No live orders yet.
+        </td>
+      </tr>
+    `;
+
     return;
   }
 
   orders.forEach((o, i) => {
+
     const tr = document.createElement("tr");
 
-    const service = o.service || (o.address ? "Laundry Service" : "—");
-    const amount = o.amount
-      ? `₱${parseFloat(o.amount).toLocaleString()}`
-      : "₱0";
-
     tr.innerHTML = `
-      <td>${o.ticket || '—'}</td>
-      <td>${o.name}</td>
-      <td>${o.contact}</td>
-      <td>${service}</td>
-      <td>${amount}</td>
-      <td><span class="status ${o.status.toLowerCase().replace(' ', '')}">${o.status}</span></td>
+      <td>${o.ticket || "-"}</td>
+
+      <td>${o.name || "-"}</td>
+
+      <td>${o.contact || "-"}</td>
+
+      <td>${o.service || "-"}</td>
+
+      <td>₱${o.amount || 0}</td>
+
       <td>
-        <button class="btn in-progress" onclick="updateStatus(${i}, 'In Progress')">In Progress</button>
-        <button class="btn completed" onclick="updateStatus(${i}, 'Completed')">Complete</button>
-        <button class="btn delete" onclick="deleteOrder(${i})">Delete</button>
+        <span class="status ${
+          o.status === "Pending"
+            ? "pending"
+            : o.status === "In Progress"
+            ? "progress"
+            : "completed"
+        }">
+          ${o.status}
+        </span>
+      </td>
+
+      <td>
+
+        <button class="action-btn btn-progress"
+          onclick="updateStatus(${i}, 'In Progress')">
+          In Progress
+        </button>
+
+        <button class="action-btn btn-complete"
+          onclick="updateStatus(${i}, 'Completed')">
+          Complete
+        </button>
+
+        <button class="action-btn btn-delete"
+          onclick="deleteOrder(${i})">
+          Delete
+        </button>
+
       </td>
     `;
 
     ordersTable.appendChild(tr);
   });
 
-  filterTable(); // ✅ apply filter after render
+  updateAnalytics();
+
+  filterTable();
 }
 
-// ===================== RENDER HISTORY =====================
-function renderHistory() {
-  historyTable.innerHTML = "";
+// ===================== UPDATE STATUS =====================
+function updateStatus(index, status) {
 
-  if (history.length === 0) {
-    historyTable.innerHTML = `<tr><td colspan="7" class="empty">No completed orders yet.</td></tr>`;
-    return;
-  }
+  orders[index].status = status;
 
-  history.forEach((o, i) => {
-    const service = o.service || "Laundry Service";
-    const amount = o.amount
-      ? `₱${parseFloat(o.amount).toLocaleString()}`
-      : "₱0";
-
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${o.ticket || '—'}</td>
-      <td>${o.name}</td>
-      <td>${o.contact}</td>
-      <td>${service}</td>
-      <td>${amount}</td>
-      <td><span class="status completed">Completed</span></td>
-      <td><button class="btn delete" onclick="deleteHistory(${i})">Delete</button></td>
-    `;
-
-    historyTable.appendChild(tr);
-  });
-}
-
-// ===================== STATUS UPDATE =====================
-function updateStatus(index, newStatus) {
-  orders[index].status = newStatus;
-
-  if (newStatus === "Completed") {
-    history.push(orders[index]);
-    orders.splice(index, 1);
-  }
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  localStorage.setItem("orderHistory", JSON.stringify(history));
+  localStorage.setItem(
+    "orders",
+    JSON.stringify(orders)
+  );
 
   renderOrders();
-  renderHistory();
 }
 
 // ===================== DELETE =====================
 function deleteOrder(index) {
-  if (confirm("Delete this live order?")) {
-    orders.splice(index, 1);
-    localStorage.setItem("orders", JSON.stringify(orders));
-    renderOrders();
-  }
+
+  const confirmDelete = confirm(
+    "Delete this order?"
+  );
+
+  if (!confirmDelete) return;
+
+  orders.splice(index, 1);
+
+  localStorage.setItem(
+    "orders",
+    JSON.stringify(orders)
+  );
+
+  renderOrders();
 }
 
-function deleteHistory(index) {
-  if (confirm("Delete this completed order?")) {
-    history.splice(index, 1);
-    localStorage.setItem("orderHistory", JSON.stringify(history));
-    renderHistory();
-  }
+// ===================== ANALYTICS =====================
+function updateAnalytics() {
+
+  const totalOrders =
+    orders.length;
+
+  const totalRevenue =
+    orders.reduce((sum, o) =>
+      sum + Number(o.amount || 0), 0);
+
+  const pending =
+    orders.filter(o =>
+      o.status === "Pending").length;
+
+  const completed =
+    orders.filter(o =>
+      o.status === "Completed").length;
+
+  document.querySelectorAll(".analytics-card h2")[0]
+    .textContent = totalOrders;
+
+  document.querySelectorAll(".analytics-card h2")[1]
+    .textContent = "₱" + totalRevenue;
+
+  document.querySelectorAll(".analytics-card h2")[2]
+    .textContent = pending;
+
+  document.querySelectorAll(".analytics-card h2")[3]
+    .textContent = completed;
 }
 
 // ===================== SEARCH + FILTER =====================
 function filterTable() {
-  const search = searchInput.value.toLowerCase();
-  const status = statusFilter.value;
 
-  document.querySelectorAll("#ordersTable tbody tr").forEach(row => {
-    const text = row.innerText.toLowerCase();
-    const rowStatus = row.querySelector(".status")?.classList[1];
+  const search =
+    searchInput.value.toLowerCase();
 
-    const matchSearch = text.includes(search);
-    const matchStatus = status === "all" || rowStatus === status;
+  const status =
+    statusFilter.value;
 
-    row.style.display = (matchSearch && matchStatus) ? "" : "none";
+  document.querySelectorAll(
+    "#ordersTable tbody tr"
+  ).forEach(row => {
+
+    const text =
+      row.innerText.toLowerCase();
+
+    const rowStatus =
+      row.querySelector(".status")
+      ?.textContent
+      .trim()
+      .toLowerCase();
+
+    const matchSearch =
+      text.includes(search);
+
+    const matchStatus =
+      status === "all"
+      || rowStatus.includes(status);
+
+    row.style.display =
+      matchSearch && matchStatus
+      ? ""
+      : "none";
   });
 }
 
-// ✅ event listeners
-searchInput.addEventListener("input", filterTable);
-statusFilter.addEventListener("change", filterTable);
+// ===================== EVENTS =====================
+searchInput.addEventListener(
+  "input",
+  filterTable
+);
 
-// ===================== TABS =====================
-liveTab.onclick = () => {
-  liveTab.classList.add("active");
-  historyTab.classList.remove("active");
-  liveOrders.style.display = "block";
-  orderHistory.style.display = "none";
-};
-
-historyTab.onclick = () => {
-  historyTab.classList.add("active");
-  liveTab.classList.remove("active");
-  liveOrders.style.display = "none";
-  orderHistory.style.display = "block";
-};
-
-// ===================== LOGOUT =====================
-function logout() {
-  localStorage.removeItem("loggedInUser");
-  alert("You have been logged out.");
-  window.location.href = "login.html";
-}
+statusFilter.addEventListener(
+  "change",
+  filterTable
+);
 
 // ===================== INIT =====================
 renderOrders();
-renderHistory();

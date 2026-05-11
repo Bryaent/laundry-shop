@@ -403,7 +403,7 @@ tbody tr:hover{
     background:#ef4444;
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
 
 @media(max-width:1200px){
 
@@ -522,7 +522,12 @@ tbody tr:hover{
 
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search orders...">
+
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search orders..."
+                >
             </div>
 
             <div class="profile-card">
@@ -544,7 +549,7 @@ tbody tr:hover{
         <div class="analytics-card">
             <div>
                 <p>Total Orders</p>
-                <h2>1,248</h2>
+                <h2>0</h2>
             </div>
 
             <i class="fa-solid fa-box"></i>
@@ -553,7 +558,7 @@ tbody tr:hover{
         <div class="analytics-card">
             <div>
                 <p>Total Revenue</p>
-                <h2>₱24,580</h2>
+                <h2>₱0</h2>
             </div>
 
             <i class="fa-solid fa-peso-sign"></i>
@@ -562,7 +567,7 @@ tbody tr:hover{
         <div class="analytics-card">
             <div>
                 <p>Pending Orders</p>
-                <h2>16</h2>
+                <h2>0</h2>
             </div>
 
             <i class="fa-solid fa-clock"></i>
@@ -571,7 +576,7 @@ tbody tr:hover{
         <div class="analytics-card">
             <div>
                 <p>Completed Orders</p>
-                <h2>932</h2>
+                <h2>0</h2>
             </div>
 
             <i class="fa-solid fa-circle-check"></i>
@@ -591,11 +596,11 @@ tbody tr:hover{
             </div>
 
             <div class="filter-box">
-                <select>
-                    <option>All Status</option>
-                    <option>Pending</option>
-                    <option>In Progress</option>
-                    <option>Completed</option>
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="progress">In Progress</option>
+                    <option value="completed">Completed</option>
                 </select>
             </div>
 
@@ -603,7 +608,7 @@ tbody tr:hover{
 
         <div class="table-card">
 
-            <table>
+            <table id="ordersTable">
 
                 <thead>
                     <tr>
@@ -617,91 +622,7 @@ tbody tr:hover{
                     </tr>
                 </thead>
 
-                <tbody>
-
-                    <tr>
-                        <td>2480</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>09123456789</td>
-                        <td>Wash & Fold</td>
-                        <td>₱150</td>
-
-                        <td>
-                            <span class="status pending">
-                                Pending
-                            </span>
-                        </td>
-
-                        <td>
-                            <button class="action-btn btn-progress">
-                                In Progress
-                            </button>
-
-                            <button class="action-btn btn-complete">
-                                Complete
-                            </button>
-
-                            <button class="action-btn btn-delete">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>2481</td>
-                        <td>Maria Santos</td>
-                        <td>09988776655</td>
-                        <td>Dry Cleaning</td>
-                        <td>₱300</td>
-
-                        <td>
-                            <span class="status progress">
-                                In Progress
-                            </span>
-                        </td>
-
-                        <td>
-                            <button class="action-btn btn-progress">
-                                In Progress
-                            </button>
-
-                            <button class="action-btn btn-complete">
-                                Complete
-                            </button>
-
-                            <button class="action-btn btn-delete">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>2482</td>
-                        <td>Carlo Reyes</td>
-                        <td>09557774411</td>
-                        <td>Full Service</td>
-                        <td>₱450</td>
-
-                        <td>
-                            <span class="status completed">
-                                Completed
-                            </span>
-                        </td>
-
-                        <td>
-                            <button class="action-btn btn-progress">
-                                In Progress
-                            </button>
-
-                            <button class="action-btn btn-complete">
-                                Complete
-                            </button>
-
-                            <button class="action-btn btn-delete">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                <tbody id="ordersBody">
 
                 </tbody>
 
@@ -712,6 +633,8 @@ tbody tr:hover{
     </section>
 
 </div>
+
+<script src="admin.js"></script>
 
 </body>
 </html>
