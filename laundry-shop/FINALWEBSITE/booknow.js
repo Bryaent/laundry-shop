@@ -362,7 +362,7 @@ function confirmFinalOrder() {
   const address = document.getElementById("custAddress")?.value;
 
   if (!name || !address) {
-    alert("❌ Please fill in your name and address!");
+    alert("Please fill in your name and address!");
     return;
   }
 
