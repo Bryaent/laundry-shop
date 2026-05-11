@@ -180,8 +180,8 @@ function renderConfirmation() {
     <!-- LEFT FORM -->
     <div class="confirm-form">
 
-      <h2>✅ Customize Your Order</h2>
-      <p style="color:#28a745; font-weight:600;">🔒 Steps locked! Customize quantities & details below:</p>
+      <h2>Customize Your Order</h2>
+      <p style="color:#28a745; font-weight:600;">Steps locked! Customize quantities & details below:</p>
 
       <input id="custName" placeholder="Full Name *" required>
       <input id="custAddress" placeholder="Address *" required>
@@ -208,7 +208,7 @@ function renderConfirmation() {
         <input type="number" id="kgInput" value="${kg}" min="1" style="width:80px;" onchange="updateKg(this.value)">
         <button onclick="updateKg(${kg+1})">+</button>
       </div>
-      ${kg > 8 ? `<p style="color:red; font-size:14px;">⚠️ +₱5 extra charge (above 8kg)</p>` : ""}
+      ${kg > 8 ? `<p style="color:red; font-size:14px;">+₱5 extra charge (above 8kg)</p>` : ""}
 
       <label>Order Quantity</label>
       <div class="qty-control">
@@ -222,7 +222,7 @@ function renderConfirmation() {
     <!-- RIGHT SUMMARY - FULL DROPDOWNS ✅ -->
     <div class="confirmation-box">
 
-      <h2>📋 Final Selections</h2>
+      <h2>Final Selections</h2>
       <p style="color:#666; font-size:14px;">Click dropdowns to customize your choices:</p>
 
   `;
@@ -252,18 +252,18 @@ function renderConfirmation() {
       <hr style="margin: 25px 0;">
 
       <div style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:#e3f2fd; border-radius:12px; margin-bottom:20px;">
-        <strong style="font-size:22px;">🧺 GRAND TOTAL:</strong>
+        <strong style="font-size:22px;">GRAND TOTAL:</strong>
         <span id="totalLive" style="font-size:28px; font-weight:700; color:#0094ff;">
           ₱${getTotal().toLocaleString()}
         </span>
       </div>
 
       <button class="select-product-btn confirm-btn" onclick="confirmFinalOrder()" style="margin-bottom:15px;">
-        ✅ CONFIRM FINAL ORDER
+        CONFIRM FINAL ORDER
       </button>
 
       <div style="padding:15px; background:#fff3cd; border:1px solid #ffeaa7; border-radius:10px; font-size:14px; color:#856404;">
-        <strong>ℹ️ Info:</strong> All selections above are now <strong>FINAL</strong> after confirmation!
+        <strong>Info:</strong> All selections above are now <strong>FINAL</strong> after confirmation!
       </div>
 
     </div>
@@ -428,7 +428,7 @@ function confirmFinalOrder() {
 
   // ===== SUCCESS =====
   alert(
-    "🎉 ORDER CONFIRMED!\n\n" +
+    "ORDER CONFIRMED!\n\n" +
     "Ticket Number: " + ticketNumber +
     "\n\nCustomer: " + name +
     "\nTotal: ₱" + getTotal() +

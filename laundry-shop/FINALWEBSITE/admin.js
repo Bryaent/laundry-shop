@@ -1,194 +1,84 @@
-const ordersTable = document.querySelector("#ordersTable tbody");
+const ordersTable = document.querySelector("#ordersBody");
 
-const searchInput = document.getElementById("searchInput");
-const statusFilter = document.getElementById("statusFilter");
+let orders = JSON.parse(localStorage.getItem("orders")) || [
+    {
+        ticket: 748,
+        name: "Lance Mabborang",
+        contact: "N/A",
+        service: "Quick Wash",
+        amount: 100,
+        status: "Received",
+        delivery: "Drop-off"
+    }
+];
 
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
+// RENDER
+function renderOrders(){
+    ordersTable.innerHTML = "";
 
-// ===================== RENDER ORDERS =====================
-function renderOrders() {
+    // CONNECT DATA TO CARDS
+    const totalOrders = orders.length;
+    const completedOrders = orders.filter(o => o.status === "Completed").length;
+    const pendingOrders = totalOrders - completedOrders;
+    const totalRevenue = orders
+        .filter(o => o.status === "Completed")
+        .reduce((sum, o) => sum + Number(o.amount), 0);
 
-  orders = JSON.parse(localStorage.getItem("orders")) || [];
+    // Update Card UI
+    document.getElementById("card-total-orders").innerText = totalOrders;
+    document.getElementById("card-completed").innerText = completedOrders;
+    document.getElementById("card-pending").innerText = pendingOrders;
+    document.getElementById("card-total-revenue").innerText = `₱${totalRevenue}`;
 
-  ordersTable.innerHTML = "";
+    if(orders.length === 0){
+        ordersTable.innerHTML = `
+        <tr><td colspan="8" style="text-align:center;padding:20px;">No orders</td></tr>`;
+        return;
+    }
 
-  if (orders.length === 0) {
+    orders.forEach((o,i)=>{
+        const tr = document.createElement("tr");
 
-    ordersTable.innerHTML = `
-      <tr>
-        <td colspan="7" style="text-align:center; padding:20px;">
-          No live orders yet.
+        tr.innerHTML = `
+        <td>${o.ticket}</td>
+        <td>${o.name}</td>
+        <td>${o.contact}</td>
+        <td>${o.service}</td>
+        <td>₱${o.amount}</td>
+        <td>
+            <span class="status ${
+                o.status === "Completed"
+                ? "completed"
+                : o.status.toLowerCase().replace(" ", "")
+            }">
+                ${o.status}
+            </span>
         </td>
-      </tr>
-    `;
+        <td>${o.delivery}</td>
+        <td>
+            <button class="action-btn received-btn" onclick="updateStatus(${i}, 'Received')">Received</button>
+            <button class="action-btn ready-btn" onclick="updateStatus(${i}, 'Ready')">Ready</button>
+            <button class="action-btn progress-btn" onclick="updateStatus(${i}, 'In Progress')">In Progress</button>
+            <button class="action-btn complete-btn" onclick="updateStatus(${i}, 'Completed')">Complete</button>
+            <button class="action-btn delete-btn" onclick="deleteOrder(${i})">Delete</button>
+        </td>
+        `;
+        ordersTable.appendChild(tr);
+    });
 
-    return;
-  }
-
-  orders.forEach((o, i) => {
-
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${o.ticket || "-"}</td>
-
-      <td>${o.name || "-"}</td>
-
-      <td>${o.contact || "-"}</td>
-
-      <td>${o.service || "-"}</td>
-
-      <td>₱${o.amount || 0}</td>
-
-      <td>
-        <span class="status ${
-          o.status === "Pending"
-            ? "pending"
-            : o.status === "In Progress"
-            ? "progress"
-            : "completed"
-        }">
-          ${o.status}
-        </span>
-      </td>
-
-      <td>
-
-        <button class="action-btn btn-progress"
-          onclick="updateStatus(${i}, 'In Progress')">
-          In Progress
-        </button>
-
-        <button class="action-btn btn-complete"
-          onclick="updateStatus(${i}, 'Completed')">
-          Complete
-        </button>
-
-        <button class="action-btn btn-delete"
-          onclick="deleteOrder(${i})">
-          Delete
-        </button>
-
-      </td>
-    `;
-
-    ordersTable.appendChild(tr);
-  });
-
-  updateAnalytics();
-
-  filterTable();
+    localStorage.setItem("orders", JSON.stringify(orders));
 }
 
-// ===================== UPDATE STATUS =====================
-function updateStatus(index, status) {
-
-  orders[index].status = status;
-
-  localStorage.setItem(
-    "orders",
-    JSON.stringify(orders)
-  );
-
-  renderOrders();
+// UPDATE
+function updateStatus(i,status){
+    orders[i].status = status;
+    renderOrders();
 }
 
-// ===================== DELETE =====================
-function deleteOrder(index) {
-
-  const confirmDelete = confirm(
-    "Delete this order?"
-  );
-
-  if (!confirmDelete) return;
-
-  orders.splice(index, 1);
-
-  localStorage.setItem(
-    "orders",
-    JSON.stringify(orders)
-  );
-
-  renderOrders();
+// DELETE
+function deleteOrder(i){
+    orders.splice(i,1);
+    renderOrders();
 }
 
-// ===================== ANALYTICS =====================
-function updateAnalytics() {
-
-  const totalOrders =
-    orders.length;
-
-  const totalRevenue =
-    orders.reduce((sum, o) =>
-      sum + Number(o.amount || 0), 0);
-
-  const pending =
-    orders.filter(o =>
-      o.status === "Pending").length;
-
-  const completed =
-    orders.filter(o =>
-      o.status === "Completed").length;
-
-  document.querySelectorAll(".analytics-card h2")[0]
-    .textContent = totalOrders;
-
-  document.querySelectorAll(".analytics-card h2")[1]
-    .textContent = "₱" + totalRevenue;
-
-  document.querySelectorAll(".analytics-card h2")[2]
-    .textContent = pending;
-
-  document.querySelectorAll(".analytics-card h2")[3]
-    .textContent = completed;
-}
-
-// ===================== SEARCH + FILTER =====================
-function filterTable() {
-
-  const search =
-    searchInput.value.toLowerCase();
-
-  const status =
-    statusFilter.value;
-
-  document.querySelectorAll(
-    "#ordersTable tbody tr"
-  ).forEach(row => {
-
-    const text =
-      row.innerText.toLowerCase();
-
-    const rowStatus =
-      row.querySelector(".status")
-      ?.textContent
-      .trim()
-      .toLowerCase();
-
-    const matchSearch =
-      text.includes(search);
-
-    const matchStatus =
-      status === "all"
-      || rowStatus.includes(status);
-
-    row.style.display =
-      matchSearch && matchStatus
-      ? ""
-      : "none";
-  });
-}
-
-// ===================== EVENTS =====================
-searchInput.addEventListener(
-  "input",
-  filterTable
-);
-
-statusFilter.addEventListener(
-  "change",
-  filterTable
-);
-
-// ===================== INIT =====================
 renderOrders();
