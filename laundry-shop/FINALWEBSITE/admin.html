@@ -4,98 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
     <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
 
+<!-- SIDEBAR -->
 <aside class="sidebar">
+
     <div>
+
         <div class="logo-section">
             <img src="img/Logo.png">
             <h2>M&M Laundry Shop</h2>
         </div>
+
         <div class="sidebar-menu">
-            <button class="menu-btn active"><i class="fa-solid fa-chart-line"></i> Analytics</button>
-            <button class="menu-btn"><i class="fa-solid fa-box"></i> Completed Orders</button>
-            <button class="menu-btn"><i class="fa-solid fa-clock"></i> History</button>
-            <button class="menu-btn"><i class="fa-solid fa-users"></i> Customers</button>
-            <button class="menu-btn"><i class="fa-solid fa-money-bill"></i> Revenue</button>
-            <button class="menu-btn"><i class="fa-solid fa-gear"></i> Settings</button>
-        </div>
-    </div>
-    <button class="logout-btn">
-        <i class="fa-solid fa-right-from-bracket"></i> Logout
+
+    <button class="menu-btn active" data-tab="dashboard">
+        <i class="fa-solid fa-chart-line"></i>
+        Analytics
     </button>
+
+    <button class="menu-btn" data-tab="inquiries">
+        <i class="fa-solid fa-handshake"></i>
+        Franchise Inquiries
+    </button>
+
+    <button class="menu-btn" data-tab="completed">
+        <i class="fa-solid fa-box"></i>
+        Completed Orders
+    </button>
+
+    <button class="menu-btn" data-tab="history">
+        <i class="fa-solid fa-clock"></i>
+        History
+    </button>
+
+    <button class="menu-btn" data-tab="customers">
+        <i class="fa-solid fa-users"></i>
+        Customers
+    </button>
+
+    <button class="menu-btn" data-tab="revenue">
+        <i class="fa-solid fa-money-bill"></i>
+        Revenue
+    </button>
+
+    <button class="menu-btn" data-tab="settings">
+        <i class="fa-solid fa-gear"></i>
+        Settings
+    </button>
+
+
+
+    </div>
+
+    <button class="logout-btn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </button>
+
 </aside>
 
+<!-- MAIN -->
 <div class="main-content">
-    <header class="topbar">
-        <div>
-            <h1>Admin Dashboard</h1>
-            <p>Manage your laundry shop efficiently</p>
-        </div>
-        <div class="topbar-right">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search orders...">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="tab-content active-tab">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Manage your laundry shop efficiently</p>
             </div>
-            <div class="profile-card">
-                <img src="img/lance.jpg">
-                <div>
-                    <h4>Admin</h4>
-                    <p>Manager</p>
+
+            <div class="topbar-right">
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search orders...">
                 </div>
+
+                <div class="profile-card">
+                    <img src="img/lance.jpg">
+
+                    <div>
+                        <h4>Admin</h4>
+                        <p>Manager</p>
+                    </div>
+                </div>
+
             </div>
-        </div>
-    </header>
 
-    <section class="analytics">
-        <div class="stat-card blue">
-            <div><p>Total Orders</p><h2 id="card-total-orders">0</h2></div>
-            <i class="fa-solid fa-box"></i>
-        </div>
-        <div class="stat-card blue">
-            <div><p>Total Revenue</p><h2 id="card-total-revenue">₱0</h2></div>
-            <i class="fa-solid fa-peso-sign"></i>
-        </div>
-        <div class="stat-card blue">
-            <div><p>Pending</p><h2 id="card-pending">0</h2></div>
-            <i class="fa-solid fa-clock"></i>
-        </div>
-        <div class="stat-card green">
-            <div><p>Completed</p><h2 id="card-completed">0</h2></div>
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
-    </section>
+        </header>
 
-    <section class="table-section">
-        <div class="table-header">
-            <h2>Live Orders</h2>
-            <p>Manage customer laundry requests</p>
-        </div>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Customer</th>
-                        <th>Contact</th>
-                        <th>Service</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Delivery Method</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="ordersBody"></tbody>
-            </table>
-        </div>
-    </section>
+        <!-- ANALYTICS -->
+        <section class="analytics">
+
+            <div class="stat-card blue">
+                <div>
+                    <p>Total Orders</p>
+                    <h2 id="card-total-orders">0</h2>
+                </div>
+
+                <i class="fa-solid fa-box"></i>
+            </div>
+
+            <div class="stat-card blue">
+                <div>
+                    <p>Total Revenue</p>
+                    <h2 id="card-total-revenue">₱0</h2>
+                </div>
+
+                <i class="fa-solid fa-peso-sign"></i>
+            </div>
+
+            <div class="stat-card blue">
+                <div>
+                    <p>Pending</p>
+                    <h2 id="card-pending">0</h2>
+                </div>
+
+                <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div class="stat-card green">
+                <div>
+                    <p>Completed</p>
+                    <h2 id="card-completed">0</h2>
+                </div>
+
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+        </section>
+
+        <!-- ORDERS -->
+        <section class="table-section">
+
+            <div class="table-header">
+                <h2>Live Orders</h2>
+                <p>Manage customer laundry requests</p>
+            </div>
+
+            <div class="table-card">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Contact</th>
+                            <th>Service</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Delivery Method</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="ordersBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- FRANCHISE TAB -->
+    <div id="inquiries" class="tab-content">
+
+        <section class="table-section">
+
+            <div class="table-header">
+                <h2>Franchise Inquiries</h2>
+                <p>Customer partnership requests</p>
+            </div>
+
+            <div class="table-card">
+
+                <table>
+
+                    <thead>
+                        <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Contact</th>
+    <th>Message</th>
+    <th>Date</th>
+    <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="inquiriesBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
 </div>
 
+
 <script src="admin.js"></script>
+
 </body>
 </html>
+

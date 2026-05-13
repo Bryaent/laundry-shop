@@ -1,52 +1,64 @@
-// ===== SLIDESHOW LOGIC =====
-const slides = document.querySelector('.slides'); // Container ng lahat ng slides
-const dots = document.querySelectorAll('.dots span'); // Dot indicators sa ilalim
-let index = 0; // Kasalukuyang slide index
+// ================= FIXED FRANCHISE FORM SYSTEM =================
 
-// Ipakita ang slide base sa index
-function showSlide(i) {
-  index = i;
+const openFormBtn = document.getElementById('openFormBtn');
+const franchiseMain = document.getElementById('franchiseMain');
+const franchiseForm = document.getElementById('franchiseForm');
+const thankYou = document.getElementById('thankYou');
+const inquiryForm = document.getElementById('inquiryForm');
+const backBtn = document.getElementById('backBtn');
+const submitBtn = document.querySelector('.modern-send-btn');
 
-  const slideWidth = document.querySelector('.carousel').clientWidth;
-
-  slides.style.transform = `translateX(${-index * slideWidth}px)`;
-
-  dots.forEach(dot => dot.classList.remove('active'));
-  dots[index].classList.add('active');
-}
-
-// Pumunta sa next slide
-function nextSlide() {
-  index = (index + 1) % dots.length; // Loop sa simula kapag huli na
-  showSlide(index);
-}
-
-// Automatic na magbago bawat 3 segundo
-setInterval(nextSlide, 3000);
-
-// ===== FRANCHISE FORM LOGIC =====
-const openFormBtn = document.getElementById('openFormBtn'); // Button para buksan ang form
-const franchiseMain = document.getElementById('franchiseMain'); // Main franchise section
-const franchiseForm = document.getElementById('franchiseForm'); // Form container
-const thankYou = document.getElementById('thankYou'); // Thank you message
-const inquiryForm = document.getElementById('inquiryForm'); // Actual form
-const backBtn = document.getElementById('backBtn'); // Back button sa form
-
-// Buksan ang form kapag pinindot ang openFormBtn
+// OPEN FORM
 openFormBtn.addEventListener('click', () => {
-  franchiseMain.style.display = 'none'; // Itago main section
-  franchiseForm.style.display = 'flex'; // Ipakita ang form
+  franchiseMain.style.display = 'none';
+  franchiseForm.style.display = 'block'; // 🔥 FIXED (NO FLEX)
 });
 
-// Kapag sinubmit ang form
-inquiryForm.addEventListener('submit', (e) => {
-  e.preventDefault(); // Iwas default submit behavior
-  franchiseForm.style.display = 'none'; // Itago form
-  thankYou.style.display = 'flex'; // Ipakita thank you message
-});
-
-// Kapag pinindot ang back button
+// BACK BUTTON
 backBtn.addEventListener('click', () => {
-  franchiseForm.style.display = 'none'; // Itago form
-  franchiseMain.style.display = 'flex'; // Ipakita main section
+  franchiseForm.style.display = 'none';
+  franchiseMain.style.display = 'block';
+});
+
+// SUBMIT
+inquiryForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const fullName = inquiryForm.querySelector('[name="full_name"]').value;
+  const email = inquiryForm.querySelector('[name="email"]').value;
+  const contact = inquiryForm.querySelector('[name="contact"]').value;
+  const message = inquiryForm.querySelector('[name="message"]').value;
+
+  submitBtn.innerText = "Sending...";
+  submitBtn.disabled = true;
+
+  setTimeout(() => {
+
+    let inquiries = JSON.parse(localStorage.getItem("inquiries")) || [];
+
+    inquiries.push({
+      fullName,
+      email,
+      contact,
+      message,
+      date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("inquiries", JSON.stringify(inquiries));
+
+    inquiryForm.reset();
+
+    franchiseForm.style.display = 'none';
+    thankYou.style.display = 'flex';
+
+    submitBtn.innerText = "SEND INQUIRY";
+    submitBtn.disabled = false;
+
+  }, 800);
+});
+
+// RETURN
+document.getElementById("returnBtn").addEventListener("click", () => {
+  thankYou.style.display = "none";
+  franchiseMain.style.display = "block";
 });

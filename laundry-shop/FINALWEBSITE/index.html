@@ -68,43 +68,71 @@
     </div>
 
     <div class="franchise-form" id="franchiseForm" style="display: none;">
-      <div class="form-container">
-        <div class="form-logo">
-          <img src="img/Logo.png" alt="M and M Laundry Shop Logo">
-        </div>
-        <div class="form-box">
-          <button type="button" id="backBtn" class="franchise-back-btn">⬅ Back</button>
-          <h2>Franchise Inquiry Form</h2>
-          <form id="inquiryForm">
-            <div class="input-group">
-              <label>Full Name</label>
-              <input type="text" id="fullName" required>
-            </div>
 
-            <div class="input-group">
-              <label>Email</label>
-              <input type="email" id="email" required>
-            </div>
+  <div class="modern-form-wrapper">
 
-            <div class="input-group">
-              <label>Contact Number</label>
-              <input type="text" id="contact" required>
-            </div>
+    <!-- LEFT -->
+    <div class="modern-form-left">
 
-            <div class="input-group full-width">
-              <label>Message <span style="color:red">*</span></label>
-              <textarea id="message" required></textarea>
-            </div>
+      <img src="img/Logo.png" alt="Logo">
 
-            <button type="submit" class="send-btn">SEND INQUIRY</button>
-          </form>
-        </div>
-      </div>
+      <h2>Franchise Inquiry</h2>
+
+      <p>
+        Become part of the growing M & M Laundry Shop family.
+        Fill out the form and our team will contact you shortly.
+      </p>
+
     </div>
+
+    <!-- RIGHT -->
+    <div class="modern-form-right">
+
+      <button type="button" id="backBtn" class="modern-back-btn">
+        ← Back
+      </button>
+
+      <form id="inquiryForm">
+
+        <div class="modern-input-box">
+          <label>Full Name</label>
+          <input type="text" name="full_name" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="modern-input-box">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="modern-input-box">
+          <label>Contact Number</label>
+          <input type="text" name="contact" placeholder="09XXXXXXXXX" required>
+        </div>
+
+        <div class="modern-input-box">
+          <label>Your Message</label>
+          <textarea name="message" placeholder="Tell us about your business interest..." required></textarea>
+        </div>
+
+        <button type="submit" class="modern-send-btn">
+          SEND INQUIRY
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
 
     <div class="thankyou-box" id="thankYou" style="display: none;">
-      <h2>Thank you for inquiring!</h2>
-    </div>
+  <h2>Thank you for inquiring!</h2>
+
+  <button id="returnBtn" class="modern-back-btn">
+  Back to Franchise
+</button>
+</div>
   </section>
 
   <section id="Service" class="reveal">
@@ -226,99 +254,85 @@
   </section>
 
   <section id="Contact" class="reveal">
-    <div class="contact-wrapper">
 
-      <div class="ratings-section">
-        <div class="ratings-container">
+  <div class="contact-wrapper-modern">
 
-          <div class="ratings-image">
-            <img src="img/smell1.jpg" alt="Laundry">
-          </div>
+    <!-- LEFT: TESTIMONIALS -->
+    <div class="contact-left-modern">
 
-          <div class="ratings-content">
-            <div class="testimonial-title">
-              <h1>Fresh laundry, happy customers!</h1>
-            </div>
-
-            <div class="testimonial-sub">
-              <p>
-                Every wash is handled with attention to detail, leaving clothes spotless, fresh, and ready to wear.
-              </p>
-            </div>
-
-            <div class="review-item">
-              <div class="review-header">
-                <img src="img/rico.jpg" alt="Rico Blanco">
-                <div>
-                  <h4>Rico Blanco</h4>
-                  <span class="role">Customer</span>
-                </div>
-              </div>
-              <p>"Bilis ng service, grabe! Mabait din yung staff."</p>
-            </div>
-
-            <div class="review-item">
-              <div class="review-header">
-                <img src="img/lea.jpg" alt="Lea Salonga">
-                <div>
-                  <h4>Lea Salonga</h4>
-                  <span class="role">Customer</span>
-                </div>
-              </div>
-              <p>"Laging mabango at maayos ang pagkakaplantsa."</p>
-            </div>
-
-            <div class="review-item">
-              <div class="review-header">
-                <img src="img/vice.jpg" alt="Vice Ganda">
-                <div>
-                  <h4>Vice Ganda</h4>
-                  <span class="role">Customer</span>
-                </div>
-              </div>
-              <p>"On time palagi yung delivery — super convenient!"</p>
-            </div>
-
-          </div>
-        </div>
+      <div class="contact-title">
+        <h1>What our customers say</h1>
+        <p>Trusted laundry service with consistent quality and freshness.</p>
       </div>
 
-      <div class="contact-content">
-        <div class="contact-footer">
-          <div class="contact-content">
+      <div class="testimonial-grid">
 
-            <div class="contact-left">
-              <h2 class="footer-title">M and M Laundry</h2>
-
-              <p>
-                <strong>Location:</strong> 244 Market Avenue, Brgy. San Miguel<br>
-                Pasig City, Philippines
-              </p>
-
-              <p>
-                <strong>Contact Number 1:</strong> 0968-301-0566<br>
-                <strong>Contact Number 2:</strong> 0993-822-4989
-              </p>
-
-              <div class="social-icons">
-                <a href="https://www.facebook.com/profile.php?id=61572294501937" target="_blank">
-                  <img src="img/fb.webp" alt="Facebook Page">
-                </a>
-              </div>
-            </div>
-
-            <div class="contact-right">
-              <div class="location-images">
-                <img src="img/a4.png" alt="Shop Image">
-                <img src="img/mapweb.png" alt="Map Image">
-              </div>
-            </div>
-
+        <div class="testimonial-modern">
+          <img src="img/rico.jpg">
+          <div>
+            <h4>Rico Blanco</h4>
+            <span>Customer</span>
+            <p>“Bilis ng service, grabe! Mabait din yung staff.”</p>
           </div>
         </div>
+
+        <div class="testimonial-modern">
+          <img src="img/lea.jpg">
+          <div>
+            <h4>Lea Salonga</h4>
+            <span>Customer</span>
+            <p>“Laging mabango at maayos ang pagkakaplantsa.”</p>
+          </div>
+        </div>
+
+        <div class="testimonial-modern">
+          <img src="img/vice.jpg">
+          <div>
+            <h4>Vice Ganda</h4>
+            <span>Customer</span>
+            <p>“On time palagi yung delivery — super convenient!”</p>
+          </div>
+        </div>
+
       </div>
+
     </div>
-  </section>
+
+    <!-- RIGHT: CONTACT INFO -->
+    <div class="contact-right-modern">
+
+      <div class="contact-card-modern">
+
+        <h2>M & M Laundry Shop</h2>
+
+        <div class="info-block">
+          <h4>Location</h4>
+          <p>244 Market Avenue, Brgy. San Miguel<br>Pasig City, Philippines</p>
+        </div>
+
+        <div class="info-block">
+          <h4>Contact</h4>
+          <p>0968-301-0566<br>0993-822-4989</p>
+        </div>
+
+        <a class="fb-btn-modern"
+           href="https://www.facebook.com/profile.php?id=61572294501937"
+           target="_blank">
+          Visit Facebook Page
+        </a>
+
+      </div>
+
+      <div class="media-row-modern">
+        <img src="img/a4.png">
+        <img src="img/mapweb.png">
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
   <script>
     function revealOnScroll() {

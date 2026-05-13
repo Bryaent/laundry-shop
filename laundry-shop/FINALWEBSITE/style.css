@@ -291,15 +291,20 @@ nav a:hover {
 }
 
 .thankyou-box {
+  width: 100%;
   min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: white;
+
+  text-align: center;
+
+  color: #003366;
+
   font-size: 30px;
-  font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  font-weight: 700;
 }
 
 .franchise-back-btn {
@@ -846,67 +851,165 @@ nav a:hover {
   line-height: 1.6;
 }
 
-/* ================= CONTACT ================= */
+/* ================= CONTACT FINAL DEFENSE VERSION ================= */
+
 #Contact {
-  background: linear-gradient(to bottom right, #a3d4ff, #eaf6ff);
-  min-height: auto;
+  background: linear-gradient(135deg, #a3d4ff, #eaf6ff);
+  padding: 90px 8%;
 }
 
-.contact-footer {
-  background: #ffffff;
-  width: 100%;
-  padding: 30px 60px;
-}
-
-.contact-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
+/* MAIN GRID */
+.contact-wrapper-modern {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
   max-width: 1200px;
   margin: auto;
-  flex-wrap: wrap;
 }
 
-.contact-left {
-  max-width: 500px;
-}
+/* ================= LEFT ================= */
 
-.footer-title {
-  font-size: 26px;
-  font-weight: 700;
+.contact-title h1 {
+  font-size: 40px;
   color: #003366;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
-.contact-left p {
-  margin-bottom: 10px;
-  color: #333;
+.contact-title p {
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* TESTIMONIAL GRID */
+.testimonial-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* CARD */
+.testimonial-modern {
+  display: flex;
+  gap: 15px;
+  background: #fff;
+  padding: 15px 18px;
+  border-radius: 14px;
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
+}
+
+.testimonial-modern:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0,148,255,0.18);
+}
+
+.testimonial-modern img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-modern h4 {
+  margin: 0;
+  color: #003366;
+}
+
+.testimonial-modern span {
+  font-size: 12px;
+  color: #777;
+}
+
+.testimonial-modern p {
+  margin-top: 5px;
   font-size: 14px;
+  color: #444;
 }
 
-.social-icons img {
-  width: 50px;
-  height: auto;
+/* ================= RIGHT ================= */
+
+.contact-card-modern {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.contact-card-modern h2 {
+  color: #003366;
+  margin-bottom: 20px;
+}
+
+/* INFO BLOCK */
+.info-block {
+  margin-bottom: 18px;
+}
+
+.info-block h4 {
+  color: #0094ff;
+  font-size: 14px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-block p {
+  color: #444;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* BUTTON */
+.fb-btn-modern {
+  display: inline-block;
   margin-top: 10px;
-  margin-left: -10px;
+
+  background: #0094ff;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+
+  text-decoration: none;
+  font-weight: 600;
+
+  transition: 0.3s ease;
 }
 
-.contact-right {
+.fb-btn-modern:hover {
+  background: #0077cc;
+}
+
+/* IMAGES */
+.media-row-modern {
   display: flex;
   gap: 15px;
+  margin-top: 20px;
 }
 
-.location-images {
-  display: flex;
-  gap: 15px;
+.media-row-modern img {
+  width: 50%;
+  border-radius: 12px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  object-fit: cover;
 }
 
-.location-images img {
-  width: 220px;
-  border-radius: 10px;
-}
+/* ================= RESPONSIVE ================= */
 
+@media (max-width: 900px) {
+  .contact-wrapper-modern {
+    grid-template-columns: 1fr;
+  }
+
+  .media-row-modern {
+    flex-direction: column;
+  }
+
+  .media-row-modern img {
+    width: 100%;
+  }
+}
 /* ================= TESTIMONIAL ================= */
 .ratings-section {
   width: 100%;
@@ -1049,4 +1152,190 @@ nav a:hover {
   .about-feature-content p {
     font-size: 14px;
   }
+}
+
+/* ================= MODERN FRANCHISE FORM ================= */
+
+.franchise-form {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px;
+}
+
+#Franchise {
+  position: relative;
+}
+
+.modern-form-wrapper {
+  width: 100%;
+  max-width: 1100px;
+
+  background: white;
+  border-radius: 30px;
+
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+
+  margin: auto;
+}
+
+/* LEFT SIDE */
+
+.modern-form-left {
+  background: linear-gradient(135deg, #0094ff, #4dc9ff);
+
+  padding: 60px 50px;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modern-form-left img {
+  width: 220px;
+  margin-bottom: 25px;
+}
+
+.modern-form-left h2 {
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.modern-form-left p {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* RIGHT SIDE */
+
+.modern-form-right {
+  padding: 50px;
+  background: #ffffff;
+  position: relative;
+}
+
+/* BACK BUTTON */
+
+.modern-back-btn {
+  border: none;
+
+  background: linear-gradient(135deg, #0094ff, #4dc9ff);
+
+  color: white;
+
+  padding: 10px 18px;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  margin-bottom: 30px;
+
+  transition: 0.3s ease;
+
+  box-shadow: 0 6px 15px rgba(0,148,255,0.25);
+}
+
+.modern-back-btn:hover {
+  background: linear-gradient(135deg, #0084e6, #36bfff);
+
+  transform: translateY(-2px);
+}
+/* INPUTS */
+
+.modern-input-box {
+  margin-bottom: 22px;
+}
+
+.modern-input-box label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-weight: 600;
+  color: #003366;
+}
+
+.modern-input-box input,
+.modern-input-box textarea {
+  width: 100%;
+
+  padding: 15px;
+
+  border: 1px solid #d9e7f5;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.3s ease;
+}
+
+.modern-input-box input:focus,
+.modern-input-box textarea:focus {
+  border-color: #0094ff;
+  box-shadow: 0 0 0 4px rgba(0,148,255,0.1);
+}
+
+.modern-input-box textarea {
+  min-height: 130px;
+  resize: none;
+}
+
+/* SEND BUTTON */
+
+.modern-send-btn {
+  width: 100%;
+
+  padding: 16px;
+
+  border: none;
+
+  background: linear-gradient(135deg, #0094ff, #0077cc);
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.modern-send-btn:hover {
+  transform: translateY(-2px);
+
+  background: linear-gradient(135deg, #0084e6, #005fb3);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .modern-form-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .modern-form-left,
+  .modern-form-right {
+    padding: 40px 30px;
+  }
+
 }
