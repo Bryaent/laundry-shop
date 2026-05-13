@@ -333,7 +333,7 @@ nav a:hover {
   background: linear-gradient(to bottom, #eef5ff, #dbeafe);
   min-height: auto;
   width: 100%;
-  padding: 70px 8% 60px;
+  padding: 125px 8% 150px;
   position: relative;
   overflow: hidden;
 }
@@ -855,7 +855,7 @@ nav a:hover {
 
 #Contact {
   background: linear-gradient(135deg, #a3d4ff, #eaf6ff);
-  padding: 90px 8%;
+  padding: 155px 8%;
 }
 
 /* MAIN GRID */
