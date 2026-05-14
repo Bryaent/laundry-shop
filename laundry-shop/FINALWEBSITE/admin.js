@@ -586,9 +586,7 @@ function loadPricing() {
         document.getElementById('express-fee').value = pricingData.expressFee || 50;
         document.getElementById('kg-extra-fee').value = pricingData.kgExtraFee || 5;
         document.getElementById('gcash-fee').value = pricingData.gcashFee || 5;
-        document.getElementById('maya-fee').value = pricingData.mayaFee || 5;
-        document.getElementById('card-fee').value = pricingData.cardFee || 10;
-        
+    
     } catch (e) {
         console.log('Loading default pricing');
         resetPricing();
@@ -631,8 +629,7 @@ function savePricing() {
         expressFee: parseFloat(document.getElementById('express-fee').value) || 50,
         kgExtraFee: parseFloat(document.getElementById('kg-extra-fee').value) || 5,
         gcashFee: parseFloat(document.getElementById('gcash-fee').value) || 5,
-        mayaFee: parseFloat(document.getElementById('maya-fee').value) || 5,
-        cardFee: parseFloat(document.getElementById('card-fee').value) || 10
+        
     };
     
     // ===== SAVE TO LOCALSTORAGE =====

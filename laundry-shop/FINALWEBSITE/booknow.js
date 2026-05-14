@@ -54,7 +54,6 @@ function loadPricingFromStorage() {
 // INIT PRICING
 loadPricingFromStorage();
 window.addEventListener('pricingUpdated', loadPricingFromStorage);
-setInterval(loadPricingFromStorage, 3000); // Every 3s
 
 
 // ===== KIOSK STEP SYSTEM =====
@@ -65,8 +64,8 @@ let isConfirmed = false; // ✅ Lock system
 
 // ===== USER SELECTIONS =====
 const selections = {
-  1: null,
-  2: null,
+  1: [], // soaps (multiple)
+  2: [], // fabcon (multiple)
   3: null,
   4: null,
   5: null
@@ -132,25 +131,36 @@ const stepContents = {
   },
 
   5: {
-    title: "Select Payment",
-    text: "Choose your payment method.",
-    items: [
-      { name: "Cash", img: "img/cash.jpg", price: 0 },
-      { name: "GCash", img: "img/gcash.jpg", price: 5 },
-      { name: "Maya", img: "img/maya.jpg", price: 5 },
-      { name: "Credit Card", img: "img/card.jpg", price: 10 },
-      { name: "Debit Card", img: "img/debit.jpg", price: 5 },
-      { name: "Online Banking", img: "img/online.jpg", price: 15 }
-    ]
-  }
+  title: "Select Payment",
+  text: "Choose your payment method.",
+  items: [
+    { name: "Cash", img: "img/cash.jpg", price: 0 },
+    { name: "GCash", img: "img/gcash.jpg", price: 5 }
+  ]
+}
 };
 
 // ===== TOTAL =====
 function getSubtotal() {
   let total = 0;
-  for (let i = 1; i <= 5; i++) {
-    if (selections[i]) total += selections[i].price;
+
+  // STEP 1 SOAPS
+  selections[1].forEach(item => {
+    total += item.price * item.qty;
+  });
+
+  // STEP 2 FABCON
+  selections[2].forEach(item => {
+    total += item.price * item.qty;
+  });
+
+  // OTHER STEPS
+  for (let i = 3; i <= 5; i++) {
+    if (selections[i]) {
+      total += selections[i].price;
+    }
   }
+
   return total;
 }
 
@@ -166,7 +176,11 @@ function updateStepChecks() {
     const span = step.querySelector("span");
     const stepNum = index + 1;
 
-    if (stepNum <= 5 && selections[stepNum]) {
+    if (
+  (stepNum === 1 || stepNum === 2)
+    ? selections[stepNum].length > 0
+    : selections[stepNum]
+) {
       span.textContent = "✔";
       span.style.background = "#28a745";
     } else if (stepNum === 6 && isConfirmed) {
@@ -287,52 +301,150 @@ function renderConfirmation() {
   `;
 
   // ✅ FULL DROPDOWN FOR ALL 5 STEPS
-  for (let i = 1; i <= 5; i++) {
-    const data = stepContents[i];
-    
-    html += `
-      <div style="margin-bottom:15px; padding:12px; background:#f8f9ff; border-radius:10px;">
-        <div style="font-weight:700; color:#0094ff; margin-bottom:8px; font-size:16px;">
-          ${data.title}
-        </div>
-        
-        <select onchange="updateSelection(${i}, this.value)" style="width:100%; padding:12px; border:2px solid #0094ff; border-radius:10px; font-size:15px; font-weight:600;">
-          ${data.items.map(item => `
-            <option value="${item.name}" ${selections[i]?.name === item.name ? "selected" : ""}>
-              ${item.name} - ₱${item.price}
-            </option>
-          `).join("")}
-        </select>
+  // ✅ CONFIRMATION DISPLAY
+ // ✅ CONFIRMATION DISPLAY
+for (let i = 1; i <= 5; i++) {
+
+  const data = stepContents[i];
+
+  html += `
+    <div style="
+      margin-bottom:15px;
+      padding:12px;
+      background:#f8f9ff;
+      border-radius:10px;
+    ">
+      <div style="
+        font-weight:700;
+        color:#0094ff;
+        margin-bottom:8px;
+        font-size:16px;
+      ">
+        ${data.title}
       </div>
+  `;
+
+  // ===== STEP 1 & 2 MULTIPLE ITEMS
+  if (i === 1 || i === 2) {
+
+    if (selections[i].length === 0) {
+
+      html += `
+        <p>No selections yet.</p>
+      `;
+
+    } else {
+
+      html += selections[i].map(item => `
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          background:white;
+          padding:10px;
+          border-radius:8px;
+          margin-bottom:8px;
+        ">
+          <div>
+            <strong>${item.name}</strong><br>
+            Qty: ${item.qty}
+          </div>
+
+          <div style="
+            font-weight:700;
+            color:#0094ff;
+          ">
+            ₱${item.price * item.qty}
+          </div>
+        </div>
+      `).join("");
+    }
+
+  } else {
+
+    // ===== NORMAL DROPDOWN
+    html += `
+      <select
+        onchange="updateSelection(${i}, this.value)"
+        style="
+          width:100%;
+          padding:12px;
+          border:2px solid #0094ff;
+          border-radius:10px;
+          font-size:15px;
+          font-weight:600;
+        "
+      >
+        ${data.items.map(item => `
+          <option
+            value="${item.name}"
+            ${selections[i]?.name === item.name ? "selected" : ""}
+          >
+            ${item.name} - ₱${item.price}
+          </option>
+        `).join("")}
+      </select>
     `;
   }
 
-  html += `
-      <hr style="margin: 25px 0;">
+  // CLOSE EACH BOX
+  html += `</div>`;
+}
 
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:#e3f2fd; border-radius:12px; margin-bottom:20px;">
-        <strong style="font-size:22px;">GRAND TOTAL:</strong>
-        <span id="totalLive" style="font-size:28px; font-weight:700; color:#0094ff;">
-          ₱${getTotal().toLocaleString()}
-        </span>
-      </div>
+// ===== FINAL SUMMARY
+html += `
+  <hr style="margin: 25px 0;">
 
-      <button class="select-product-btn confirm-btn" onclick="confirmFinalOrder()" style="margin-bottom:15px;">
-        CONFIRM FINAL ORDER
-      </button>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    background:#e3f2fd;
+    border-radius:12px;
+    margin-bottom:20px;
+  ">
+    <strong style="font-size:22px;">GRAND TOTAL:</strong>
 
-      <div style="padding:15px; background:#fff3cd; border:1px solid #ffeaa7; border-radius:10px; font-size:14px; color:#856404;">
-        <strong>Info:</strong> All selections above are now <strong>FINAL</strong> after confirmation!
-      </div>
-
-    </div>
+    <span id="totalLive" style="
+      font-size:28px;
+      font-weight:700;
+      color:#0094ff;
+    ">
+      ₱${getTotal().toLocaleString()}
+    </span>
   </div>
-  `;
 
-  productsPanel.innerHTML = html;
-  
-  // Update live total immediately
-  updateConfirmationLive();
+  <button
+    class="select-product-btn confirm-btn"
+    onclick="confirmFinalOrder()"
+    style="margin-bottom:15px;"
+  >
+    CONFIRM FINAL ORDER
+  </button>
+
+  <div style="
+    padding:15px;
+    background:#fff3cd;
+    border:1px solid #ffeaa7;
+    border-radius:10px;
+    font-size:14px;
+    color:#856404;
+  ">
+    <strong>Info:</strong>
+    All selections above are now <strong>FINAL</strong> after confirmation!
+  </div>
+
+</div>
+</div>
+`;
+
+// ===== RENDER
+productsPanel.innerHTML = html;
+
+// ===== UPDATE TOTAL
+updateConfirmationLive();
+
 }
 
 // ===== LIVE UPDATE =====
@@ -384,6 +496,9 @@ function updateStepUI() {
 
   const data = stepContents[currentStep];
 
+// ===== MULTIPLE SELECT FOR STEP 1 & 2 =====
+if (currentStep === 1 || currentStep === 2) {
+
   productsPanel.innerHTML = `
     <h2>${data.title}</h2>
     <p class="select-text">${data.text}</p>
@@ -391,26 +506,147 @@ function updateStepUI() {
     <div class="products-grid">
       ${data.items.map((item, index) => `
         <div class="product-card">
+
           <img src="${item.img}">
           <h3>${item.name}</h3>
+
           <p>₱${item.price}</p>
-          <button onclick="selectItem(${currentStep}, ${index})">
-            Select
-          </button>
+
+          <div class="qty-control" style="
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:15px 0;
+">
+
+  <button onclick="
+  handleQtyChange(${currentStep}, ${index}, -1)
+">-</button>
+
+  <input
+  type="number"
+  min="1"
+  value="1"
+  readonly
+    id="qty-${currentStep}-${index}"
+    style="
+      width:60px;
+      text-align:center;
+      font-weight:700;
+    "
+  >
+
+  
+  <button onclick="
+  handleQtyChange(${currentStep}, ${index}, 1)
+">+</button>
+
+</div>
+
+ <button
+  id="addBtn-${currentStep}-${index}"
+  onclick="addMultiItem(${currentStep}, ${index})"
+  style="
+    background:${
+      selections[currentStep].find(i => i.name === item.name)
+        ? '#28a745'
+        : '#0094ff'
+    };
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+  "
+  ${
+    selections[currentStep].find(i => i.name === item.name)
+      ? 'disabled'
+      : ''
+  }
+>
+  ${
+    selections[currentStep].find(i => i.name === item.name)
+      ? '✔ Added'
+      : 'Add'
+  }
+</button>
+
         </div>
       `).join("")}
     </div>
 
-    <div style="margin-top:20px; font-weight:700; color:#0094ff;">
-      Total: ₱${getTotal().toLocaleString()}
+    <div id="selectedItems" style="
+      margin-top:30px;
+      text-align:left;
+    ">
+      <p>No items selected yet.</p>
     </div>
+
+    <button
+  onclick="confirmMultiStep(${currentStep})"
+  style="
+    margin-top:15px;
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+  "
+>
+      Confirm Selection
+    </button>
   `;
+
+  renderMultiSummary(currentStep);
+return;
+}
+
+// ===== NORMAL SINGLE SELECT STEPS =====
+productsPanel.innerHTML = `
+  <h2>${data.title}</h2>
+  <p class="select-text">${data.text}</p>
+
+  <div class="products-grid">
+    ${data.items.map((item, index) => `
+      <div class="product-card">
+        <img src="${item.img}">
+        <h3>${item.name}</h3>
+        <p>₱${item.price}</p>
+
+        <button onclick="selectItem(${currentStep}, ${index})">
+          Select
+        </button>
+      </div>
+    `).join("")}
+  </div>
+
+  <div style="
+    margin-top:20px;
+    font-weight:700;
+    color:#0094ff;
+  ">
+    Total: ₱${getTotal().toLocaleString()}
+  </div>
+`;
 }
 
 // ===== SELECT ITEM =====
 function selectItem(step, index) {
-  selections[step] = stepContents[step].items[index];
+
+  selections[step] =
+    stepContents[step].items[index];
+
   currentStep++;
+
   updateStepUI();
 }
 
@@ -441,12 +677,12 @@ function confirmFinalOrder() {
       : "Laundry Service",
 
     soap: selections[1]
-      ? selections[1].name
-      : "",
+  .map(i => `${i.name} x${i.qty}`)
+  .join(", "),
 
     fabcon: selections[2]
-      ? selections[2].name
-      : "",
+  .map(i => `${i.name} x${i.qty}`)
+  .join(", "),
 
     pickup: selections[4]
       ? selections[4].name
@@ -513,3 +749,195 @@ fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/orders.php", {
 // ===== INITIALIZE =====
 updateStepUI();
 activateStepClicks();
+
+// ===== ADD MULTIPLE ITEMS =====
+function addMultiItem(step, index) {
+
+  const item = stepContents[step].items[index];
+  const qtyInput = document.getElementById(`qty-${step}-${index}`);
+
+  let qty = parseInt(qtyInput.value);
+
+  if (isNaN(qty) || qty < 1) {
+    qty = 1;
+  }
+
+  const existing = selections[step].find(
+    i => i.name === item.name
+  );
+
+  if (existing) {
+    alert("Already added. Remove first before changing quantity.");
+    return;
+  }
+
+  selections[step].push({
+    ...item,
+    qty: qty
+  });
+
+  qtyInput.value = 1;
+
+  renderMultiSummary(step);
+
+  // IMPORTANT
+  updateStepUI();
+}
+function bindQtyLiveUpdate(step, index) {
+
+  const input = document.getElementById(`qty-${step}-${index}`);
+  const item = stepContents[step].items[index];
+
+  if (!input) return;
+
+  input.oninput = () => {
+
+    let qty = parseInt(input.value);
+    if (!qty || qty < 1) qty = 1;
+
+    const existing = selections[step].find(i => i.name === item.name);
+
+    if (existing) {
+      existing.qty = qty;
+      renderMultiSummary(step);
+    }
+  };
+}
+
+// ===== REMOVE ITEM =====
+// ===== REMOVE ITEM =====
+function removeMultiItem(step, name) {
+
+  // remove specific item only
+  selections[step] =
+    selections[step].filter(i => i.name !== name);
+
+  // hanapin original index
+  const index =
+    stepContents[step].items.findIndex(
+      item => item.name === name
+    );
+
+  // reset ONLY that qty input
+  const qtyInput =
+    document.getElementById(`qty-${step}-${index}`);
+
+  if (qtyInput) {
+    qtyInput.value = 1;
+  }
+
+  // reset ONLY that button
+  const btn =
+    document.getElementById(`addBtn-${step}-${index}`);
+
+  if (btn) {
+    btn.style.background = "#0094ff";
+    btn.style.color = "white";
+    btn.innerHTML = "Add";
+    btn.disabled = false;
+  }
+
+  // refresh summary
+  renderMultiSummary(step);
+}
+
+// ===== CONFIRM STEP =====
+function confirmMultiStep(step) {
+
+  if (selections[step].length === 0) {
+    alert("Please select at least one item.");
+    return;
+  }
+
+  currentStep++;
+  updateStepUI();
+}
+
+function renderMultiSummary(step) {
+
+  const box = document.getElementById("selectedItems");
+
+  if (!box) return;
+
+  if (selections[step].length === 0) {
+    box.innerHTML = `
+      <p>No items selected yet.</p>
+    `;
+    return;
+  }
+
+  box.innerHTML = selections[step].map(item => `
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:#f5f7fb;
+      padding:10px;
+      border-radius:10px;
+      margin-bottom:10px;
+    ">
+      <div>
+        <strong>${item.name}</strong><br>
+        Qty: ${item.qty}<br>
+        ₱${item.price * item.qty}
+      </div>
+
+      <button onclick="
+        removeMultiItem(${step}, '${item.name}')
+      " style="
+        background:red;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:8px;
+        cursor:pointer;
+      ">
+        Remove
+      </button>
+    </div>
+  `).join("");
+
+  box.innerHTML += `
+    <div style="
+      margin-top:15px;
+      font-weight:700;
+      color:#0094ff;
+      font-size:18px;
+    ">
+      Current Total:
+      ₱${getTotal().toLocaleString()}
+    </div>
+  `;
+}
+
+// ===== HANDLE QTY CHANGE =====
+function handleQtyChange(step, index, change) {
+
+  const item = stepContents[step].items[index];
+
+  const existing = selections[step].find(
+    i => i.name === item.name
+  );
+
+  if (existing) {
+    alert(
+      "Remove the item first before editing quantity."
+    );
+    return;
+  }
+
+  const input =
+    document.getElementById(`qty-${step}-${index}`);
+
+  let current = parseInt(input.value);
+
+  if (isNaN(current) || current < 1) {
+    current = 1;
+  }
+
+  current += change;
+
+  if (current < 1) current = 1;
+
+  input.value = current;
+}

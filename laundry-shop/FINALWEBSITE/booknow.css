@@ -131,10 +131,16 @@
 }
 
 .products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 25px;
   margin-top: 10px;
+}
+
+.product-card {
+  width: 100%;
+  max-width: 280px;
 }
 
 /* PRODUCT CARD */
