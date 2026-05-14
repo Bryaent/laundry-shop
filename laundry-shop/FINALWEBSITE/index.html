@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>M & M Laundry Shop</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -36,296 +37,65 @@
   </header>
 
   <section id="Home">
-    <div class="home-text">
-      <h1>Fast, Fresh and Hassle-Free Laundry<br>Right at Your Fingertips</h1>
-      <br>
-      <p>
-        Book your laundry pickup or drop-off in just a few<br>
-        clicks, track every stage of your order in real-time<br>
-        from washing to drying to ready-for-pickup and<br>
-        enjoy clear, upfront pricing with no hidden fees.<br>
-        Our platform is designed to make laundry day<br>
-        stress-free, giving you more time to focus on what<br>
-        matters most while we handle the rest.
-      </p>
-    </div>
-  </section>
 
-  <section id="Franchise" class="reveal">
-    <div class="franchise-content" id="franchiseMain">
-      <img src="img/Logo.png" alt="M and M Laundry Shop Logo" class="franchise-logo">
-      <div class="franchise-text">
-        <h1>Franchise</h1>
-        <h2>Join the M & M Laundry Shop Family<br>Your Fresh Start to Business Success!</h2>
-        <p>
-          Step into a growing community with M & M Laundry Shop! Partner with us and discover
-          the opportunities for growth, innovation, and positive impact on your local area.
-          Together, we’ll help you build a thriving business and turn clean clothes into a
-          clean path to success — your journey begins with M & M today!
-        </p>
-        <button class="partner-btn" id="openFormBtn">BE OUR PARTNER</button>
+  <div class="home-overlay"></div>
+
+  <div class="hero-container">
+
+    <!-- LEFT SIDE -->
+    <div class="hero-left">
+
+      <div class="hero-badge">
+        ★ Top Rated Laundry Service
       </div>
+
+      <h1>
+        Your Personal,<br>
+        <span>Reliable Laundry</span><br>
+        Assistant
+      </h1>
+
+      <p>
+        Professional laundry pickup and delivery that fits your life —
+        fast, clean, and hassle-free service you can trust.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="booknow.html" class="hero-btn primary-btn">
+          Schedule Pickup
+        </a>
+
+        <a href="#Service" class="hero-btn secondary-btn">
+          See Services
+        </a>
+      </div>
+
     </div>
 
-    <div class="franchise-form" id="franchiseForm" style="display: none;">
-
-  <div class="modern-form-wrapper">
-
-    <!-- LEFT -->
-    <div class="modern-form-left">
+    <!-- RIGHT SIDE -->
+    <div class="hero-card">
 
       <img src="img/Logo.png" alt="Logo">
 
-      <h2>Franchise Inquiry</h2>
+      <h2>It's as easy as 1-2-3</h2>
 
-      <p>
-        Become part of the growing M & M Laundry Shop family.
-        Fill out the form and our team will contact you shortly.
-      </p>
-
-    </div>
-
-    <!-- RIGHT -->
-    <div class="modern-form-right">
-
-      <button type="button" id="backBtn" class="modern-back-btn">
-        ← Back
-      </button>
-
-      <form id="inquiryForm">
-
-        <div class="modern-input-box">
-          <label>Full Name</label>
-          <input type="text" name="full_name" placeholder="Enter your full name" required>
-        </div>
-
-        <div class="modern-input-box">
-          <label>Email Address</label>
-          <input type="email" name="email" placeholder="Enter your email" required>
-        </div>
-
-        <div class="modern-input-box">
-          <label>Contact Number</label>
-          <input type="text" name="contact" placeholder="09XXXXXXXXX" required>
-        </div>
-
-        <div class="modern-input-box">
-          <label>Your Message</label>
-          <textarea name="message" placeholder="Tell us about your business interest..." required></textarea>
-        </div>
-
-        <button type="submit" class="modern-send-btn">
-          SEND INQUIRY
-        </button>
-
-      </form>
-
-    </div>
-
-  </div>
-
-</div>
-
-    <div class="thankyou-box" id="thankYou" style="display: none;">
-  <h2>Thank you for inquiring!</h2>
-
-  <button id="returnBtn" class="modern-back-btn">
-  Back to Franchise
-</button>
-</div>
-  </section>
-
-  <section id="Service" class="reveal">
-    <div class="services-header">
-      <h1>Our Services</h1>
-    </div>
-
-    <div class="services-header-p">
-      <p>
-        Enjoy a hassle-free laundry experience as we wash, dry, and neatly fold your clothes
-        with care. Each load is handled with the right cleaning products to keep your garments fresh,
-        soft, and ready to wear.
-      </p>
-    </div>
-
-    <div class="services-container">
-      <div class="service-box">
-        <img src="img/Wash logo (1).png" alt="Wash">
-        <h4>₱60</h4>
-        <p>Washing your clothes to remove dirt and stains.</p>
-        <span>WASH</span>
+      <div class="hero-step">
+        <span>1</span>
+        <p>Book your laundry online in minutes</p>
       </div>
 
-      <div class="service-box">
-        <img src="img/Dry logo (1).png" alt="Dry">
-        <h4>₱65</h4>
-        <p>Carefully drying clothes for softness and freshness.</p>
-        <span>DRY</span>
+      <div class="hero-step">
+        <span>2</span>
+        <p>We pick up, clean, and fold your clothes</p>
       </div>
 
-      <div class="service-box">
-        <img src="img/Fold logo (1).png" alt="Fold">
-        <h4>₱30</h4>
-        <p>Neatly folding your clothes, ready to wear.</p>
-        <span>FOLD</span>
+      <div class="hero-step">
+        <span>3</span>
+        <p>Fresh laundry delivered back to you</p>
       </div>
 
-      <div class="full-service-box">
-        <h4>FULL SERVICE</h4>
-        <h1>₱185</h1>
-        <ul>
-          <li>Wash & Dry & Fold</li>
-          <li>Detergent</li>
-          <li>Fabric Conditioner</li>
-          <li>Fabric Cologne</li>
-        </ul>
-      </div>
-    </div>
-
-    <a href="booknow.html" class="book-btn">BOOK NOW</a>
-  </section>
-
-  <section id="About" class="reveal">
-    <div class="about-container">
-
-      <div class="about-image">
-        <div class="carousel">
-          <div class="slides">
-            <img src="img/A1.jpg" alt="Image 1">
-            <img src="img/A2.jpg" alt="Image 2">
-            <img src="img/A3.jpg" alt="Image 3">
-            <img src="img/A4.jpg" alt="Image 4">
-          </div>
-
-          <div class="dots">
-            <span class="active"></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-
-        <a href="booknow.html" class="about-book-card">
-          <span class="about-book-icon">➜</span>
-          <div class="about-book-text">
-            <h3>BOOK NOW</h3>
-            <p>Quick, easy, and convenient laundry service.</p>
-          </div>
-        </a>
-      </div>
-
-      <div class="about-text">
-        <h4>M & M Laundry Shop</h4>
-        <h1>ABOUT US</h1>
-
-        <p>
-          We are a family-run laundry shop that offers fast, clean, and reliable service.
-          Our goal is to make laundry simple, easy, and stress-free for every customer.
-        </p>
-
-        <div class="about-icons">
-          <div class="about-feature">
-            <div class="about-feature-icon">✓</div>
-            <div class="about-feature-content">
-              <h3>Fast Service</h3>
-              <p>We work quickly while keeping your clothes clean and fresh.</p>
-            </div>
-          </div>
-
-          <div class="about-feature">
-            <div class="about-feature-icon">✓</div>
-            <div class="about-feature-content">
-              <h3>Quality Care</h3>
-              <p>Your clothes are handled with care using proper cleaning products.</p>
-            </div>
-          </div>
-
-          <div class="about-feature">
-            <div class="about-feature-icon">✓</div>
-            <div class="about-feature-content">
-              <h3>Convenience</h3>
-              <p>Book online and enjoy an easier way to manage your laundry.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="Contact" class="reveal">
-
-  <div class="contact-wrapper-modern">
-
-    <!-- LEFT: TESTIMONIALS -->
-    <div class="contact-left-modern">
-
-      <div class="contact-title">
-        <h1>What our customers say</h1>
-        <p>Trusted laundry service with consistent quality and freshness.</p>
-      </div>
-
-      <div class="testimonial-grid">
-
-        <div class="testimonial-modern">
-          <img src="img/rico.jpg">
-          <div>
-            <h4>Rico Blanco</h4>
-            <span>Customer</span>
-            <p>“Bilis ng service, grabe! Mabait din yung staff.”</p>
-          </div>
-        </div>
-
-        <div class="testimonial-modern">
-          <img src="img/lea.jpg">
-          <div>
-            <h4>Lea Salonga</h4>
-            <span>Customer</span>
-            <p>“Laging mabango at maayos ang pagkakaplantsa.”</p>
-          </div>
-        </div>
-
-        <div class="testimonial-modern">
-          <img src="img/vice.jpg">
-          <div>
-            <h4>Vice Ganda</h4>
-            <span>Customer</span>
-            <p>“On time palagi yung delivery — super convenient!”</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- RIGHT: CONTACT INFO -->
-    <div class="contact-right-modern">
-
-      <div class="contact-card-modern">
-
-        <h2>M & M Laundry Shop</h2>
-
-        <div class="info-block">
-          <h4>Location</h4>
-          <p>244 Market Avenue, Brgy. San Miguel<br>Pasig City, Philippines</p>
-        </div>
-
-        <div class="info-block">
-          <h4>Contact</h4>
-          <p>0968-301-0566<br>0993-822-4989</p>
-        </div>
-
-        <a class="fb-btn-modern"
-           href="https://www.facebook.com/profile.php?id=61572294501937"
-           target="_blank">
-          Visit Facebook Page
-        </a>
-
-      </div>
-
-      <div class="media-row-modern">
-        <img src="img/a4.png">
-        <img src="img/mapweb.png">
+      <div class="hero-price">
+        Starting at <strong>₱185</strong>
       </div>
 
     </div>
@@ -333,7 +103,429 @@
   </div>
 
 </section>
+<!-- FRANCHISE SECTION - COMPLETE -->
+<section id="Franchise" class="reveal">
+  <!-- MAIN CONTENT (VISIBLE BY DEFAULT) -->
+  <div class="franchise-content" id="franchiseMain">
+    <div class="franchise-main">
+      <!-- LEFT - TEXT CONTENT -->
+      <div class="franchise-main-left">
+        <h1 class="franchise-title">Laundry Franchise</h1>
+        <h2>
+          THE BEST
+          <span>LAUNDRY</span>
+        </h2>
+        <p>
+          Build your future with M & M Laundry Shop.
+          Start your own successful laundry business with
+          complete support, modern equipment, and a trusted brand.
+        </p>
 
+        <!-- STATS -->
+        <div class="franchise-stats">
+          <div class="stat-item">
+            <span class="stat-number">500+</span>
+            <span>Happy Franchisees</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">₱2.5M</span>
+            <span>Avg Revenue</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">95%</span>
+            <span>Success Rate</span>
+          </div>
+        </div>
+
+        <!-- CONNECTS TO FORM -->
+        <button class="partner-btn gradient-btn" id="openFormBtn">
+          <i class="fas fa-handshake"></i> BE OUR PARTNER
+        </button>
+      </div>
+
+      <!-- RIGHT - IMAGE -->
+      <div class="franchise-image">
+        <img src="img/washing.png" alt="Washing Machine">
+        <div class="wash-badge">
+          CLEAN<br>IS OUR<br>PASSION
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM (HIDDEN BY DEFAULT - SHOWS WHEN BUTTON CLICKED) -->
+  <div class="franchise-form" id="franchiseForm" style="display: none;">
+    <div class="modern-form-wrapper">
+      <!-- LEFT -->
+      <div class="modern-form-left">
+        <img src="img/Logo.png" alt="Logo">
+        <h2>Franchise Inquiry</h2>
+        <p>
+          Become part of the growing M & M Laundry Shop family.
+          Fill out the form and our team will contact you shortly.
+        </p>
+        <div class="form-features">
+          <div class="feature-item"><i class="fas fa-check"></i> Full Training</div>
+          <div class="feature-item"><i class="fas fa-check"></i> Marketing Support</div>
+          <div class="feature-item"><i class="fas fa-check"></i> Equipment Package</div>
+        </div>
+      </div>
+
+      <!-- RIGHT - FORM -->
+      <div class="modern-form-right">
+        <button type="button" id="backBtn" class="modern-back-btn">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <form id="inquiryForm">
+          <div class="modern-input-box">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" name="full_name" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="modern-input-box">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+          </div>
+
+          <div class="modern-input-box">
+            <label><i class="fas fa-phone"></i> Contact Number</label>
+            <input type="text" name="contact" placeholder="09XXXXXXXXX" required>
+          </div>
+
+          <div class="modern-input-box">
+            <label><i class="fas fa-comment"></i> Your Message</label>
+            <textarea name="message" placeholder="Tell us about your business interest..." required></textarea>
+          </div>
+
+          <button type="submit" class="modern-send-btn gradient-btn">
+            <i class="fas fa-paper-plane"></i> SEND INQUIRY
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- THANK YOU (HIDDEN) -->
+  <div class="thankyou-box" id="thankYou" style="display: none;">
+    <div class="thankyou-content">
+      <i class="fas fa-check-circle success-icon"></i>
+      <h2>Thank you for inquiring!</h2>
+      <p>Our franchise team will contact you within 24 hours.</p>
+      <button id="returnBtn" class="modern-back-btn gradient-btn">
+        Back to Franchise
+      </button>
+    </div>
+  </div>
+</section>
+
+  <section id="Service" class="reveal">
+
+  <div class="services-header">
+    <h1>Our <span>Services</span></h1>
+  </div>
+
+  <div class="services-header-p">
+    <p>
+      Enjoy a hassle-free laundry experience as we wash, dry, and neatly fold your clothes
+      with care. Each load is handled with the right cleaning products to keep your garments fresh,
+      soft, and ready to wear.
+    </p>
+  </div>
+
+  <div class="services-container">
+
+    <div class="service-box">
+      <img src="img/Wash logo (1).png" alt="Wash">
+      <h4>Wash Service</h4>
+      <p>
+        Washing your clothes to remove dirt and stains while keeping every fabric clean,
+        fresh, and well cared for.
+      </p>
+      <span>₱60</span>
+    </div>
+
+    <div class="service-box">
+      <img src="img/Dry logo (1).png" alt="Dry">
+      <h4>Dry Service</h4>
+      <p>
+        Carefully drying your clothes with the right temperature to maintain softness,
+        freshness, and comfort.
+      </p>
+      <span>₱65</span>
+    </div>
+
+    <div class="service-box">
+      <img src="img/Fold logo (1).png" alt="Fold">
+      <h4>Fold Service</h4>
+      <p>
+        Neatly folding every garment so your clothes are organized, wrinkle-free,
+        and ready to wear anytime.
+      </p>
+      <span>₱30</span>
+    </div>
+
+    <div class="service-box">
+      <img src="img/Wash logo (1).png" alt="Steam">
+      <h4>Steam Service</h4>
+      <p>
+        Steam ironing your clothes carefully to remove wrinkles and keep garments
+        looking smooth and professional.
+      </p>
+      <span>STEAM</span>
+    </div>
+
+    <div class="service-box">
+      <img src="img/Dry logo (1).png" alt="Stain">
+      <h4>Stain Removal</h4>
+      <p>
+        Special stain treatment for tough dirt and marks while protecting the quality
+        and color of your clothes.
+      </p>
+      <span>CLEAN</span>
+    </div>
+
+    <div class="full-service-box">
+      <h4>FULL SERVICE</h4>
+      <h1>₱185</h1>
+
+      <ul>
+        <li>Wash & Dry & Fold</li>
+        <li>Detergent Included</li>
+        <li>Fabric Conditioner</li>
+        <li>Fabric Cologne</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <a href="booknow.html" class="book-btn">BOOK NOW</a>
+
+</section>
+
+<section id="About" class="reveal">
+
+  <div class="about-container">
+
+    <!-- LEFT SIDE -->
+    <div class="about-image">
+
+      <img src="img/A1.jpg" alt="Laundry Shop">
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="about-text">
+
+      <h4>M & M Laundry Shop</h4>
+
+      <h1>ABOUT US</h1>
+
+      <p>
+        At M & M Laundry Shop, we are committed to providing professional,
+        reliable, and high-quality laundry services for every customer.
+        Our goal is to make laundry easier and more convenient by delivering
+        clean, fresh, and properly cared-for clothes with fast and dependable service.
+      </p>
+
+      <div class="about-icons">
+
+        <div class="about-feature">
+
+          <div class="about-feature-icon">✓</div>
+
+          <div class="about-feature-content">
+            <h3>Fast & Reliable Service</h3>
+
+            <p>
+              We ensure your laundry is cleaned, dried, and prepared on time
+              while maintaining excellent quality and care.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="about-feature">
+
+          <div class="about-feature-icon">✓</div>
+
+          <div class="about-feature-content">
+            <h3>Professional Fabric Care</h3>
+
+            <p>
+              Your garments are handled carefully using quality cleaning products
+              to keep fabrics fresh, soft, and well-maintained.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="about-feature">
+
+          <div class="about-feature-icon">✓</div>
+
+          <div class="about-feature-content">
+            <h3>Customer Convenience</h3>
+
+            <p>
+              We provide a simple and hassle-free laundry experience with
+              easy booking and friendly customer assistance.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+<!-- CONTACT - 4 FORMAL TESTIMONIALS (COMPACT) -->
+<section id="Contact" class="reveal">
+  <div class="contact-container-new">
+    
+    <!-- COMPACT FORMAL RATINGS -->
+    <div class="compact-formal-section">
+      
+      <!-- HEADER -->
+      <div class="compact-header">
+        <div class="formal-badge-compact">CLIENT REVIEWS</div>
+        <h1>Trusted by Our Clients</h1>
+        <p>Exceptional service earning outstanding reviews</p>
+      </div>
+
+      <!-- 4 TESTIMONIALS GRID -->
+      <div class="compact-testimonials-grid">
+        
+        <!-- TESTIMONIAL 1 -->
+        <div class="testimonial-compact">
+          <div class="testimonial-compact-header">
+            <div class="profile-compact">
+              <img src="img/jc.jpg" alt="John Carlo">
+              <div>
+                <h4>JC E.</h4>
+                <span>Business Owner</span>
+              </div>
+            </div>
+            <div class="stars-compact">★★★★★</div>
+          </div>
+          <p>"Exceptional service with impressive turnaround times."</p>
+        </div>
+
+        <!-- TESTIMONIAL 2 -->
+        <div class="testimonial-compact">
+          <div class="testimonial-compact-header">
+            <div class="profile-compact">
+              <img src="img/lans.jpg" alt="Lance M.">
+              <div>
+                <h4>Lance M.</h4>
+                <span>Professional</span>
+              </div>
+            </div>
+            <div class="stars-compact">★★★★★</div>
+          </div>
+          <p>"Consistently excellent quality and attention to detail."</p>
+        </div>
+
+        <!-- TESTIMONIAL 3 -->
+        <div class="testimonial-compact">
+          <div class="testimonial-compact-header">
+            <div class="profile-compact">
+              <img src="img/james.jpg" alt="james">
+              <div>
+                <h4>James D.</h4>
+                <span>Regular Client</span>
+              </div>
+            </div>
+            <div class="stars-compact">★★★★★</div>
+          </div>
+          <p>"Outstanding reliability. Always on time."</p>
+        </div>
+
+        <!-- TESTIMONIAL 4 -->
+        <div class="testimonial-compact">
+          <div class="testimonial-compact-header">
+            <div class="profile-compact">
+              <img src="img/CHES.jpg" alt="Chester G.">
+              <div>
+                <h4>Chester G.</h4>
+                <span>Office Worker</span>
+              </div>
+            </div>
+            <div class="stars-compact">★★★★★</div>
+          </div>
+          <p>"Professional service. Highly recommended for all."</p>
+        </div>
+
+      </div>
+
+      <!-- STATS BAR -->
+      <div class="compact-stats-bar">
+        <div class="stat-compact">
+          <span class="stat-number-compact">4.9</span>
+          <span>Overall Rating</span>
+        </div>
+        <div class="stat-compact">
+          <span class="stat-number-compact">2.5K+</span>
+          <span>Clients Served</span>
+        </div>
+        <div class="stat-compact">
+          <span class="stat-number-compact">99%</span>
+          <span>Satisfaction</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+  <!-- FOOTER ✅ SEPARATE SECTION -->
+  <footer>
+    <div class="footer-container">
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <img src="img/Logo.png">
+        <h2>M & M Laundry Shop</h2>
+        <p>
+          Fast, fresh, and hassle-free laundry services
+          designed to make your daily life easier and
+          more convenient.
+        </p>
+        <a href="https://www.facebook.com/profile.php?id=61572294501937" target="_blank" class="footer-fb-btn">
+          Visit Facebook Page
+        </a>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#Home">Home</a></li>
+          <li><a href="#Franchise">Franchise</a></li>
+          <li><a href="#Service">Services</a></li>
+          <li><a href="#About">About Us</a></li>
+        </ul>
+      </div>
+
+      <!-- CONTACT INFO -->
+      <div class="footer-contact">
+        <h3>Contact Info</h3>
+        <p>📍 244 Market Avenue, Pasig City</p>
+        <p>📞 0968-301-0566</p>
+        <p>📞 0993-822-4989</p>
+        <p>📧 mmlaundryshop@gmail.com</p>
+        <div class="footer-images">
+          <img src="img/a4.png">
+          <img src="img/mapweb.png">
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 M & M Laundry Shop. All Rights Reserved.
+    </div>
+  </footer>
   <script>
     function revealOnScroll() {
       const reveals = document.querySelectorAll(".reveal");
