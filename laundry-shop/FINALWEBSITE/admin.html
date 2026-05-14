@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>M&M Laundry Admin Dashboard</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -25,8 +25,14 @@
     <div>
 
         <div class="logo-section">
+
             <img src="img/Logo.png">
-            <h2>M&M Laundry Shop</h2>
+
+            <div>
+                <h2>M&M Laundry</h2>
+                <p>Admin Dashboard</p>
+            </div>
+
         </div>
 
         <div class="sidebar-menu">
@@ -67,135 +73,88 @@
 
 </aside>
 
-<!-- MAIN -->
+<!-- MAIN CONTENT -->
 <div class="main-content">
 
-    <!-- OVERVIEW -->
+    <!-- DASHBOARD -->
     <div id="dashboard" class="tab-content active-tab">
 
-        <header class="topbar">
+        <div class="page-header">
 
-            <div>
-                <h1>Business Overview</h1>
-                <p>Monitor laundry shop performance and operations</p>
-            </div>
+            <h1>Business Overview</h1>
 
-        </header>
+            <p>
+                Monitor laundry shop performance and operations
+            </p>
 
-        <!-- ANALYTICS -->
-        <section class="analytics">
+        </div>
 
-            <div class="stat-card blue clickable-card glow-card"
+        <section class="large-analytics">
+
+            <div class="large-card blue clickable-card"
             data-tab-target="orders">
 
-                <div>
-                    <p>Total Orders</p>
-                    <h2 id="card-total-orders">0</h2>
-                    <span>Click to manage orders</span>
-                </div>
+                <div class="large-card-content">
 
-                <i class="fa-solid fa-box"></i>
+                    <div>
+                        <p>Total Orders</p>
+                        <h2 id="card-total-orders">0</h2>
+                        <span>All customer laundry transactions</span>
+                    </div>
+
+                    <i class="fa-solid fa-box"></i>
+
+                </div>
 
             </div>
 
-            <div class="stat-card purple clickable-card glow-card"
+            <div class="large-card purple clickable-card"
             data-tab-target="revenue">
 
-                <div>
-                    <p>Total Revenue</p>
-                    <h2 id="card-total-revenue">₱0</h2>
-                    <span>Click to view analytics</span>
-                </div>
+                <div class="large-card-content">
 
-                <i class="fa-solid fa-peso-sign"></i>
+                    <div>
+                        <p>Total Revenue</p>
+                        <h2 id="card-total-revenue">₱0</h2>
+                        <span>Completed order earnings</span>
+                    </div>
+
+                    <i class="fa-solid fa-peso-sign"></i>
+
+                </div>
 
             </div>
 
-            <div class="stat-card orange clickable-card glow-card"
+            <div class="large-card orange clickable-card"
             data-tab-target="orders">
 
-                <div>
-                    <p>Pending</p>
-                    <h2 id="card-pending">0</h2>
-                    <span>Orders still processing</span>
-                </div>
+                <div class="large-card-content">
 
-                <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <p>Pending Orders</p>
+                        <h2 id="card-pending">0</h2>
+                        <span>Orders currently processing</span>
+                    </div>
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
 
             </div>
 
-            <div class="stat-card green clickable-card glow-card"
+            <div class="large-card green clickable-card"
             data-tab-target="orders">
 
-                <div>
-                    <p>Completed</p>
-                    <h2 id="card-completed">0</h2>
-                    <span>Finished transactions</span>
-                </div>
+                <div class="large-card-content">
 
-                <i class="fa-solid fa-circle-check"></i>
+                    <div>
+                        <p>Completed Orders</p>
+                        <h2 id="card-completed">0</h2>
+                        <span>Successfully finished orders</span>
+                    </div>
 
-            </div>
+                    <i class="fa-solid fa-circle-check"></i>
 
-        </section>
-
-        <!-- OVERVIEW GRID -->
-        <section class="overview-grid">
-
-            <div class="overview-card">
-
-                <div class="overview-title">
-                    <h3>Recent Activity</h3>
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
-
-                <ul class="activity-list">
-                    <li>New laundry order received</li>
-                    <li>2 orders marked as completed</li>
-                    <li>Revenue updated automatically</li>
-                    <li>Franchise inquiry submitted</li>
-                </ul>
-
-            </div>
-
-            <div class="overview-card">
-
-                <div class="overview-title">
-                    <h3>Quick Insights</h3>
-                    <i class="fa-solid fa-chart-pie"></i>
-                </div>
-
-                <div class="insight-box">
-                    <p>Most customers prefer wash & fold services.</p>
-                </div>
-
-                <div class="insight-box">
-                    <p>Peak laundry hours are around 1PM - 5PM.</p>
-                </div>
-
-                <div class="insight-box">
-                    <p>Completed orders improve revenue analytics instantly.</p>
-                </div>
-
-            </div>
-
-            <div class="overview-card">
-
-                <div class="overview-title">
-                    <h3>Business Tips</h3>
-                    <i class="fa-solid fa-lightbulb"></i>
-                </div>
-
-                <div class="tip-card">
-                    Offer discounts for repeat customers.
-                </div>
-
-                <div class="tip-card">
-                    Add express laundry service for extra income.
-                </div>
-
-                <div class="tip-card">
-                    Encourage pickups for convenience.
                 </div>
 
             </div>
@@ -207,11 +166,16 @@
     <!-- ORDERS -->
     <div id="orders" class="tab-content">
 
-        <div class="orders-top">
+        <div class="page-header orders-header">
 
             <div>
+
                 <h1>Orders Management</h1>
-                <p>Track and manage laundry transactions</p>
+
+                <p>
+                    Track and manage customer laundry transactions
+                </p>
+
             </div>
 
             <div class="search-box">
@@ -230,9 +194,21 @@
         <!-- LIVE ORDERS -->
         <section class="table-section">
 
-            <div class="table-header">
-                <h2>Live Orders</h2>
-                <p>Manage customer laundry requests</p>
+            <div class="section-header">
+
+                <div>
+                    <h2>Live Orders</h2>
+                    <p>Manage active customer laundry requests</p>
+                </div>
+
+                <button class="bulk-delete-btn"
+                onclick="deleteSelectedOrders()">
+
+                    <i class="fa-solid fa-trash"></i>
+                    Delete Selected
+
+                </button>
+
             </div>
 
             <div class="table-card">
@@ -240,7 +216,13 @@
                 <table>
 
                     <thead>
+
                         <tr>
+
+                            <th>
+                                <input type="checkbox" id="selectAll">
+                            </th>
+
                             <th>#</th>
                             <th>Customer</th>
                             <th>Contact</th>
@@ -249,7 +231,9 @@
                             <th>Status</th>
                             <th>Delivery Method</th>
                             <th>Action</th>
+
                         </tr>
+
                     </thead>
 
                     <tbody id="ordersBody"></tbody>
@@ -260,14 +244,16 @@
 
         </section>
 
-        <br><br>
-
-        <!-- COMPLETED ORDERS -->
+        <!-- COMPLETED -->
         <section class="table-section">
 
-            <div class="table-header">
-                <h2>Completed Orders</h2>
-                <p>Finished laundry transactions</p>
+            <div class="section-header">
+
+                <div>
+                    <h2>Completed Orders</h2>
+                    <p>Successfully finished transactions</p>
+                </div>
+
             </div>
 
             <div class="table-card">
@@ -275,7 +261,9 @@
                 <table>
 
                     <thead>
+
                         <tr>
+
                             <th>#</th>
                             <th>Customer</th>
                             <th>Contact</th>
@@ -283,7 +271,9 @@
                             <th>Amount</th>
                             <th>Status</th>
                             <th>Delivery Method</th>
+
                         </tr>
+
                     </thead>
 
                     <tbody id="completedOrdersBody"></tbody>
@@ -299,58 +289,74 @@
     <!-- REVENUE -->
     <div id="revenue" class="tab-content">
 
-        <section class="table-section">
+        <div class="page-header">
 
-            <div class="table-header">
-                <h2>Monthly Revenue</h2>
-                <p>Real-time revenue analytics</p>
-            </div>
+            <h1>Monthly Revenue</h1>
 
-            <div class="chart-card">
-                <canvas id="revenueChart"></canvas>
-            </div>
+            <p>
+                Real-time revenue analytics and performance tracking
+            </p>
 
-        </section>
+        </div>
 
-    </div>
-
-    <!-- SETTINGS -->
-    <div id="settings" class="tab-content">
+        <div class="chart-card">
+            <canvas id="revenueChart"></canvas>
+        </div>
 
     </div>
 
     <!-- INQUIRIES -->
     <div id="inquiries" class="tab-content">
 
-        <section class="table-section">
+        <div class="page-header">
 
-            <div class="table-header">
-                <h2>Franchise Inquiries</h2>
-                <p>Customer partnership requests</p>
-            </div>
+            <h1>Franchise Inquiries</h1>
 
-            <div class="table-card">
+            <p>
+                Customer partnership and business requests
+            </p>
 
-                <table>
+        </div>
 
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Contact</th>
-                            <th>Message</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+        <div class="table-card">
 
-                    <tbody id="inquiriesBody"></tbody>
+            <table>
 
-                </table>
+                <thead>
 
-            </div>
+                    <tr>
 
-        </section>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="inquiriesBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settings" class="tab-content">
+
+        <div class="page-header">
+
+            <h1>Settings</h1>
+
+            <p>
+                Configure laundry pricing and services
+            </p>
+
+        </div>
 
     </div>
 

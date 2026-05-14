@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Track Your Laundry</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- FIXED HEADER - MATCHES INDEX.HTML -->
   <header>
     <div class="header-left">
       <div id="Lugu">
@@ -11,238 +16,300 @@
       </div>
       <div class="tagline">
         <span>FAST AND FRESH LAUNDRY JUST</span>
-          <a href="booknow.html">
+        <a href="booknow.html">
           <button>CLICK AWAY!</button>
         </a>
       </div>
     </div>
-<nav>
+    <nav>
       <ul>
-<li><a href="index.html">HOME</a></li>
-<li><a href="franchise.html">FRANCHISE</a></li>
-<li><a href="service.html">SERVICE</a></li>
-<li><a href="about.html">ABOUT US</a></li>
-<li><a href="contact.html">CONTACT US</a></li>
-<li><a href="account.html" class="account-btn active">ACCOUNT</a></li>
-<li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
-    </ul>
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="franchise.html">FRANCHISE</a></li>
+        <li><a href="service.html">SERVICE</a></li>
+        <li><a href="about.html">ABOUT US</a></li>
+        <li><a href="contact.html">CONTACT US</a></li>
+        <li><a href="account.html" class="account-btn active">ACCOUNT</a></li>
+        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+      </ul>
     </nav>
   </header>
-  <style>
-    
-    /* GLOBAL PAGE DESIGN */
-body {
-  font-family: "Poppins", sans-serif;
-  background: url('img/servicebg.png') no-repeat center center/cover;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 180px; /* para di sumabit sa fixed header */
-  min-height: 100vh;
-  text-align: center;
-}
 
-/* TRACK CONTAINER */
-.track-container {
-  background: white;
-  padding: 40px 35px;
-  border-radius: 18px;
-  box-shadow: 0 5px 18px rgba(0,0,0,0.25);
-  max-width: 430px;
-  width: 95%;
-  text-align: center;
-  margin-top: 20px;
-}
+  <!-- MAIN CONTENT -->
+  <div class="tracklaundry-page">
+    <div class="track-container">
+      <a href="booknow.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Booking
+      </a>
+      <h2>Track Your Laundry</h2>
+      <p>Enter your ticket number to check your order status.</p>
 
-/* INPUT */
-#ticketInput {
-  padding: 12px;
-  width: 90%;
-  border: 2px solid #bcdcff;
-  border-radius: 10px;
-  font-size: 16px;
-  margin-bottom: 15px;
-  transition: 0.3s;
-}
+      <form id="trackForm">
+        <input type="text" id="ticketInput" placeholder="Enter ticket number" required>
+        <br>
+        <button type="submit">Track Order</button>
+      </form>
 
-#ticketInput:focus {
-  border-color: #0094ff;
-  box-shadow: 0 0 5px rgba(0,148,255,0.4);
-}
-
-/* BUTTON */
-button {
-  background: linear-gradient(to bottom, #50aaff, #0070c9);
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 16px;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(to bottom, #3c8fe0, #005fa3);
-}
-
-/* BACK BUTTON */
-.back-btn {
-  position: absolute;
-  top: 150px;
-  left: 135px;
-  background: #0094ff;
-  color: white;
-  text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
-  transition: 0.3s;
-}
-
-.back-btn:hover {
-  background: #0077cc;
-}
-
-/* RESULT BOX */
-#trackResult {
-  margin-top: 25px;
-  padding: 20px;
-  background: #f7fbff;
-  border: 1px solid #d3e8ff;
-  border-radius: 12px;
-  text-align: left;
-  font-size: 15px;
-  display: none; /* hidden until result appears */
-}
-
-#trackResult h3 {
-  color: #0077cc;
-  margin-bottom: 10px;
-}
-
-#trackResult p {
-  margin-bottom: 6px;
-}
-
-
-
-  </style>
-</head>
-<body>
-  <div class="track-container">
-    <a href="booknow.html" class="back-btn">← Back</a>
-    <h2>Track Your Laundry</h2>
-    <p>Enter your ticket number to check your order status.</p>
-
-
-    <form id="trackForm">
-      <input type="text" id="ticketInput" placeholder="Enter ticket number" required>
-      <br>
-      <button type="submit">Track</button>
-    </form>
-
-    <div id="trackResult"></div>
+      <div id="trackResult"></div>
+    </div>
   </div>
 
+  <!-- SCRIPTS -->
+  <script src="web.js"></script>
   <script>
+    // TRACK LAUNDRY FUNCTIONALITY
+    const form = document.getElementById("trackForm");
+    const resultBox = document.getElementById("trackResult");
 
-const form =
-  document.getElementById("trackForm");
+    // AUTO TICKET FROM URL
+    const params = new URLSearchParams(window.location.search);
+    const autoTicket = params.get("ticket");
 
-const resultBox =
-  document.getElementById("trackResult");
+    if (autoTicket) {
+      document.getElementById("ticketInput").value = autoTicket;
+    }
 
-// ================= AUTO TICKET =================
-const params =
-  new URLSearchParams(window.location.search);
+    // TRACK FORM SUBMISSION
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const code = document.getElementById("ticketInput").value.trim();
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const match = orders.find(o => o.ticket === code);
 
-const autoTicket =
-  params.get("ticket");
+      resultBox.style.display = "block";
 
-if (autoTicket) {
+      if (match) {
+        resultBox.innerHTML = `
+          <div class="track-success">
+            <h3><i class="fas fa-check-circle"></i> Order Found!</h3>
+            <div class="track-details">
+              <p><strong>Ticket:</strong> ${match.ticket}</p>
+              <p><strong>Name:</strong> ${match.name}</p>
+              <p><strong>Address:</strong> ${match.address}</p>
+              <p><strong>Service:</strong> ${match.service}</p>
+              <p><strong>Soap:</strong> ${match.soap}</p>
+              <p><strong>Fabcon:</strong> ${match.fabcon}</p>
+              <p><strong>Payment:</strong> ${match.payment}</p>
+              <p><strong>Amount:</strong> ₱${match.amount}</p>
+              <p><strong>Status:</strong> 
+                <span class="status-badge ${match.status.toLowerCase()}">${match.status}</span>
+              </p>
+            </div>
+          </div>
+        `;
+      } else {
+        resultBox.innerHTML = `
+          <div class="track-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>No Record Found</h3>
+            <p>Please check your ticket number and try again.</p>
+          </div>
+        `;
+      }
+    });
 
-  document.getElementById(
-    "ticketInput"
-  ).value = autoTicket;
-}
+    // AUTO TRACK IF TICKET IN URL
+    if (autoTicket) {
+      form.dispatchEvent(new Event("submit"));
+    }
+  </script>
 
-// ================= TRACK =================
-form.addEventListener("submit", function(e) {
+  <style>
+    /* TRACK LAUNDRY PAGE SPECIFIC STYLES */
+    .tracklaundry-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      padding: 180px 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  e.preventDefault();
+    .track-container {
+      background: white;
+      padding: 50px 40px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
 
-  const code =
-    document.getElementById("ticketInput")
-    .value
-    .trim();
+    .track-container h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #3ba7ff, #0094ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-  const orders =
-    JSON.parse(localStorage.getItem("orders")) || [];
+    .track-container p {
+      color: #64748b;
+      font-size: 16px;
+      margin-bottom: 35px;
+      line-height: 1.6;
+    }
 
-  const match =
-    orders.find(o => o.ticket === code);
+    /* BACK BUTTON */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #0094ff, #0077cc);
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 8px 25px rgba(0,148,255,0.3);
+      transition: all 0.3s ease;
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-  resultBox.style.display = "block";
+    .back-btn:hover {
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 12px 35px rgba(0,148,255,0.4);
+    }
 
-  if (match) {
+    /* INPUT */
+    #ticketInput {
+      width: 100%;
+      padding: 20px 25px;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-size: 16px;
+      margin-bottom: 25px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background: #fafbff;
+    }
 
-    resultBox.innerHTML = `
-      <h3>Tracking Details</h3>
+    #ticketInput:focus {
+      outline: none;
+      border-color: #0094ff;
+      box-shadow: 0 0 0 4px rgba(0,148,255,0.1);
+      transform: translateY(-2px);
+    }
 
-      <p><strong>Ticket:</strong>
-      ${match.ticket}</p>
+    /* BUTTON */
+    button[type="submit"] {
+      background: linear-gradient(135deg, #3ba7ff, #0094ff);
+      color: white;
+      border: none;
+      padding: 18px 40px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(59,167,255,0.3);
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-      <p><strong>Name:</strong>
-      ${match.name}</p>
+    button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(59,167,255,0.4);
+    }
 
-      <p><strong>Address:</strong>
-      ${match.address}</p>
+    /* RESULT STYLES */
+    #trackResult {
+      margin-top: 30px;
+      display: none;
+    }
 
-      <p><strong>Service:</strong>
-      ${match.service}</p>
+    .track-success,
+    .track-error {
+      padding: 30px;
+      border-radius: 20px;
+      text-align: left;
+    }
 
-      <p><strong>Soap:</strong>
-      ${match.soap}</p>
+    .track-success {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 2px solid #bbf7d0;
+    }
 
-      <p><strong>Fabcon:</strong>
-      ${match.fabcon}</p>
+    .track-error {
+      background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+      border: 2px solid #fca5a5;
+      color: #dc2626;
+    }
 
-      <p><strong>Payment:</strong>
-      ${match.payment}</p>
+    .track-success h3,
+    .track-error h3 {
+      color: #166534;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-      <p><strong>Amount:</strong>
-      ₱${match.amount}</p>
+    .track-error h3 {
+      color: #dc2626;
+    }
 
-      <p><strong>Status:</strong>
-      ${match.status}</p>
-    `;
+    .track-error i {
+      color: #f87171;
+      font-size: 24px;
+    }
 
-  } else {
+    .track-details p {
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: #374151;
+      display: flex;
+      justify-content: space-between;
+    }
 
-    resultBox.innerHTML = `
-      <p style="color:red;">
-        No record found.
-      </p>
-    `;
-  }
-});
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
 
-// ================= AUTO TRACK =================
-if (autoTicket) {
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
 
-  form.dispatchEvent(
-    new Event("submit")
-  );
-}
+    .status-badge.processing {
+      background: #dbeafe;
+      color: #1e40af;
+    }
 
-</script>
+    .status-badge.completed {
+      background: #d1fae5;
+      color: #059669;
+    }
 
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .tracklaundry-page {
+        padding: 160px 15px 30px;
+      }
+      
+      .track-container {
+        padding: 40px 30px;
+        margin: 0 10px;
+      }
+      
+      .track-container h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
 </body>
 </html>
