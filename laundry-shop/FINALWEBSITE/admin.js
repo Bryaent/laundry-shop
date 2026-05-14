@@ -1,443 +1,387 @@
 // ================= ORDERS =================
 
-const ordersTable =
-document.querySelector("#ordersBody");
+const ordersTable = document.querySelector("#ordersBody");
+const completedOrdersTable = document.querySelector("#completedOrdersBody");
 
-const completedOrdersTable =
-document.querySelector("#completedOrdersBody");
+let orders = [];
 
-let orders =
-JSON.parse(localStorage.getItem("orders")) || [];
+// ================= LOAD ORDERS =================
+function loadOrders() {
+    fetch("http://localhost:3000/laundry-shop/FINALWEBSITE/orders")
+        .then(res => res.json())
+        .then(data => {
+            orders = data;
+            renderOrders();
+            renderRevenueChart();
+        })
+        .catch(err => {
+            console.log("DB error, fallback localStorage");
 
-function renderOrders(){
+            orders = JSON.parse(localStorage.getItem("orders")) || [];
+            renderOrders();
+            renderRevenueChart();
+        });
+}
+
+loadOrders();
+
+// ================= RENDER ORDERS =================
+function renderOrders() {
+    if (!ordersTable || !completedOrdersTable) return;
 
     ordersTable.innerHTML = "";
     completedOrdersTable.innerHTML = "";
 
     const totalOrders = orders.length;
 
-    const completedOrders =
-    orders.filter(o => o.status === "Completed").length;
+    const completedOrders = orders.filter(
+        o => o.status === "Completed"
+    ).length;
 
-    const pendingOrders =
-    totalOrders - completedOrders;
+    const pendingOrders = totalOrders - completedOrders;
 
     const totalRevenue = orders
-    .filter(o => o.status === "Completed")
-    .reduce((sum, o) =>
-        sum + Number(o.amount), 0);
+        .filter(o => o.status === "Completed")
+        .reduce((sum, o) => sum + Number(o.amount || 0), 0);
 
-    document.getElementById(
-        "card-total-orders"
-    ).innerText = totalOrders;
+    // Dashboard Cards
+    const cardTotalOrders = document.getElementById("card-total-orders");
+    const cardCompleted = document.getElementById("card-completed");
+    const cardPending = document.getElementById("card-pending");
+    const cardRevenue = document.getElementById("card-total-revenue");
 
-    document.getElementById(
-        "card-completed"
-    ).innerText = completedOrders;
+    if (cardTotalOrders) cardTotalOrders.innerText = totalOrders;
+    if (cardCompleted) cardCompleted.innerText = completedOrders;
+    if (cardPending) cardPending.innerText = pendingOrders;
+    if (cardRevenue) cardRevenue.innerText = `₱${totalRevenue.toLocaleString()}`;
 
-    document.getElementById(
-        "card-pending"
-    ).innerText = pendingOrders;
-
-    document.getElementById(
-        "card-total-revenue"
-    ).innerText = `₱${totalRevenue}`;
-
-    if(orders.length === 0){
-
+    // No Orders
+    if (orders.length === 0) {
         ordersTable.innerHTML = `
-        <tr>
-            <td colspan="8"
-            style="text-align:center;padding:20px;">
-                No live orders
-            </td>
-        </tr>
+            <tr>
+                <td colspan="8" style="text-align:center;padding:20px;">
+                    No live orders
+                </td>
+            </tr>
         `;
 
         completedOrdersTable.innerHTML = `
-        <tr>
-            <td colspan="7"
-            style="text-align:center;padding:20px;">
-                No completed orders
-            </td>
-        </tr>
+            <tr>
+                <td colspan="7" style="text-align:center;padding:20px;">
+                    No completed orders
+                </td>
+            </tr>
         `;
 
         return;
     }
 
-    orders.forEach((o,i)=>{
+    // Render Each Order
+    orders.forEach((o, i) => {
+        const tr = document.createElement("tr");
 
-        const tr =
-        document.createElement("tr");
+        const pickupDisplay =
+            o.pickupType || o.delivery || "Store Pickup";
 
-        if(o.status === "Completed"){
-
+        // COMPLETED ORDERS
+        if (o.status === "Completed") {
             tr.innerHTML = `
-            <td>${o.ticket}</td>
-            <td>${o.name}</td>
-            <td>${o.contact}</td>
-            <td>${o.service}</td>
-            <td>₱${o.amount}</td>
-
-            <td>
-                <span class="status completed">
-                    Completed
-                </span>
-            </td>
-
-            <td>${o.delivery}</td>
+                <td>${o.ticket || ""}</td>
+                <td>${o.name || ""}</td>
+                <td>${o.contact || "N/A"}</td>
+                <td>${o.service || ""}</td>
+                <td>₱${Number(o.amount || 0).toLocaleString()}</td>
+                <td>
+                    <span class="status completed">
+                        Completed
+                    </span>
+                </td>
+                <td>${pickupDisplay}</td>
             `;
 
             completedOrdersTable.appendChild(tr);
-
         }
 
-        else{
+        // ACTIVE ORDERS
+        else {
+            const statusClass = (o.status || "Pending")
+                .toLowerCase()
+                .replace(/\s+/g, "");
 
             tr.innerHTML = `
-            <td>${o.ticket}</td>
+                <td>${o.ticket || ""}</td>
+                <td>${o.name || ""}</td>
+                <td>${o.contact || "N/A"}</td>
+                <td>${o.service || ""}</td>
+                <td>₱${Number(o.amount || 0).toLocaleString()}</td>
+                <td>
+                    <span class="status ${statusClass}">
+                        ${o.status || "Pending"}
+                    </span>
+                </td>
+                <td>${pickupDisplay}</td>
+                <td>
+                    <button
+                        class="action-btn received-btn"
+                        onclick="updateStatus(${i}, 'Received')">
+                        Received
+                    </button>
 
-            <td>${o.name}</td>
+                    <button
+                        class="action-btn ready-btn"
+                        onclick="updateStatus(${i}, 'Ready')">
+                        Ready
+                    </button>
 
-            <td>${o.contact}</td>
+                    <button
+                        class="action-btn progress-btn"
+                        onclick="updateStatus(${i}, 'In Progress')">
+                        In Progress
+                    </button>
 
-            <td>${o.service}</td>
+                    <button
+                        class="action-btn complete-btn"
+                        onclick="updateStatus(${i}, 'Completed')">
+                        Complete
+                    </button>
 
-            <td>₱${o.amount}</td>
-
-            <td>
-                <span class="status ${
-                    o.status
-                    .toLowerCase()
-                    .replace(" ","")
-                }">
-                    ${o.status}
-                </span>
-            </td>
-
-            <td>${o.delivery}</td>
-
-            <td>
-
-                <button
-                class="action-btn received-btn"
-                onclick="updateStatus(${i},
-                'Received')">
-                Received
-                </button>
-
-                <button
-                class="action-btn ready-btn"
-                onclick="updateStatus(${i},
-                'Ready')">
-                Ready
-                </button>
-
-                <button
-                class="action-btn progress-btn"
-                onclick="updateStatus(${i},
-                'In Progress')">
-                In Progress
-                </button>
-
-                <button
-                class="action-btn complete-btn"
-                onclick="updateStatus(${i},
-                'Completed')">
-                Complete
-                </button>
-
-                <button
-                class="action-btn delete-btn"
-                onclick="deleteOrder(${i})">
-                Delete
-                </button>
-
-            </td>
+                    <button
+                        class="action-btn delete-btn"
+                        onclick="deleteOrder(${i})">
+                        Delete
+                    </button>
+                </td>
             `;
 
             ordersTable.appendChild(tr);
-
         }
-
     });
 
-    localStorage.setItem(
-        "orders",
-        JSON.stringify(orders)
-    );
-
+    // Backup to localStorage
+    localStorage.setItem("orders", JSON.stringify(orders));
 }
 
-// UPDATE STATUS
-function updateStatus(i,status){
+// ================= UPDATE STATUS =================
+// ================= UPDATE STATUS =================
+function updateStatus(i, status) {
+    const order = orders[i];
+    if (!order || !order.id) return;
 
-    orders[i].status = status;
+    fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php?action=update", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: order.id,
+            status: status
+        })
+    })
+    .then(res => res.json())
+    .then(() => loadOrders())
+    .catch(err => console.log(err));
+}
+// ================= DELETE ORDER =================
+function deleteOrder(i) {
+    const order = orders[i];
+    if (!order || !order.id) return;
 
-    if(status === "Completed"){
-
-        orders[i].month =
-        new Date().getMonth();
-
-    }
-
-    renderOrders();
-    renderRevenueChart();
-
+    fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php?action=delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: order.id,
+            action: "delete"
+        })
+    })
+    .then(() => loadOrders())
+    .catch(err => console.log(err));
 }
 
-// DELETE
-function deleteOrder(i){
+// ================= DELETE ORDER =================
+function deleteOrder(i) {
+    const order = orders[i];
+    if (!order || !order.id) return;
 
-    orders.splice(i,1);
-
-    renderOrders();
-    renderRevenueChart();
-
+    fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: order.id })
+    })
+    .then(() => loadOrders())
+    .catch(err => console.log(err));
 }
-
-renderOrders();
-
 
 // ================= TAB SWITCHING =================
+const menuButtons = document.querySelectorAll(".menu-btn");
+const tabs = document.querySelectorAll(".tab-content");
 
-const menuButtons =
-document.querySelectorAll(".menu-btn");
-
-const tabs =
-document.querySelectorAll(".tab-content");
-
-function switchTab(tabId){
-
+function switchTab(tabId) {
     menuButtons.forEach(btn =>
         btn.classList.remove("active")
     );
 
-    tabs.forEach(t =>
-        t.classList.remove("active-tab")
+    tabs.forEach(tab =>
+        tab.classList.remove("active-tab")
     );
 
-    document
-    .querySelector(`[data-tab="${tabId}"]`)
-    .classList.add("active");
+    const activeButton = document.querySelector(
+        `[data-tab="${tabId}"]`
+    );
 
-    document
-    .getElementById(tabId)
-    .classList.add("active-tab");
+    const activeTab = document.getElementById(tabId);
 
+    if (activeButton) activeButton.classList.add("active");
+    if (activeTab) activeTab.classList.add("active-tab");
 }
 
 menuButtons.forEach(button => {
-
     button.addEventListener("click", () => {
-
-        const tab =
-        button.getAttribute("data-tab");
-
+        const tab = button.getAttribute("data-tab");
         switchTab(tab);
-
     });
-
 });
-
 
 // ================= CLICKABLE CARDS =================
-
 const clickableCards =
-document.querySelectorAll(".clickable-card");
+    document.querySelectorAll(".clickable-card");
 
 clickableCards.forEach(card => {
-
     card.addEventListener("click", () => {
-
         const target =
-        card.getAttribute("data-tab-target");
+            card.getAttribute("data-tab-target");
 
         switchTab(target);
-
     });
-
 });
 
-
 // ================= REVENUE CHART =================
+function renderRevenueChart() {
+    const ctx = document.getElementById("revenueChart");
+    if (!ctx || typeof Chart === "undefined") return;
 
-function renderRevenueChart(){
-
-    const completedOrders =
-    orders.filter(
+    const completed = orders.filter(
         o => o.status === "Completed"
     );
 
-    const monthlyRevenue =
-    new Array(12).fill(0);
+    const monthlyRevenue = new Array(12).fill(0);
 
-    completedOrders.forEach(order => {
-
+    completed.forEach(order => {
         const month =
-        order.month !== undefined
-        ? order.month
-        : new Date().getMonth();
+            order.month !== undefined
+                ? order.month
+                : new Date().getMonth();
 
-        monthlyRevenue[month] +=
-        Number(order.amount);
-
+        monthlyRevenue[month] += Number(order.amount || 0);
     });
 
-    const ctx =
-    document.getElementById(
-        "revenueChart"
-    );
-
-    if(window.revenueChartInstance){
-
+    if (window.revenueChartInstance) {
         window.revenueChartInstance.destroy();
-
     }
 
-    window.revenueChartInstance =
-    new Chart(ctx, {
-
-        type:"line",
-
-        data:{
-
-            labels:[
-                "Jan","Feb","Mar","Apr",
-                "May","Jun","Jul","Aug",
-                "Sep","Oct","Nov","Dec"
+    window.revenueChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: [
+                "Jan", "Feb", "Mar", "Apr",
+                "May", "Jun", "Jul", "Aug",
+                "Sep", "Oct", "Nov", "Dec"
             ],
-
-            datasets:[{
-
-                label:"Monthly Revenue",
-
-                data:monthlyRevenue,
-
-                tension:0.4,
-
-                fill:true,
-
-                borderWidth:4
-
+            datasets: [{
+                label: "Monthly Revenue",
+                data: monthlyRevenue,
+                tension: 0.4,
+                fill: true,
+                borderWidth: 4
             }]
         },
-
-        options:{
-
-            responsive:true,
-
-            maintainAspectRatio:false,
-
-            scales:{
-                y:{
-                    beginAtZero:true
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }
-
     });
-
 }
 
-renderRevenueChart();
-
-
 // ================= SEARCH =================
+const searchInput = document.getElementById("searchInput");
 
-const searchInput =
-document.getElementById("searchInput");
-
-if(searchInput){
-
+if (searchInput) {
     searchInput.addEventListener("keyup", () => {
+        const value = searchInput.value.toLowerCase();
 
-        const value =
-        searchInput.value.toLowerCase();
-
-        const rows =
-        document.querySelectorAll(
+        const rows = document.querySelectorAll(
             "#ordersBody tr"
         );
 
         rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
 
-            const text =
-            row.innerText.toLowerCase();
-
-            row.style.display =
-            text.includes(value)
-            ? ""
-            : "none";
-
+            row.style.display = text.includes(value)
+                ? ""
+                : "none";
         });
-
     });
-
 }
 
-
 // ================= INQUIRIES =================
-
 const inquiriesBody =
-document.querySelector("#inquiriesBody");
+    document.querySelector("#inquiriesBody");
 
 let inquiries =
-JSON.parse(
-    localStorage.getItem("inquiries")
-) || [];
+    JSON.parse(localStorage.getItem("inquiries")) || [];
 
-function renderInquiries(){
+function renderInquiries() {
+    if (!inquiriesBody) return;
 
     inquiriesBody.innerHTML = "";
 
-    if(inquiries.length === 0){
-
+    if (inquiries.length === 0) {
         inquiriesBody.innerHTML = `
-        <tr>
-            <td colspan="6"
-            style="text-align:center;padding:20px;">
-                No franchise inquiries
-            </td>
-        </tr>
+            <tr>
+                <td colspan="6"
+                    style="text-align:center;padding:20px;">
+                    No franchise inquiries
+                </td>
+            </tr>
         `;
-
         return;
     }
 
-    inquiries.forEach((inq, i)=>{
-
-        const tr =
-        document.createElement("tr");
+    inquiries.forEach((inq, i) => {
+        const tr = document.createElement("tr");
 
         tr.innerHTML = `
-            <td>${inq.fullName}</td>
-            <td>${inq.email}</td>
-            <td>${inq.contact}</td>
-            <td>${inq.message}</td>
-            <td>${inq.date}</td>
-
+            <td>${inq.fullName || ""}</td>
+            <td>${inq.email || ""}</td>
+            <td>${inq.contact || ""}</td>
+            <td>${inq.message || ""}</td>
+            <td>${inq.date || ""}</td>
             <td>
                 <button
-                class="action-btn delete-btn"
-                onclick="deleteInquiry(${i})">
+                    class="action-btn delete-btn"
+                    onclick="deleteInquiry(${i})">
                     Delete
                 </button>
             </td>
         `;
 
         inquiriesBody.appendChild(tr);
-
     });
-
 }
 
 renderInquiries();
 
-function deleteInquiry(i){
-
-    inquiries.splice(i,1);
+function deleteInquiry(i) {
+    inquiries.splice(i, 1);
 
     localStorage.setItem(
         "inquiries",
@@ -445,6 +389,4 @@ function deleteInquiry(i){
     );
 
     renderInquiries();
-
 }
-

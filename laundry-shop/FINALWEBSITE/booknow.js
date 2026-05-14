@@ -416,15 +416,26 @@ function confirmFinalOrder() {
   };
 
   // ===== SAVE TO LOCAL STORAGE =====
-  let orders =
-    JSON.parse(localStorage.getItem("orders")) || [];
+  // ===== SAVE TO LOCAL STORAGE =====
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+orders.push(newOrder);
+localStorage.setItem("orders", JSON.stringify(orders));
 
-  orders.push(newOrder);
-
-  localStorage.setItem(
-    "orders",
-    JSON.stringify(orders)
-  );
+// ===== SAVE TO DATABASE (PHP MYSQL) =====
+fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/orders.php", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(newOrder)
+})
+.then(res => res.json())
+.then(data => {
+  console.log("Saved to DB:", data);
+})
+.catch(err => {
+  console.log("DB Error:", err);
+});
 
   // ===== SUCCESS =====
   alert(
