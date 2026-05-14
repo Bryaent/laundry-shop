@@ -164,23 +164,16 @@ function renderOrders() {
 // ================= UPDATE STATUS =================
 function updateStatus(i, status) {
     const order = orders[i];
-    if (!order) return; 
+    if (!order) return;
 
-    // 1. Optimistic Update: Update the local array immediately
+    // 1. UPDATE UI FIRST (Optimistic Update)
     order.status = status;
-
-    // 2. Re-render the tables and save the new status to localStorage
     renderOrders();
-    renderRevenueChart(); // Re-render the chart in case it was marked 'Completed'
+    renderRevenueChart();
 
-    // 3. If the order doesn't have an ID, we can't update the DB. 
-    // It will just stay in localStorage.
-    if (!order.id) {
-        console.warn("No order ID found. Status updated in localStorage only.");
-        return; 
-    }
+    if (!order.id) return; // Stop if no ID exists for the DB
 
-    // 4. Attempt to update the backend database
+    // 2. YOUR ORIGINAL DATABASE CONNECTIVITY
     fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php?action=update", {
         method: "POST",
         headers: {
@@ -192,10 +185,7 @@ function updateStatus(i, status) {
         })
     })
     .then(res => res.json())
-    .then(() => console.log(`Backend status updated to ${status}.`))
-    .catch(err => {
-        console.warn("Backend update failed. Relying on localStorage fallback.", err);
-    });
+    .catch(err => console.log(err));
 }
 
 // ================= DELETE ORDER =================
@@ -203,19 +193,14 @@ function deleteOrder(i) {
     const order = orders[i];
     if (!order) return;
 
-    // 1. Optimistic Update: Remove it from the local array immediately
+    // 1. UPDATE UI FIRST (Optimistic Update)
     orders.splice(i, 1);
-
-    // 2. Re-render the tables and update localStorage
     renderOrders();
-    renderRevenueChart(); // Update chart in case a completed order was deleted
+    renderRevenueChart();
 
-    if (!order.id) {
-        console.warn("No order ID found. Deleted from localStorage only.");
-        return;
-    }
+    if (!order.id) return; // Stop if no ID exists for the DB
 
-    // 3. Attempt to delete from the backend
+    // 2. YOUR ORIGINAL DATABASE CONNECTIVITY
     fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php?action=delete", {
         method: "POST",
         headers: {
@@ -227,8 +212,7 @@ function deleteOrder(i) {
         })
     })
     .then(res => res.json())
-    .then(() => console.log("Deleted from backend."))
-    .catch(err => console.warn("Backend delete failed. Relying on localStorage.", err));
+    .catch(err => console.log(err));
 }
 
 // ================= TAB SWITCHING =================
