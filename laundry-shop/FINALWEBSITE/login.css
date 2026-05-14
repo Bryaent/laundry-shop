@@ -1,3 +1,4 @@
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -5,23 +6,27 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* BODY */
 body {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #4facfe, #00f2fe);
+  padding: 20px;
 }
 
 /* MAIN CONTAINER */
 .container {
+  position: relative;
   display: flex;
   width: 900px;
-  height: 550px;
+  max-width: 100%;
+  min-height: 550px;
   background: white;
   border-radius: 25px;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
 /* LEFT PANEL */
@@ -29,10 +34,12 @@ body {
   flex: 1;
   background: linear-gradient(135deg, #0077cc, #00c6ff);
   color: white;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   padding: 40px;
   text-align: center;
 }
@@ -45,29 +52,37 @@ body {
 .left-panel p {
   font-size: 14px;
   margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 .left-panel img {
   width: 200px;
+  max-width: 100%;
 }
 
 /* RIGHT PANEL */
 .right-panel {
   flex: 1;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  padding: 40px;
 }
 
+/* FORM */
 form {
-  width: 80%;
+  width: 100%;
+  max-width: 350px;
 }
 
 form h2 {
   margin-bottom: 20px;
+  color: #333;
 }
 
-/* INPUT */
+/* INPUTS */
 .input-group {
   margin-bottom: 15px;
 }
@@ -76,20 +91,35 @@ form h2 {
 .input-group select {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
+
   border: 1px solid #ccc;
+  border-radius: 10px;
+
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #0094ff;
+  box-shadow: 0 0 5px rgba(0, 148, 255, 0.3);
 }
 
 /* LOGIN BUTTON */
 .login-btn {
   width: 100%;
   padding: 12px;
+
   border: none;
   border-radius: 10px;
+
   background: #0094ff;
   color: white;
+
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
+
   margin-top: 10px;
 }
 
@@ -105,38 +135,49 @@ form h2 {
   color: #888;
 }
 
-/* SOCIAL */
+/* SOCIAL LOGIN */
 .social-login button {
   width: 100%;
   padding: 10px;
+
   border-radius: 10px;
   border: none;
+
   margin-bottom: 10px;
+
   cursor: pointer;
   font-weight: 500;
+  transition: 0.3s;
 }
 
-/* GOOGLE */
+/* GOOGLE BUTTON */
 .google-btn {
   background: linear-gradient(135deg, #ffffff, #f1f1f1);
   border: 1px solid #ddd;
   color: #444;
   font-weight: 600;
-  transition: 0.3s;
 }
 
+/* GOOGLE ICON */
 .google-btn i {
   margin-right: 10px;
   font-size: 16px;
 
-  /* GOOGLE COLORS */
-  background: linear-gradient(45deg, 
-    #4285F4,  /* Blue */
-    #34A853,  /* Green */
-    #FBBC05,  /* Yellow */
-    #EA4335   /* Red */
+  background: linear-gradient(
+    45deg,
+    #4285F4,
+    #34A853,
+    #FBBC05,
+    #EA4335
   );
+
+  /* STANDARD PROPERTY */
+  background-clip: text;
+
+  /* WEBKIT SUPPORT */
   -webkit-background-clip: text;
+
+  color: transparent;
   -webkit-text-fill-color: transparent;
 }
 
@@ -144,51 +185,64 @@ form h2 {
   background: linear-gradient(135deg, #4285F4, #34A853);
   color: white;
   border: none;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .google-btn:hover i {
+  color: white;
   -webkit-text-fill-color: white;
 }
 
-/* FACEBOOK */
+/* FACEBOOK BUTTON */
 .facebook-btn {
   background: #fff;
   border: 1px solid #ddd;
-  color: #1877f2; /* Facebook blue text */
+  color: #1877f2;
   font-weight: 600;
-  transition: 0.3s;
 }
 
-/* ICON */
+/* FACEBOOK ICON */
 .facebook-btn i {
   margin-right: 10px;
   font-size: 16px;
   color: #1877f2;
 }
 
-/* HOVER EFFECT */
+/* FACEBOOK HOVER */
 .facebook-btn:hover {
   background: linear-gradient(135deg, #1877f2, #3b5998);
   color: white;
   border: none;
+
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .facebook-btn:hover i {
   color: white;
 }
 
-/* REGISTER */
+/* REGISTER BUTTON */
 .register-btn {
   width: 100%;
   padding: 10px;
+
   border: none;
   background: transparent;
+
   color: #0094ff;
   cursor: pointer;
+
   margin-top: 10px;
+  transition: 0.3s;
 }
+
+.register-btn:hover {
+  color: #0077cc;
+}
+
+/* ADMIN BUTTON */
 .admin-icon-btn {
   position: absolute;
   bottom: 20px;
@@ -196,9 +250,10 @@ form h2 {
 
   width: 45px;
   height: 45px;
-  border-radius: 50%;
 
+  border-radius: 50%;
   border: none;
+
   background: #0094ff;
   color: white;
 
@@ -207,7 +262,8 @@ form h2 {
   align-items: center;
 
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: 0.3s;
 }
 
@@ -220,3 +276,23 @@ form h2 {
   font-size: 18px;
 }
 
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+  }
+
+  .left-panel {
+    padding: 30px 20px;
+  }
+
+  .right-panel {
+    padding: 30px 20px;
+  }
+}
