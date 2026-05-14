@@ -162,11 +162,25 @@ function renderOrders() {
 }
 
 // ================= UPDATE STATUS =================
-// ================= UPDATE STATUS =================
 function updateStatus(i, status) {
     const order = orders[i];
-    if (!order || !order.id) return;
+    if (!order) return; 
 
+    // 1. Optimistic Update: Update the local array immediately
+    order.status = status;
+
+    // 2. Re-render the tables and save the new status to localStorage
+    renderOrders();
+    renderRevenueChart(); // Re-render the chart in case it was marked 'Completed'
+
+    // 3. If the order doesn't have an ID, we can't update the DB. 
+    // It will just stay in localStorage.
+    if (!order.id) {
+        console.warn("No order ID found. Status updated in localStorage only.");
+        return; 
+    }
+
+    // 4. Attempt to update the backend database
     fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php?action=update", {
         method: "POST",
         headers: {
@@ -178,14 +192,30 @@ function updateStatus(i, status) {
         })
     })
     .then(res => res.json())
-    .then(() => loadOrders())
-    .catch(err => console.log(err));
+    .then(() => console.log(`Backend status updated to ${status}.`))
+    .catch(err => {
+        console.warn("Backend update failed. Relying on localStorage fallback.", err);
+    });
 }
+
 // ================= DELETE ORDER =================
 function deleteOrder(i) {
     const order = orders[i];
-    if (!order || !order.id) return;
+    if (!order) return;
 
+    // 1. Optimistic Update: Remove it from the local array immediately
+    orders.splice(i, 1);
+
+    // 2. Re-render the tables and update localStorage
+    renderOrders();
+    renderRevenueChart(); // Update chart in case a completed order was deleted
+
+    if (!order.id) {
+        console.warn("No order ID found. Deleted from localStorage only.");
+        return;
+    }
+
+    // 3. Attempt to delete from the backend
     fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php?action=delete", {
         method: "POST",
         headers: {
@@ -196,24 +226,9 @@ function deleteOrder(i) {
             action: "delete"
         })
     })
-    .then(() => loadOrders())
-    .catch(err => console.log(err));
-}
-
-// ================= DELETE ORDER =================
-function deleteOrder(i) {
-    const order = orders[i];
-    if (!order || !order.id) return;
-
-    fetch("http://localhost/laundry-shop/FINALWEBSITE/orders.php", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ id: order.id })
-    })
-    .then(() => loadOrders())
-    .catch(err => console.log(err));
+    .then(res => res.json())
+    .then(() => console.log("Deleted from backend."))
+    .catch(err => console.warn("Backend delete failed. Relying on localStorage.", err));
 }
 
 // ================= TAB SWITCHING =================
