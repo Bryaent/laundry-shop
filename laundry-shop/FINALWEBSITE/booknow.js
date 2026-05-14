@@ -1,3 +1,62 @@
+// ===== FIXED PRICING SYNC (PUT AT VERY TOP) =====
+function loadPricingFromStorage() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('laundryPricing'));
+        if (!saved) return console.log('No admin pricing found');
+        
+        // UPDATE STEP 1 SOAPS
+        if(saved.step1) {
+            stepContents[1].items[0].price = saved.step1[0]; // Ariel
+            stepContents[1].items[1].price = saved.step1[1]; // Tide  
+            stepContents[1].items[2].price = saved.step1[2]; // Breeze
+            stepContents[1].items[3].price = saved.step1[3]; // Surf
+            stepContents[1].items[4].price = saved.step1[4]; // Pride
+            stepContents[1].items[5].price = saved.step1[5]; // Wings
+        }
+        
+        // UPDATE STEP 2 FABCON
+        if(saved.step2) {
+            stepContents[2].items[0].price = saved.step2[0]; // Downy
+            stepContents[2].items[1].price = saved.step2[1]; // Del
+            stepContents[2].items[2].price = saved.step2[2]; // Champion
+            stepContents[2].items[3].price = saved.step2[3]; // Surf Fabcon
+            stepContents[2].items[4].price = saved.step2[4]; // Lala Fabcon
+            stepContents[2].items[5].price = saved.step2[5]; // Personal Choice
+        }
+        
+        // UPDATE STEP 3 WASH
+        if(saved.step3) {
+            stepContents[3].items[0].price = saved.step3[0]; // Quick Wash
+            stepContents[3].items[1].price = saved.step3[1]; // Deep Clean
+            stepContents[3].items[2].price = saved.step3[2]; // Premium Wash
+            stepContents[3].items[3].price = saved.step3[3]; // Eco Wash
+            stepContents[3].items[4].price = saved.step3[4]; // Cold Wash
+            stepContents[3].items[5].price = saved.step3[5]; // Hot Wash
+        }
+        
+        deliveryFee = saved.deliveryFee || 40;
+        
+        console.log('✅ PRICES UPDATED:', {
+            Ariel: stepContents[1].items[0].price,
+            Downy: stepContents[2].items[0].price,
+            'Quick Wash': stepContents[3].items[0].price
+        });
+        
+        // REFRESH UI
+        if(isConfirmed) renderConfirmation();
+        else updateStepUI();
+        
+    } catch(e) {
+        console.log('Pricing load failed:', e);
+    }
+}
+
+// INIT PRICING
+loadPricingFromStorage();
+window.addEventListener('pricingUpdated', loadPricingFromStorage);
+setInterval(loadPricingFromStorage, 3000); // Every 3s
+
+
 // ===== KIOSK STEP SYSTEM =====
 let stepBoxes = document.querySelectorAll(".step-box");
 const productsPanel = document.querySelector(".products-panel");

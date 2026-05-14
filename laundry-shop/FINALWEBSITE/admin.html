@@ -346,18 +346,163 @@
     </div>
 
     <!-- SETTINGS -->
-    <div id="settings" class="tab-content">
-
+ <div id="settings" class="tab-content">
         <div class="page-header">
-
-            <h1>Settings</h1>
-
-            <p>
-                Configure laundry pricing and services
-            </p>
-
+            <h1>Service Pricing</h1>
+            <p>Configure pricing for all laundry services - <strong>Changes sync instantly to BookNow!</strong></p>
         </div>
 
+        <div class="settings-grid">
+            
+            <!-- STEP 1: LAUNDRY SOAPS (EXACT MATCH) -->
+            <div class="pricing-section">
+                <h3><i class="fa-solid fa-soap"></i> Step 1: Laundry Soaps</h3>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="price-input-group">
+                            <div class="price-item">
+                                <label>Ariel</label>
+                                <input type="number" id="soap-ariel" min="0" step="0.5" value="20">
+                            </div>
+                            <div class="price-item">
+                                <label>Tide</label>
+                                <input type="number" id="soap-tide" min="0" step="0.5" value="25">
+                            </div>
+                            <div class="price-item">
+                                <label>Breeze</label>
+                                <input type="number" id="soap-breeze" min="0" step="0.5" value="18">
+                            </div>
+                            <div class="price-item">
+                                <label>Surf</label>
+                                <input type="number" id="soap-surf" min="0" step="0.5" value="15">
+                            </div>
+                            <div class="price-item">
+                                <label>Pride</label>
+                                <input type="number" id="soap-pride" min="0" step="0.5" value="17">
+                            </div>
+                            <div class="price-item">
+                                <label>Wings</label>
+                                <input type="number" id="soap-wings" min="0" step="0.5" value="16">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: FABRIC CONDITIONERS (EXACT MATCH) -->
+            <div class="pricing-section">
+                <h3><i class="fa-solid fa-spray-can"></i> Step 2: Fabric Conditioners</h3>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="price-input-group">
+                            <div class="price-item">
+                                <label>Downy</label>
+                                <input type="number" id="fabcon-downy" min="0" step="0.5" value="30">
+                            </div>
+                            <div class="price-item">
+                                <label>Del</label>
+                                <input type="number" id="fabcon-del" min="0" step="0.5" value="20">
+                            </div>
+                            <div class="price-item">
+                                <label>Champion</label>
+                                <input type="number" id="fabcon-champion" min="0" step="0.5" value="22">
+                            </div>
+                            <div class="price-item">
+                                <label>Surf Fabcon</label>
+                                <input type="number" id="fabcon-surf-fabcon" min="0" step="0.5" value="18">
+                            </div>
+                            <div class="price-item">
+                                <label>Lala Fabcon</label>
+                                <input type="number" id="fabcon-lala-fabcon" min="0" step="0.5" value="15">
+                            </div>
+                            <div class="price-item">
+                                <label>Personal Choice</label>
+                                <input type="number" id="fabcon-personal-choice" min="0" step="0.5" value="10">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: WASH TYPES (EXACT MATCH) -->
+            <div class="pricing-section">
+                <h3><i class="fa-solid fa-tshirt"></i> Step 3: Wash Types</h3>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="price-input-group">
+                            <div class="price-item">
+                                <label>Quick Wash</label>
+                                <input type="number" id="wash-quick-wash" min="0" step="0.5" value="50">
+                            </div>
+                            <div class="price-item">
+                                <label>Deep Clean</label>
+                                <input type="number" id="wash-deep-clean" min="0" step="0.5" value="80">
+                            </div>
+                            <div class="price-item">
+                                <label>Premium Wash</label>
+                                <input type="number" id="wash-premium-wash" min="0" step="0.5" value="120">
+                            </div>
+                            <div class="price-item">
+                                <label>Eco Wash</label>
+                                <input type="number" id="wash-eco-wash" min="0" step="0.5" value="60">
+                            </div>
+                            <div class="price-item">
+                                <label>Cold Wash</label>
+                                <input type="number" id="wash-cold-wash" min="0" step="0.5" value="40">
+                            </div>
+                            <div class="price-item">
+                                <label>Hot Wash</label>
+                                <input type="number" id="wash-hot-wash" min="0" step="0.5" value="70">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4 & 5: FEES -->
+            <div class="fees-section">
+                <h3><i class="fa-solid fa-truck"></i> Step 4 & 5: Fees & Charges</h3>
+                <div class="fee-card">
+                    <div class="fee-item">
+                        <label>Home Delivery Fee</label>
+                        <input type="number" id="delivery-fee" min="0" step="5" value="40">
+                    </div>
+                    <div class="fee-item">
+                        <label>Express Pickup Fee</label>
+                        <input type="number" id="express-fee" min="0" step="5" value="50">
+                    </div>
+                    <div class="fee-item">
+                        <label>Extra KG Fee (>8kg)</label>
+                        <input type="number" id="kg-extra-fee" min="0" step="1" value="5">
+                    </div>
+                    <div class="fee-item">
+                        <label>GCash Fee</label>
+                        <input type="number" id="gcash-fee" min="0" step="1" value="5">
+                    </div>
+                    <div class="fee-item">
+                        <label>Maya Fee</label>
+                        <input type="number" id="maya-fee" min="0" step="1" value="5">
+                    </div>
+                    <div class="fee-item">
+                        <label>Credit Card Fee</label>
+                        <input type="number" id="card-fee" min="0" step="1" value="10">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAVE BUTTONS -->
+            <div class="save-section">
+                <button class="save-pricing-btn" onclick="savePricing()">
+                    <i class="fa-solid fa-save"></i>
+                    Save All Pricing (Syncs to BookNow)
+                </button>
+                <button class="reset-pricing-btn" onclick="resetPricing()">
+                    <i class="fa-solid fa-undo"></i>
+                    Reset to Defaults
+                </button>
+                <div class="pricing-status" id="pricingStatus" style="display: none;"></div>
+            </div>
+        </div>
     </div>
 
 </div>
