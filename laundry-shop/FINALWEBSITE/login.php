@@ -17,14 +17,18 @@ if ($result->num_rows > 0) {
     if (password_verify($password, $user['password'])) {
 
         $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
 
-        echo "success"; // 👈 JS na bahala sa redirect
+        echo json_encode([
+            "status" => "success",
+            "role" => $user["role"]
+        ]);
 
     } else {
-        echo "wrong_password";
+        echo json_encode(["status" => "wrong_password"]);
     }
 
 } else {
-    echo "not_found";
+    echo json_encode(["status" => "not_found"]);
 }
 ?>
