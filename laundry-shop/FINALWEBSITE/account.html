@@ -58,63 +58,113 @@
   </section>
 
   <script>
-  // Load user data (if available)
-  const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+// Load user data from account.php
+fetch("account.php")
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
 
-  document.getElementById("accName").textContent = user.name || "Customer Name";
-  document.getElementById("accEmail").textContent = user.email || "customer@email.com";
-  document.getElementById("accContact").textContent = user.contact || "0912 345 6789";
-  document.getElementById("accAddress").textContent = user.address || "123 Laundry Street, City";
+    if (data.status === "success") {
 
-  // Logout button
-  document.getElementById("logoutBtn").addEventListener("click", function() {
-    if (confirm("Are you sure you want to log out?")) {
-      localStorage.removeItem("loggedInUser");
+      // Display user information from database
+      document.getElementById("accName").textContent = data.fullname;
+      document.getElementById("accEmail").textContent = data.email;
+      document.getElementById("accContact").textContent = data.contact;
+      document.getElementById("accAddress").textContent = data.address;
+
+    } else {
+      alert("Please login first.");
       window.location.href = "login.html";
     }
+  })
+  .catch(error => {
+    console.error(error);
+    alert("Error loading account information.");
   });
 
-  // Edit / Save toggle
-  const editBtn = document.getElementById("editBtn");
-  const saveBtn = document.getElementById("saveBtn");
-  const detailsDiv = document.querySelector(".details");
 
-  editBtn.addEventListener("click", () => {
-    detailsDiv.querySelectorAll("span").forEach(span => {
-      const val = span.textContent;
-      const input = document.createElement("input");
-      input.value = val;
-      span.replaceWith(input);
-    });
-    editBtn.classList.add("hidden");
-    saveBtn.classList.remove("hidden");
+// Logout button
+document.getElementById("logoutBtn").addEventListener("click", function(e) {
+  e.preventDefault();
+
+  if (confirm("Are you sure you want to log out?")) {
+    fetch("logout.php")
+      .then(() => {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+      })
+      .catch(() => {
+        window.location.href = "login.html";
+      });
+  }
+});
+
+
+// Edit / Save toggle
+const editBtn = document.getElementById("editBtn");
+const saveBtn = document.getElementById("saveBtn");
+const detailsDiv = document.querySelector(".details");
+
+editBtn.addEventListener("click", () => {
+  detailsDiv.querySelectorAll("span").forEach(span => {
+    const val = span.textContent;
+    const input = document.createElement("input");
+    input.value = val;
+    span.replaceWith(input);
   });
 
-  saveBtn.addEventListener("click", () => {
-    const inputs = detailsDiv.querySelectorAll("input");
-    const updatedUser = {
-      name: inputs[0].value,
-      email: inputs[1].value,
-      contact: inputs[2].value,
-      address: inputs[3].value
-    };
+  editBtn.classList.add("hidden");
+  saveBtn.classList.remove("hidden");
+});
 
-    // Replace inputs with spans again
-    inputs.forEach((input, i) => {
-      const span = document.createElement("span");
-      span.textContent = Object.values(updatedUser)[i];
-      input.replaceWith(span);
-    });
+saveBtn.addEventListener("click", () => {
+  const inputs = detailsDiv.querySelectorAll("input");
 
-    // ✅ Save updated data to localStorage
-    localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+  const updatedUser = {
+    name: inputs[0].value,
+    email: inputs[1].value,
+    contact: inputs[2].value,
+    address: inputs[3].value
+  };
 
-    editBtn.classList.remove("hidden");
-    saveBtn.classList.add("hidden");
+  // Save updated data to database
+  fetch("update_account.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(updatedUser)
+  })
+  .then(response => response.json())
+  .then(data => {
 
-    alert("Profile updated successfully!");
+    if (data.status === "success") {
+
+      // Replace inputs with spans again
+      inputs.forEach((input, i) => {
+        const span = document.createElement("span");
+        span.textContent = Object.values(updatedUser)[i];
+        input.replaceWith(span);
+      });
+
+      // Optional localStorage backup
+      localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+
+      editBtn.classList.remove("hidden");
+      saveBtn.classList.add("hidden");
+
+      alert("Profile updated successfully!");
+
+    } else {
+      alert("Failed to update profile.");
+    }
+
+  })
+  .catch(error => {
+    console.error(error);
+    alert("Error updating profile.");
   });
+});
 </script>
-
 </body>
 </html>

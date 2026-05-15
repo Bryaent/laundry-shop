@@ -22,12 +22,26 @@ if ($check->num_rows > 0) {
     exit();
 }
 
-// hash password
+// Hash password
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-// insert user
-$stmt = $conn->prepare("INSERT INTO users (fullname, email, username, password) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("ssss", $fullname, $email, $username, $hashedPassword);
+// Default role for all new users
+$role = "customer";
+
+// Insert user
+$stmt = $conn->prepare(
+    "INSERT INTO users (fullname, email, username, password, role)
+     VALUES (?, ?, ?, ?, ?)"
+);
+
+$stmt->bind_param(
+    "sssss",
+    $fullname,
+    $email,
+    $username,
+    $hashedPassword,
+    $role
+);
 
 if ($stmt->execute()) {
     echo "success";
