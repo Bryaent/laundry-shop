@@ -458,23 +458,27 @@ function updateSelection(step, value) {
   updateStepChecks();
   
   // Re-render to show updated selections + total
-  if (isConfirmed) {
-    renderConfirmation();
-  } else {
+
     updateConfirmationLive();
   }
-}
+
 
 // ===== QTY =====
 function changeQty(val) {
   orderQuantity += val;
-  if (orderQuantity < 1) orderQuantity = 1;
 
-  if (isConfirmed) {
-    renderConfirmation();
-  } else {
-    updateConfirmationLive();
+  if (orderQuantity < 1) {
+    orderQuantity = 1;
   }
+
+  // I-update lang ang quantity display
+  const qtyDisplay = document.getElementById("qtyDisplay");
+  if (qtyDisplay) {
+    qtyDisplay.value = orderQuantity;
+  }
+
+  // I-update lang ang total
+  updateConfirmationLive();
 }
 
 // ===== MAIN UI =====
@@ -546,7 +550,7 @@ if (currentStep === 1 || currentStep === 2) {
   onclick="addMultiItem(${currentStep}, ${index})"
   style="
     background:${
-      selections[currentStep].find(i => i.name === item.name)
+      (selections[currentStep] || []).find(i => i.name === item.name)
         ? '#28a745'
         : '#0094ff'
     };
@@ -559,13 +563,13 @@ if (currentStep === 1 || currentStep === 2) {
     transition:0.3s;
   "
   ${
-    selections[currentStep].find(i => i.name === item.name)
+    (selections[currentStep] || []).find(i => i.name === item.name)
       ? 'disabled'
       : ''
   }
 >
   ${
-    selections[currentStep].find(i => i.name === item.name)
+    (selections[currentStep] || []).find(i => i.name === item.name)
       ? '✔ Added'
       : 'Add'
   }
@@ -751,7 +755,8 @@ activateStepClicks();
 function addMultiItem(step, index) {
 
   const item = stepContents[step].items[index];
-  const qtyInput = document.getElementById(`qty-${step}-${index}`);
+ const qtyInput = document.getElementById(`qty-${step}-${index}`);
+if (!qtyInput) return;
 
   let qty = parseInt(qtyInput.value);
 
@@ -759,9 +764,7 @@ function addMultiItem(step, index) {
     qty = 1;
   }
 
-  const existing = selections[step].find(
-    i => i.name === item.name
-  );
+  const existing = selections[step].find(i => i.name === item.name);
 
   if (existing) {
     alert("Already added. Remove first before changing quantity.");
@@ -776,9 +779,7 @@ function addMultiItem(step, index) {
   qtyInput.value = 1;
 
   renderMultiSummary(step);
-
-  // IMPORTANT
-  updateStepUI();
+  updateStepChecks(); // optional UI update lang
 }
 function bindQtyLiveUpdate(step, index) {
 
