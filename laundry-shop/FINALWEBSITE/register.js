@@ -12,7 +12,9 @@ form.addEventListener("submit", function(e) {
   .then(res => res.text())
   .then(data => {
 
-    console.log(data); // 👈 para makita mo error
+    data = data.trim(); // 🔥 important fix
+
+    console.log("Server response:", data);
 
     if (data === "success") {
       alert("Registered successfully!");
@@ -28,5 +30,9 @@ form.addEventListener("submit", function(e) {
       alert("Error: " + data);
     }
 
+  })
+  .catch(err => {
+    console.error("Fetch error:", err);
+    alert("Server error. Try again.");
   });
 });
