@@ -51,9 +51,6 @@ function loadPricingFromStorage() {
     }
 }
 
-// INIT PRICING
-loadPricingFromStorage();
-window.addEventListener('pricingUpdated', loadPricingFromStorage);
 
 
 // ===== KIOSK STEP SYSTEM =====
@@ -941,3 +938,6 @@ function handleQtyChange(step, index, change) {
 
   input.value = current;
 }
+// INIT PRICING
+loadPricingFromStorage();
+window.addEventListener('pricingUpdated', loadPricingFromStorage);
