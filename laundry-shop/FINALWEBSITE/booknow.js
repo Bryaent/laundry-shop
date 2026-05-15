@@ -4,15 +4,17 @@ function loadPricingFromStorage() {
         const saved = JSON.parse(localStorage.getItem('laundryPricing'));
         if (!saved) return console.log('No admin pricing found');
         
-        // UPDATE STEP 1 SOAPS
-        if(saved.step1) {
-            stepContents[1].items[0].price = saved.step1[0]; // Ariel
-            stepContents[1].items[1].price = saved.step1[1]; // Tide  
-            stepContents[1].items[2].price = saved.step1[2]; // Breeze
-            stepContents[1].items[3].price = saved.step1[3]; // Surf
-            stepContents[1].items[4].price = saved.step1[4]; // Pride
-            stepContents[1].items[5].price = saved.step1[5]; // Wings
+        if (Array.isArray(saved.step1)) {
+    stepContents[1].items.forEach((item, i) => {
+
+        // 🔥 FIX: never risk breaking last item rendering
+        if (item.name === "Personal Choice") return;
+
+        if (saved.step1[i] !== undefined) {
+            stepContents[1].items[i].price = saved.step1[i];
         }
+    });
+}
         
         // UPDATE STEP 2 FABCON
         if(saved.step2) {
@@ -84,7 +86,8 @@ const stepContents = {
       { name: "Breeze", img: "img/breeze.jpg", price: 18 },
       { name: "Surf", img: "img/surf.jpg", price: 15 },
       { name: "Pride", img: "img/pride.jpg", price: 17 },
-      { name: "Wings", img: "img/wings.jpg", price: 16 }
+      { name: "Wings", img: "img/wings.jpg", price: 16 },
+      { name: "Personal Choice", img: "img/placeholder.jpg", price: 0  }
     ]
   },
 
@@ -97,7 +100,7 @@ const stepContents = {
       { name: "Champion", img: "img/champ.jpg", price: 22 },
       { name: "Surf Fabcon", img: "img/serf.jpg", price: 18 },
       { name: "Lala Fabcon", img: "img/lala.jpg", price: 15 },
-      { name: "Personal Choice", img: "img/placeholder.jpg", price: 10 }
+      { name: "Personal Choice", img: "img/placeholder.jpg", price: 0 }
     ]
   },
 
@@ -262,15 +265,6 @@ function renderConfirmation() {
         <option value="delivery" ${deliveryFee === 40 ? 'selected' : ''}>Home Delivery (+₱40)</option>
       </select>
 
-      <label>Pickup Time</label>
-      <select id="pickupTime">
-        <option>8:00 AM</option>
-        <option>10:00 AM</option>
-        <option>12:00 PM</option>
-        <option>2:00 PM</option>
-        <option>4:00 PM</option>
-        <option>6:00 PM</option>
-      </select>
 
       <label>Kilograms</label>
       <div class="qty-control" style="margin-bottom:12px;">
@@ -705,10 +699,7 @@ function confirmFinalOrder() {
         ? "Home Delivery"
         : "Store Pickup",
 
-    pickupTime:
-      document.getElementById("pickupTime")
-        ? document.getElementById("pickupTime").value
-        : ""
+  
   };
 
   // ===== SAVE TO LOCAL STORAGE =====
