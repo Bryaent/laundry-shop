@@ -5,7 +5,7 @@ form.addEventListener("submit", function(e) {
 
   const formData = new FormData(form);
 
-  fetch("register.php", {
+  fetch("../PHP/register.php", {
     method: "POST",
     body: formData
   })
@@ -18,7 +18,7 @@ form.addEventListener("submit", function(e) {
 
     if (data === "success") {
       alert("Registered successfully!");
-      window.location.href = "login.html";
+      window.location.href = "../HTML/login.html";
     } 
     else if (data === "exists") {
       alert("Username already exists!");

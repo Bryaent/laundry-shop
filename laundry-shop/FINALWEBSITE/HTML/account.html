@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account</title>
-  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="../CSS/account.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -12,23 +12,23 @@
   <header>
     <div class="header-left">
       <div id="Lugu">
-        <img src="img/Logo.png" alt="Logo">
+        <img src="../img/Logo.png" alt="Logo">
       </div>
       <div class="tagline">
         <span>FAST AND FRESH LAUNDRY JUST</span>
-          <a href="booknow.html">
+          <a href="../HTML/booknow.html">
           <button>CLICK AWAY!</button>
         </a>
       </div>
     </div>
 <nav>
       <ul>
-<li><a href="index.html">HOME</a></li>
-<li><a href="index.html#franchise">FRANCHISE</a></li>
-<li><a href="index.html#service">SERVICE</a></li>
-<li><a href="index.html#about">ABOUT US</a></li>
-<li><a href="index.html#contact">CONTACT US</a></li>
-<li><a href="index.html#contact" class="account-btn active">ACCOUNT</a></li>
+<li><a href="../HTML/index.html">HOME</a></li>
+<li><a href="../HTML/index.html#franchise">FRANCHISE</a></li>
+<li><a href="../HTML/index.html#service">SERVICE</a></li>
+<li><a href="../HTML/index.html#about">ABOUT US</a></li>
+<li><a href="../HTML/index.html#contact">CONTACT US</a></li>
+<li><a href="../HTML/index.html#contact" class="account-btn active">ACCOUNT</a></li>
 <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
     </nav>
   </header>
@@ -39,7 +39,7 @@
       <h2>My Account</h2>
       <div class="profile-info">
         <div class="profile-pic">
-          <img src="img/lance.jpg" alt="Profile Picture">
+          <img src="../img/lance.jpg" alt="Profile Picture">
         </div>
 
         <div class="details">
@@ -59,7 +59,7 @@
 
   <script>
 // Load user data from account.php
-fetch("account.php")
+fetch("../PHP/account.php")
   .then(response => response.json())
   .then(data => {
     console.log(data);
@@ -74,7 +74,7 @@ fetch("account.php")
 
     } else {
       alert("Please login first.");
-      window.location.href = "login.html";
+      window.location.href = "../HTML/login.html";
     }
   })
   .catch(error => {
@@ -88,13 +88,13 @@ document.getElementById("logoutBtn").addEventListener("click", function(e) {
   e.preventDefault();
 
   if (confirm("Are you sure you want to log out?")) {
-    fetch("logout.php")
+    fetch("../PHP/logout.php")
       .then(() => {
         localStorage.removeItem("loggedInUser");
-        window.location.href = "login.html";
+        window.location.href = "../HTML/login.html";
       })
       .catch(() => {
-        window.location.href = "login.html";
+        window.location.href = "../HTML/login.html";
       });
   }
 });
@@ -128,7 +128,7 @@ saveBtn.addEventListener("click", () => {
   };
 
   // Save updated data to database
-  fetch("update_account.php", {
+  fetch("../PHP/update_account.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

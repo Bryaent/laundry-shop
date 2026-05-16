@@ -578,7 +578,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ------------------------- */
   if (trackBtn) {
     trackBtn.addEventListener("click", () => {
-      window.location.href = "tracklaundry.html";
+      window.location.href = "../HTML/tracklaundry.html";
     });
   }
 

@@ -6,7 +6,7 @@ let orders = [];
 // LOAD ORDERS
 function loadOrders(){
 
-    fetch("http://localhost:3000/laundry-shop/FINALWEBSITE/orders.php")
+    fetch("http://localhost:3000/laundry-shop/FINALWEBSITE/PHP/orders.php")
         .then(res => res.json())
         .then(data => {
 

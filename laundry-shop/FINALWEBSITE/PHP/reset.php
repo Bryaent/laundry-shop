@@ -1,5 +1,5 @@
 <?php
-include "db.php";
+include "../db.php";
 
 $newPassword = password_hash("admin123", PASSWORD_DEFAULT);
 

@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <title>Book Now | M & M Laundry</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="booknow.css">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/booknow.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
@@ -16,12 +16,12 @@
 <header>
   <div class="header-left">
     <div id="Lugu">
-      <img src="img/Logo.png" alt="Logo">
+      <img src="../img/Logo.png" alt="Logo">
     </div>
 
     <div class="tagline">
       <span>FAST AND FRESH LAUNDRY JUST</span>
-      <a href="booknow.html">
+      <a href="../HTML/booknow.html">
         <button>CLICK AWAY!</button>
       </a>
     </div>
@@ -29,12 +29,12 @@
 
   <nav>
     <ul>
-      <li><a href="index.html#Home">HOME</a></li>
-      <li><a href="index.html#Franchise">FRANCHISE</a></li>
-      <li><a href="index.html#Service">SERVICE</a></li>
-      <li><a href="index.html#About">ABOUT US</a></li>
-      <li><a href="index.html#Contact">CONTACT US</a></li>
-      <li><a href="account.html" class="account-btn">ACCOUNT</a></li>
+      <li><a href="../HTML/index.html">HOME</a></li>
+      <li><a href="../HTML/index.html#Franchise">FRANCHISE</a></li>
+      <li><a href="../HTML/index.html#Service">SERVICE</a></li>
+      <li><a href="../HTML/index.html#About">ABOUT US</a></li>
+      <li><a href="../HTML/index.html#Contact">CONTACT US</a></li>
+      <li><a href="../HTML/account.html" class="account-btn">ACCOUNT</a></li>
       <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
     </ul>
   </nav>
@@ -71,13 +71,13 @@
 
 </main>
 
-<script src="booknow.js"></script>
+<script src="../JS/booknow.js"></script>
 
 <script>
 document.getElementById("logoutBtn").addEventListener("click", function () {
   if (confirm("Are you sure you want to log out?")) {
     localStorage.removeItem("loggedInUser");
-    window.location.href = "login.html";
+    window.location.href = "../HTML/login.html";
   }
 });
 </script>

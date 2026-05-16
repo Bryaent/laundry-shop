@@ -5,7 +5,7 @@ form.addEventListener('submit', function (e) {
 
   const formData = new FormData(form);
 
-  fetch("login.php", {
+  fetch("../PHP/login.php", {
     method: "POST",
     body: formData
   })
@@ -17,9 +17,9 @@ form.addEventListener('submit', function (e) {
     if (data.status === "success") {
 
       if (data.role === "admin") {
-        window.location.href = "admin.html";
+        window.location.href = "../HTML/admin.html";
       } else {
-        window.location.href = "index.html";
+        window.location.href = "../HTML/index.html";
       }
 
     } 

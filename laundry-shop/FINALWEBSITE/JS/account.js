@@ -1,4 +1,4 @@
-fetch("account.php")
+fetch("../PHP/account.php")
   .then(response => response.json())
   .then(data => {
     console.log(data);
@@ -9,7 +9,7 @@ fetch("account.php")
       document.getElementById("customerPassword").textContent = data.password;
     } else {
       alert("Please login first.");
-      window.location.href = "login.html";
+      window.location.href = "../HTML/login.html";
     }
   })
   .catch(error => {

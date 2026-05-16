@@ -161,7 +161,7 @@ if (logoutBtn) {
 
     if (confirm("Are you sure you want to log out?")) {
       localStorage.removeItem("loggedInUser");
-      window.location.href = "login.html";
+      window.location.href = "../HTML/login.html";
     }
   });
 }

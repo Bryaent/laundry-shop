@@ -81,13 +81,13 @@ const stepContents = {
     title: "Select Your Laundry Soap",
     text: "Choose your preferred detergent product.",
     items: [
-      { name: "Ariel", img: "img/Ariel.jpg", price: 20 },
-      { name: "Tide", img: "img/tide.jpg", price: 25 },
-      { name: "Breeze", img: "img/breeze.jpg", price: 18 },
-      { name: "Surf", img: "img/surf.jpg", price: 15 },
-      { name: "Pride", img: "img/pride.jpg", price: 17 },
-      { name: "Wings", img: "img/wings.jpg", price: 16 },
-      { name: "Personal Choice", img: "img/placeholder.jpg", price: 0  }
+      { name: "Ariel", img: "../img/Ariel.jpg", price: 20 },
+      { name: "Tide", img: "../img/tide.jpg", price: 25 },
+      { name: "Breeze", img: "../img/breeze.jpg", price: 18 },
+      { name: "Surf", img: "../img/surf.jpg", price: 15 },
+      { name: "Pride", img: "../img/pride.jpg", price: 17 },
+      { name: "Wings", img: "../img/wings.jpg", price: 16 },
+      { name: "Personal Choice", img: "../img/placeholder.jpg", price: 0  }
     ]
   },
 
@@ -95,12 +95,12 @@ const stepContents = {
     title: "Select Fabric Conditioner",
     text: "Choose your preferred fabric conditioner.",
     items: [
-      { name: "Downy", img: "img/downy.jpg", price: 30 },
-      { name: "Del", img: "img/del.jpg", price: 20 },
-      { name: "Champion", img: "img/champ.jpg", price: 22 },
-      { name: "Surf Fabcon", img: "img/serf.jpg", price: 18 },
-      { name: "Lala Fabcon", img: "img/lala.jpg", price: 15 },
-      { name: "Personal Choice", img: "img/placeholder.jpg", price: 0 }
+      { name: "Downy", img: "../img/downy.jpg", price: 30 },
+      { name: "Del", img: "../img/del.jpg", price: 20 },
+      { name: "Champion", img: "../img/champ.jpg", price: 22 },
+      { name: "Surf Fabcon", img: "../img/serf.jpg", price: 18 },
+      { name: "Lala Fabcon", img: "../img/lala.jpg", price: 15 },
+      { name: "Personal Choice", img: "../img/placeholder.jpg", price: 0 }
     ]
   },
 
@@ -108,12 +108,12 @@ const stepContents = {
     title: "Select Wash Type",
     text: "Choose your wash preference.",
     items: [
-      { name: "Quick Wash", img: "img/quick.jpg", price: 50 },
-      { name: "Deep Clean", img: "img/deep.jpg", price: 80 },
-      { name: "Premium Wash", img: "img/premium.jpg", price: 120 },
-      { name: "Eco Wash", img: "img/eco.jpg", price: 60 },
-      { name: "Cold Wash", img: "img/cold.jpg", price: 40 },
-      { name: "Hot Wash", img: "img/hot.jpg", price: 70 }
+      { name: "Quick Wash", img: "../img/quick.jpg", price: 50 },
+      { name: "Deep Clean", img: "../img/deep.jpg", price: 80 },
+      { name: "Premium Wash", img: "../img/premium.jpg", price: 120 },
+      { name: "Eco Wash", img: "../img/eco.jpg", price: 60 },
+      { name: "Cold Wash", img: "../img/cold.jpg", price: 40 },
+      { name: "Hot Wash", img: "../img/hot.jpg", price: 70 }
     ]
   },
 
@@ -121,12 +121,12 @@ const stepContents = {
     title: "Pickup Details",
     text: "Choose your pickup schedule.",
     items: [
-      { name: "Morning", img: "img/morning.jpg", price: 0 },
-      { name: "Afternoon", img: "img/afternoon.jpg", price: 0 },
-      { name: "Evening", img: "img/evening.jpg", price: 0 },
-      { name: "Express Pickup", img: "img/express.jpg", price: 50 },
-      { name: "Store Pickup", img: "img/A1.jpg", price: 0 },
-      { name: "Home Delivery", img: "img/home.png", price: 40 }
+      { name: "Morning", img: "../img/morning.jpg", price: 0 },
+      { name: "Afternoon", img: "../img/afternoon.jpg", price: 0 },
+      { name: "Evening", img: "../img/evening.jpg", price: 0 },
+      { name: "Express Pickup", img: "../img/express.jpg", price: 50 },
+      { name: "Store Pickup", img: "../img/A1.jpg", price: 0 },
+      { name: "Home Delivery", img: "../img/home.png", price: 40 }
     ]
   },
 
@@ -134,8 +134,8 @@ const stepContents = {
   title: "Select Payment",
   text: "Choose your payment method.",
   items: [
-    { name: "Cash", img: "img/cash.jpg", price: 0 },
-    { name: "GCash", img: "img/gcash.jpg", price: 5 }
+    { name: "Cash", img: "../img/cash.jpg", price: 0 },
+    { name: "GCash", img: "../img/gcash.jpg", price: 5 }
   ]
 }
 };
@@ -709,7 +709,7 @@ orders.push(newOrder);
 localStorage.setItem("orders", JSON.stringify(orders));
 
 // ===== SAVE TO DATABASE (PHP MYSQL) =====
-fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/orders.php", {
+fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -735,7 +735,7 @@ fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/orders.php", {
 
   // ===== REDIRECT =====
   window.location.href =
-    "tracklaundry.html?ticket=" + ticketNumber;
+    "../HTML/tracklaundry.html?ticket=" + ticketNumber;
 }
 
 // ===== INITIALIZE =====
