@@ -87,7 +87,7 @@ const stepContents = {
       { name: "Surf", img: "../img/surf.jpg", price: 15 },
       { name: "Pride", img: "../img/pride.jpg", price: 17 },
       { name: "Wings", img: "../img/wings.jpg", price: 16 },
-      { name: "Personal Choice", img: "../img/placeholder.jpg", price: 0  }
+      { name: "Personal Choice", img: "../img/personal.jpg", price: 0  }
     ]
   },
 
@@ -100,7 +100,7 @@ const stepContents = {
       { name: "Champion", img: "../img/champ.jpg", price: 22 },
       { name: "Surf Fabcon", img: "../img/serf.jpg", price: 18 },
       { name: "Lala Fabcon", img: "../img/lala.jpg", price: 15 },
-      { name: "Personal Choice", img: "../img/placeholder.jpg", price: 0 }
+      { name: "Personal Choice", img: "../img/personal.jpg", price: 0 }
     ]
   },
 
@@ -144,17 +144,14 @@ const stepContents = {
 function getSubtotal() {
   let total = 0;
 
-  // STEP 1 SOAPS
-  selections[1].forEach(item => {
+  (selections[1] || []).forEach(item => {
     total += item.price * item.qty;
   });
 
-  // STEP 2 FABCON
-  selections[2].forEach(item => {
+  (selections[2] || []).forEach(item => {
     total += item.price * item.qty;
   });
 
-  // OTHER STEPS
   for (let i = 3; i <= 5; i++) {
     if (selections[i]) {
       total += selections[i].price;
@@ -176,14 +173,17 @@ function updateStepChecks() {
     const span = step.querySelector("span");
     const stepNum = index + 1;
 
-    if (
-  (stepNum === 1 || stepNum === 2)
-    ? selections[stepNum].length > 0
-    : selections[stepNum]
-) {
-      span.textContent = "✔";
-      span.style.background = "#28a745";
-    } else if (stepNum === 6 && isConfirmed) {
+    let isDone = false;
+
+    if (stepNum === 1 || stepNum === 2) {
+      isDone = selections[stepNum]?.length > 0;
+    }
+
+    else if (stepNum >= 3 && stepNum <= 5) {
+      isDone = selections[stepNum] !== null && selections[stepNum] !== undefined;
+    }
+
+    if (isDone) {
       span.textContent = "✔";
       span.style.background = "#28a745";
     } else {
@@ -231,19 +231,19 @@ function activateStepClicks() {
 // ===== EXTRA CONTROLS =====
 function updateKg(val) {
   kg = val < 1 ? 1 : parseInt(val);
-  if (isConfirmed) renderConfirmation();
-  else updateConfirmationLive();
+ renderConfirmation();
+ updateConfirmationLive();
 }
 
 function togglePickup(type) {
   deliveryFee = type === "delivery" ? 40 : 0;
-  if (isConfirmed) renderConfirmation();
-  else updateConfirmationLive();
+ renderConfirmation();
+ updateConfirmationLive();
 }
 
 // ✅ FULL DROPDOWN CUSTOMIZATION IN CONFIRMATION
 function renderConfirmation() {
-  isConfirmed = true;
+  
   lockPreviousSteps();
   updateStepChecks();
 
@@ -450,12 +450,8 @@ function updateSelection(step, value) {
   selections[step] = item;
 
   updateStepChecks();
-  
-  // Re-render to show updated selections + total
-
-    updateConfirmationLive();
-  }
-
+  updateConfirmationLive();
+}
 
 // ===== QTY =====
 function changeQty(val) {
@@ -771,6 +767,7 @@ if (!qtyInput) return;
 
   renderMultiSummary(step);
   updateStepChecks(); // optional UI update lang
+  updateConfirmationLive(); // optional live total update
 }
 function bindQtyLiveUpdate(step, index) {
 

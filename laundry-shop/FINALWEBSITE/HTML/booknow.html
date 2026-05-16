@@ -1,86 +1,1533 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
   <title>Book Now | M & M Laundry</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <link rel="stylesheet" href="../CSS/style.css">
-  <link rel="stylesheet" href="../CSS/booknow.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    :root {
+      --blue: #0074D9;
+      --blue-dark: #005bb5;
+      --blue-light: #e8f3ff;
+      --blue-mid: #c2ddf9;
+      --green: #1a9e5c;
+      --green-light: #e6f7ef;
+      --red: #d9363e;
+      --red-light: #fdecea;
+      --text: #1a1f2e;
+      --muted: #6b7280;
+      --border: #dce7f5;
+      --bg: #f2f6fc;
+      --white: #ffffff;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 2px 12px rgba(0,116,217,0.09);
+      --shadow-md: 0 6px 24px rgba(0,116,217,0.14);
+    }
 
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-left img { height: 38px; object-fit: contain; }
+    .header-logo-text { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--blue); letter-spacing: 0.01em; }
+
+    nav ul { display: flex; align-items: center; gap: 6px; list-style: none; }
+    nav ul li a {
+      padding: 7px 13px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    nav ul li a:hover { color: var(--blue); background: var(--blue-light); }
+    nav ul li a.account-btn {
+      background: var(--blue);
+      color: white;
+    }
+    nav ul li a.account-btn:hover { background: var(--blue-dark); }
+    .logout-btn { color: var(--red) !important; }
+    .logout-btn:hover { background: var(--red-light) !important; color: var(--red) !important; }
+
+    /* ── PAGE WRAPPER ── */
+    .page-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    /* ── KIOSK LAYOUT ── */
+    .kiosk-layout {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    /* ── SIDEBAR ── */
+    .steps-panel {
+      width: 240px;
+      min-width: 240px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px 14px;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 84px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .steps-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0 4px 10px;
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 4px;
+    }
+
+    .step-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1.5px solid transparent;
+    }
+    .step-box:hover { background: var(--blue-light); }
+    .step-box.active-step {
+      background: var(--blue-light);
+      border-color: var(--blue-mid);
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .step-num.done { background: var(--green); }
+
+    .step-label { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .step-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* ── MAIN PANEL ── */
+    .products-panel {
+      flex: 1;
+      min-width: 0;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px 30px;
+      overflow-y: auto;
+      max-height: calc(100vh - 104px);
+    }
+
+    /* ── STEP SECTION ── */
+    .step-section { margin-bottom: 48px; }
+    .step-section:last-child { margin-bottom: 0; }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .section-badge {
+      width: 34px; height: 34px;
+      background: var(--blue);
+      color: white;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .section-badge.done { background: var(--green); }
+
+    .section-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .section-sub { font-size: 12px; color: var(--muted); }
+
+    /* ── PRODUCT GRID — 3 columns for soap/fabcon ── */
+    .products-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .products-grid-3 .personal-card {
+      grid-column: 1 / -1;
+    }
+
+    /* Wash type — keep 3 col */
+    .products-grid-wash {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* Pickup — 3 col */
+    .products-grid-pickup {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* ── PRODUCT CARD ── */
+    .product-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.2s;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .product-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .product-card.is-selected {
+      border-color: var(--blue);
+      background: var(--blue-light);
+    }
+
+    .product-card.is-added {
+      border-color: var(--green);
+    }
+
+    .card-img-wrap {
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 16px;
+      min-height: 130px;
+    }
+
+    .card-img-wrap img {
+      width: 80px; height: 80px;
+      object-fit: contain;
+    }
+
+    .card-body {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .card-desc { font-size: 11.5px; color: var(--muted); line-height: 1.5; flex: 1; margin-bottom: 12px; }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .card-price { font-size: 17px; font-weight: 800; color: var(--blue); }
+
+    /* Qty row */
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 8px 0 12px;
+    }
+
+    .qty-row button {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      border: 1.5px solid var(--blue-mid);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: 0.15s;
+      font-family: inherit;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .qty-row button:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .qty-row input {
+      width: 42px;
+      text-align: center;
+      border: 1.5px solid var(--blue-mid);
+      border-radius: 6px;
+      padding: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      font-family: inherit;
+      background: white;
+    }
+
+    /* Buttons */
+    .btn-add {
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-add:hover { background: var(--blue-dark); transform: scale(1.03); }
+    .btn-add.added { background: var(--green); cursor: default; }
+    .btn-add:disabled { cursor: default; }
+
+    .btn-select {
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-select:hover { background: var(--blue-dark); }
+    .btn-select.selected { background: var(--green); cursor: default; }
+
+    /* ── PERSONAL CHOICE CARD (full-width) ── */
+    .personal-card .card-img-wrap { min-height: 80px; padding: 14px 20px; }
+    .personal-card .card-body { flex-direction: row; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .personal-card .card-name { margin-bottom: 0; }
+    .personal-card .card-desc { flex: 1; min-width: 160px; margin-bottom: 0; }
+    .personal-card .card-footer { margin-top: 0; }
+
+    /* ── MULTI SUMMARY ── */
+    .multi-summary {
+      margin-top: 16px;
+      background: var(--blue-light);
+      border: 1.5px solid var(--blue-mid);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+
+    .multi-summary-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border-radius: 8px;
+      padding: 9px 12px;
+      margin-bottom: 7px;
+      border: 1.5px solid var(--border);
+      gap: 10px;
+    }
+
+    .summary-row-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .summary-row-qty { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .summary-row-price { font-size: 14px; font-weight: 800; color: var(--blue); flex-shrink: 0; }
+
+    .btn-remove {
+      background: var(--red-light);
+      color: var(--red);
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      flex-shrink: 0;
+      transition: 0.15s;
+    }
+
+    .btn-remove:hover { background: var(--red); color: white; }
+
+    .conf-qty-btn {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      border: 1.5px solid var(--blue-mid);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: 0.15s;
+      font-family: inherit;
+      flex-shrink: 0;
+      line-height: 1;
+      padding: 0;
+    }
+    .conf-qty-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .running-total {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      text-align: right;
+    }
+
+    /* ── PROCEED BUTTON ── */
+    .proceed-wrap {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1.5px solid var(--border);
+      text-align: center;
+    }
+
+    .proceed-wrap p {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .btn-proceed {
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 15px 52px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 20px rgba(0,116,217,0.3);
+      transition: all 0.25s;
+    }
+
+    .btn-proceed:hover {
+      background: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,116,217,0.35);
+    }
+
+    /* ── CONFIRMATION PAGE ── */
+    .confirm-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 20px;
+      text-align: left;
+    }
+
+    /* Left form */
+    .confirm-form {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+    }
+
+    .confirm-form-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--blue);
+      margin-bottom: 18px;
+    }
+
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: 13.5px;
+      font-family: inherit;
+      background: white;
+      color: var(--text);
+      transition: border 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+
+    .qty-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-ctrl button {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .qty-ctrl button:hover { background: var(--blue-dark); }
+    .qty-ctrl button:disabled { background: var(--border); cursor: not-allowed; }
+
+    .qty-ctrl input {
+      width: 54px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    .kg-note {
+      font-size: 12px;
+      color: var(--red);
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .info-box {
+      background: #fff9e6;
+      border: 1.5px solid #f5d87a;
+      border-radius: 9px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #7a5c00;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    /* Right summary */
+    .confirm-summary {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      overflow-y: auto;
+    }
+
+    .confirm-summary-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
+
+    .confirm-summary-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .confirm-block {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 15px;
+      margin-bottom: 12px;
+    }
+
+    .confirm-block-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .confirm-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border-radius: 7px;
+      padding: 9px 12px;
+      margin-bottom: 7px;
+      border: 1.5px solid var(--border);
+      font-size: 13px;
+    }
+
+    .confirm-item-row:last-child { margin-bottom: 0; }
+    .confirm-item-name { font-weight: 700; color: var(--text); }
+    .confirm-item-qty { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .confirm-item-price { font-size: 14px; font-weight: 800; color: var(--blue); flex-shrink: 0; }
+
+    .confirm-select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 2px solid var(--blue);
+      border-radius: 9px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text);
+      background: white;
+      cursor: pointer;
+    }
+
+    .confirm-select:focus { outline: none; }
+
+    /* Payment options inline */
+    .payment-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .payment-option {
+      border: 2px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .payment-option:hover { border-color: var(--blue); background: var(--blue-light); }
+    .payment-option.selected { border-color: var(--blue); background: var(--blue-light); }
+
+    .payment-icon {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      background: var(--blue);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .payment-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .payment-note { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* Total bar */
+    .total-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--blue);
+      color: white;
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      margin: 14px 0 16px;
+    }
+
+    .total-bar-label { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .total-bar-amount { font-size: 26px; font-weight: 800; }
+
+    /* Confirm button */
+    .btn-confirm {
+      width: 100%;
+      padding: 14px 20px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      box-shadow: 0 5px 18px rgba(0,116,217,0.28);
+    }
+
+    .btn-confirm:hover {
+      background: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 9px 22px rgba(0,116,217,0.35);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1200px) {
+      .products-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .kiosk-layout { flex-direction: column; }
+      .steps-panel {
+        width: 100%; min-width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 8px;
+        position: static;
+        padding: 12px;
+      }
+      .step-box { flex: 0 0 auto; }
+      .steps-label { display: none; }
+      .products-panel { max-height: none; }
+      .confirm-wrap { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .products-grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .products-grid-wash { grid-template-columns: repeat(2, 1fr); }
+      .products-grid-pickup { grid-template-columns: repeat(2, 1fr); }
+      .page-wrap { padding: 16px 12px 40px; }
+      .products-panel { padding: 18px 14px; }
+    }
+
+    @media (max-width: 400px) {
+      .products-grid-3, .products-grid-wash, .products-grid-pickup { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-
 <body>
 
 <header>
   <div class="header-left">
-    <div id="Lugu">
-      <img src="../img/Logo.png" alt="Logo">
-    </div>
-
-    <div class="tagline">
-      <span>FAST AND FRESH LAUNDRY JUST</span>
-      <a href="../HTML/booknow.html">
-        <button>CLICK AWAY!</button>
-      </a>
-    </div>
+    <img src="../img/Logo.png" alt="M&M Laundry" onerror="this.style.display='none'">
+    <span class="header-logo-text">M &amp; M Laundry</span>
   </div>
-
   <nav>
     <ul>
-      <li><a href="../HTML/index.html">HOME</a></li>
-      <li><a href="../HTML/index.html#Franchise">FRANCHISE</a></li>
-      <li><a href="../HTML/index.html#Service">SERVICE</a></li>
-      <li><a href="../HTML/index.html#About">ABOUT US</a></li>
-      <li><a href="../HTML/index.html#Contact">CONTACT US</a></li>
-      <li><a href="../HTML/account.html" class="account-btn">ACCOUNT</a></li>
-      <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+      <li><a href="../HTML/index.html">Home</a></li>
+      <li><a href="../HTML/index.html#Franchise">Franchise</a></li>
+      <li><a href="../HTML/index.html#Service">Service</a></li>
+      <li><a href="../HTML/index.html#About">About Us</a></li>
+      <li><a href="../HTML/index.html#Contact">Contact</a></li>
+      <li><a href="../HTML/account.html" class="account-btn">Account</a></li>
+      <li><a href="#" id="logoutBtn" class="logout-btn">Logout</a></li>
     </ul>
   </nav>
 </header>
 
-<main class="booknow-page">
+<div class="page-wrap">
+  <h1 class="page-title">Book Your Laundry</h1>
+  <div class="kiosk-layout">
 
-  <section class="booknow-container">
-
-    <div id="bookService" class="tab-content active">
-
-      <div class="kiosk-layout">
-
-        <!-- LEFT STEPS -->
-        <div class="steps-panel">
-
-          <div class="step-box active-step"><span>1</span><p>Select Soap</p></div>
-          <div class="step-box"><span>2</span><p>Select Fabric Conditioner</p></div>
-          <div class="step-box"><span>3</span><p>Select Wash Type</p></div>
-          <div class="step-box"><span>4</span><p>Pickup Details</p></div>
-          <div class="step-box"><span>5</span><p>Payment</p></div>
-          <div class="step-box"><span>6</span><p>Confirmation</p></div>
-
-        </div>
-
-        <!-- RIGHT PANEL -->
-        <div class="products-panel"></div>
-
-      </div>
-
+    <!-- SIDEBAR -->
+    <div class="steps-panel" id="stepsPanel">
+      <div class="steps-label">Your Progress</div>
+      <!-- steps rendered by JS -->
     </div>
 
-  </section>
+    <!-- MAIN PANEL -->
+    <div class="products-panel" id="mainPanel"></div>
 
-</main>
-
-<script src="../JS/booknow.js"></script>
+  </div>
+</div>
 
 <script>
-document.getElementById("logoutBtn").addEventListener("click", function () {
-  if (confirm("Are you sure you want to log out?")) {
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "../HTML/login.html";
+// ──────────────────────────────────────────────
+// DATA
+// ──────────────────────────────────────────────
+const descriptions = {
+  "Ariel": "Powerful stain removal trusted by families everywhere.",
+  "Breeze": "Gentle on fabrics, tough on everyday stains.",
+  "Surf": "Affordable cleaning power with a fresh scent.",
+  "Personal Choice (Soap)": "Use your own preferred detergent brand.",
+  "Downy": "Softens and protects with a lasting fresh fragrance.",
+  "Del": "Gentle conditioner for smooth, soft fabrics.",
+  "Champion": "Long-lasting scent keeps your clothes smelling great.",
+  "Personal Choice (Fabcon)": "Bring your own fabric conditioner.",
+  "Quick Wash": "Fast 30-minute cycle for lightly soiled clothes.",
+  "Deep Clean": "Thorough wash for heavily soiled garments.",
+  "Premium Wash": "Top-tier care with premium fabric-safe detergents.",
+  "Eco Wash": "Energy-efficient cycle that is kind to the planet.",
+  "Cold Wash": "Gentle cold cycle, ideal for colored fabrics.",
+  "Hot Wash": "High-temperature wash that eliminates bacteria and germs.",
+  "Morning": "Pickup scheduled between 7 AM and 12 PM.",
+  "Afternoon": "Pickup scheduled between 12 PM and 5 PM.",
+  "Evening": "Pickup scheduled between 5 PM and 9 PM.",
+  "Express Pickup": "Priority pickup within 2 hours of booking.",
+  "Store Pickup": "Drop off and collect at our branch.",
+  "Home Delivery": "We deliver fresh laundry right to your door.",
+  "Cash": "Pay in full upon delivery or store pickup.",
+  "GCash": "Fast cashless payment via GCash."
+};
+
+const stepContents = {
+  1: {
+    title: "Select Laundry Soap",
+    sub: "Choose your preferred detergent. You may select multiple.",
+    items: [
+      { name: "Ariel",  img: "../img/Ariel.jpg",   price: 20 },
+      { name: "Breeze", img: "../img/breeze.jpg",  price: 18 },
+      { name: "Surf",   img: "../img/surf.jpg",    price: 15 },
+      { name: "Personal Choice (Soap)", img: "../img/personal.jpg", price: 0 }
+    ],
+    multi: true
+  },
+  2: {
+    title: "Select Fabric Conditioner",
+    sub: "Choose your preferred fabric conditioner. You may select multiple.",
+    items: [
+      { name: "Downy",    img: "../img/downy.jpg", price: 30 },
+      { name: "Del",      img: "../img/del.jpg",   price: 20 },
+      { name: "Champion", img: "../img/champ.jpg", price: 22 },
+      { name: "Personal Choice (Fabcon)", img: "../img/personal.jpg", price: 0 }
+    ],
+    multi: true
+  },
+  3: {
+    title: "Select Wash Type",
+    sub: "Choose one wash method for your laundry.",
+    items: [
+      { name: "Quick Wash",   img: "../img/quick.jpg",   price: 50 },
+      { name: "Deep Clean",   img: "../img/deep.jpg",    price: 80 },
+      { name: "Premium Wash", img: "../img/premium.jpg", price: 120 },
+      { name: "Eco Wash",     img: "../img/eco.jpg",     price: 60 },
+      { name: "Cold Wash",    img: "../img/cold.jpg",    price: 40 },
+      { name: "Hot Wash",     img: "../img/hot.jpg",     price: 70 }
+    ],
+    multi: false
+  },
+  4: {
+    title: "Pickup Details",
+    sub: "Choose your preferred pickup schedule.",
+    items: [
+      { name: "Morning",        img: "../img/morning.jpg",    price: 0 },
+      { name: "Afternoon",      img: "../img/afternoon.jpg",  price: 0 },
+      { name: "Evening",        img: "../img/evening.jpg",    price: 0 },
+      { name: "Express Pickup", img: "../img/express.jpg",    price: 50 },
+      { name: "Store Pickup",   img: "../img/A1.jpg",         price: 0 },
+      { name: "Home Delivery",  img: "../img/home.png",       price: 40 }
+    ],
+    multi: false
+  }
+};
+
+const paymentItems = [
+  { name: "Cash",  note: "Pay upon pickup or delivery", icon: "P", price: 0 },
+  { name: "GCash", note: "+5 processing fee",            icon: "G", price: 5 }
+];
+
+// State
+const selections = { 1: [], 2: [], 3: null, 4: null };
+let selectedPayment = "Cash";
+let orderQuantity = 1;
+let kg = 1;
+let deliveryFee = 0;
+
+// ──────────────────────────────────────────────
+// SIDEBAR
+// ──────────────────────────────────────────────
+const sidebarSteps = [
+  { label: "Laundry Soap",          sub: "Select detergent" },
+  { label: "Fabric Conditioner",    sub: "Select fabcon" },
+  { label: "Wash Type",             sub: "Choose method" },
+  { label: "Pickup Details",        sub: "Schedule pickup" },
+  { label: "Confirm Order",         sub: "Review and pay" }
+];
+
+function renderSidebar(activeNum) {
+  const panel = document.getElementById('stepsPanel');
+  let html = '<div class="steps-label">Your Progress</div>';
+
+  sidebarSteps.forEach((s, i) => {
+    const stepNum = i + 1;
+    let done = false;
+    if (stepNum === 1) done = selections[1].length > 0;
+    else if (stepNum === 2) done = selections[2].length > 0;
+    else if (stepNum === 3) done = !!selections[3];
+    else if (stepNum === 4) done = !!selections[4];
+
+    const numClass = done ? 'step-num done' : 'step-num';
+    const numText  = done ? '&#10003;' : stepNum;
+    const active   = stepNum === activeNum ? 'active-step' : '';
+
+    html += `
+      <div class="step-box ${active}" onclick="sidebarClick(${stepNum})">
+        <div class="${numClass}">${numText}</div>
+        <div>
+          <div class="step-label">${s.label}</div>
+          <div class="step-sub">${s.sub}</div>
+        </div>
+      </div>`;
+  });
+
+  panel.innerHTML = html;
+}
+
+function sidebarClick(stepNum) {
+  if (stepNum === 5) {
+    const sec = document.getElementById('section-step-5');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else renderAllSteps(); // fallback: just re-render if already there
+    return;
+  }
+  const sec = document.getElementById(`section-step-${stepNum}`);
+  if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ──────────────────────────────────────────────
+// TOTALS
+// ──────────────────────────────────────────────
+function getSubtotal() {
+  let t = 0;
+  selections[1].forEach(i => t += i.price * i.qty);
+  selections[2].forEach(i => t += i.price * i.qty);
+  if (selections[3]) t += selections[3].price;
+  if (selections[4]) t += selections[4].price;
+  const pay = paymentItems.find(p => p.name === selectedPayment);
+  if (pay) t += pay.price;
+  return t;
+}
+
+function getTotal() {
+  const base = getSubtotal() * orderQuantity;
+  const kgExtra = kg > 8 ? 5 : 0;
+  return base + kgExtra + deliveryFee;
+}
+
+function updateTotalLive() {
+  const el = document.getElementById('totalLive');
+  if (el) el.textContent = 'P' + getTotal().toLocaleString();
+}
+
+// ──────────────────────────────────────────────
+// BUILD CARD
+// ──────────────────────────────────────────────
+function buildMultiCard(step, item, index) {
+  const desc = descriptions[item.name] || 'Quality laundry product.';
+  const isPersonal = item.name.startsWith('Personal Choice');
+  const isAdded = selections[step].find(i => i.name === item.name);
+  const extraClass = isPersonal ? ' personal-card' : '';
+  const addedClass = isAdded ? ' is-added' : '';
+
+  return `
+    <div class="product-card${extraClass}${addedClass}" id="card-${step}-${index}">
+      <div class="card-img-wrap">
+        <img src="${item.img}" alt="${item.name}" onerror="this.src='../img/placeholder.jpg'">
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="card-name">${item.name}</div>
+          <div class="card-desc">${desc}</div>
+        </div>
+        <div class="qty-row">
+          <button onclick="handleQty(${step},${index},-1)">-</button>
+          <input type="number" id="qty-${step}-${index}" value="1" min="1" readonly>
+          <button onclick="handleQty(${step},${index},1)">+</button>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">${item.price > 0 ? 'P' + item.price : 'Free'}</div>
+          <button
+            id="addBtn-${step}-${index}"
+            class="btn-add${isAdded ? ' added' : ''}"
+            onclick="addItem(${step},${index})"
+            ${isAdded ? 'disabled' : ''}
+          >${isAdded ? 'Added' : 'Add to order'}</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildSingleCard(step, item, index) {
+  const desc = descriptions[item.name] || 'Quality laundry product.';
+  const isSelected = selections[step]?.name === item.name;
+
+  return `
+    <div class="product-card${isSelected ? ' is-selected' : ''}" id="card-${step}-${index}">
+      <div class="card-img-wrap">
+        <img src="${item.img}" alt="${item.name}" onerror="this.src='../img/placeholder.jpg'">
+      </div>
+      <div class="card-body">
+        <div class="card-name">${item.name}</div>
+        <div class="card-desc">${desc}</div>
+        <div class="card-footer">
+          <div class="card-price">${item.price > 0 ? 'P' + item.price : 'Free'}</div>
+          <button
+            id="selBtn-${step}-${index}"
+            class="btn-select${isSelected ? ' selected' : ''}"
+            onclick="selectItem(${step},${index})"
+          >${isSelected ? 'Selected' : 'Select'}</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────
+// MULTI-ITEM ACTIONS
+// ──────────────────────────────────────────────
+function handleQty(step, index, delta) {
+  const item = stepContents[step].items[index];
+  const existing = selections[step].find(i => i.name === item.name);
+  if (existing) { alert('Remove the item first before editing quantity.'); return; }
+  const inp = document.getElementById(`qty-${step}-${index}`);
+  let val = parseInt(inp.value) + delta;
+  if (val < 1) val = 1;
+  inp.value = val;
+}
+
+function addItem(step, index) {
+  const item = stepContents[step].items[index];
+  const inp  = document.getElementById(`qty-${step}-${index}`);
+  const qty  = Math.max(1, parseInt(inp.value) || 1);
+
+  if (selections[step].find(i => i.name === item.name)) return;
+  selections[step].push({ ...item, qty });
+
+  // Update button
+  const btn = document.getElementById(`addBtn-${step}-${index}`);
+  if (btn) { btn.classList.add('added'); btn.textContent = 'Added'; btn.disabled = true; }
+  const card = document.getElementById(`card-${step}-${index}`);
+  if (card) card.classList.add('is-added');
+
+  refreshMultiSummary(step);
+  renderSidebar(getCurrentVisibleStep());
+}
+
+function removeItem(step, name) {
+  selections[step] = selections[step].filter(i => i.name !== name);
+  const index = stepContents[step].items.findIndex(i => i.name === name);
+
+  const btn = document.getElementById(`addBtn-${step}-${index}`);
+  if (btn) { btn.classList.remove('added'); btn.textContent = 'Add to order'; btn.disabled = false; }
+  const inp = document.getElementById(`qty-${step}-${index}`);
+  if (inp) inp.value = 1;
+  const card = document.getElementById(`card-${step}-${index}`);
+  if (card) card.classList.remove('is-added');
+
+  refreshMultiSummary(step);
+  renderSidebar(getCurrentVisibleStep());
+}
+
+function refreshMultiSummary(step) {
+  const box = document.getElementById(`summary-${step}`);
+  if (!box) return;
+  if (selections[step].length === 0) {
+    box.innerHTML = '<p style="font-size:12.5px;color:var(--muted);">No items selected yet.</p>';
+    return;
+  }
+  box.innerHTML = `
+    <div class="multi-summary-title">Selected Items</div>
+    ${selections[step].map(item => `
+      <div class="summary-row">
+        <div>
+          <div class="summary-row-name">${item.name}</div>
+          <div class="summary-row-qty">Qty: ${item.qty}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="summary-row-price">P${item.price * item.qty}</div>
+          <button class="btn-remove" onclick="removeItem(${step},'${item.name}')">Remove</button>
+        </div>
+      </div>
+    `).join('')}
+    <div class="running-total">Running total: P${getTotal().toLocaleString()}</div>
+  `;
+}
+
+// ──────────────────────────────────────────────
+// SINGLE SELECT
+// ──────────────────────────────────────────────
+function selectItem(step, index) {
+  selections[step] = stepContents[step].items[index];
+
+  // Update buttons in that step
+  stepContents[step].items.forEach((_, i) => {
+    const btn = document.getElementById(`selBtn-${step}-${i}`);
+    const card = document.getElementById(`card-${step}-${i}`);
+    if (btn) { btn.classList.toggle('selected', i === index); btn.textContent = i === index ? 'Selected' : 'Select'; }
+    if (card) card.classList.toggle('is-selected', i === index);
+  });
+
+  renderSidebar(getCurrentVisibleStep());
+}
+
+// ──────────────────────────────────────────────
+// RENDER ALL STEPS
+// ──────────────────────────────────────────────
+function renderAllSteps() {
+  const panel = document.getElementById('mainPanel');
+  let html = '';
+
+  // Steps 1-4
+  for (let s = 1; s <= 4; s++) {
+    const data = stepContents[s];
+    const isMulti = data.multi;
+
+    let gridClass = s === 1 || s === 2 ? 'products-grid-3' :
+                    s === 3 ? 'products-grid-wash' : 'products-grid-pickup';
+
+    html += `
+      <div class="step-section" id="section-step-${s}" data-step="${s}">
+        <div class="section-header">
+          <div class="section-badge" id="badge-${s}">${s}</div>
+          <div>
+            <div class="section-title">${data.title}</div>
+            <div class="section-sub">${data.sub}</div>
+          </div>
+        </div>
+
+        <div class="${gridClass}">
+          ${data.items.map((item, i) => isMulti ? buildMultiCard(s, item, i) : buildSingleCard(s, item, i)).join('')}
+        </div>
+
+        ${isMulti ? `
+          <div class="multi-summary" id="summary-${s}">
+            <p style="font-size:12.5px;color:var(--muted);">No items selected yet.</p>
+          </div>
+        ` : ''}
+      </div>`;
+  }
+
+  // Proceed button
+  html += `
+    <div class="proceed-wrap" id="section-step-5">
+      <p>Review your selections above, then proceed to confirmation.</p>
+      <button class="btn-proceed" onclick="goToConfirmation()">Proceed to Confirmation</button>
+    </div>`;
+
+  panel.innerHTML = html;
+  renderSidebar(1);
+  initScrollSync();
+}
+
+// ──────────────────────────────────────────────
+// SCROLL SYNC
+// ──────────────────────────────────────────────
+let _scrollObserver = null;
+
+function getCurrentVisibleStep() {
+  for (let s = 1; s <= 4; s++) {
+    const el = document.getElementById(`section-step-${s}`);
+    if (!el) continue;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.6 && rect.bottom > 0) return s;
+  }
+  return 1;
+}
+
+function initScrollSync() {
+  if (_scrollObserver) _scrollObserver.disconnect();
+
+  const sections = [];
+  for (let s = 1; s <= 4; s++) {
+    const el = document.getElementById(`section-step-${s}`);
+    if (el) sections.push({ el, step: s });
+  }
+
+  _scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const step = parseInt(e.target.getAttribute('data-step'));
+        renderSidebar(step);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  sections.forEach(({ el }) => _scrollObserver.observe(el));
+
+  // Proceed wrap
+  const proceedEl = document.getElementById('section-step-5');
+  if (proceedEl) {
+    const obs2 = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) renderSidebar(5);
+    }, { threshold: 0.3 });
+    obs2.observe(proceedEl);
+  }
+}
+
+// ──────────────────────────────────────────────
+// CONFIRMATION
+// ──────────────────────────────────────────────
+function goToConfirmation() {
+  if (selections[1].length === 0) { alert('Please select at least one Laundry Soap.'); return; }
+  if (selections[2].length === 0) { alert('Please select at least one Fabric Conditioner.'); return; }
+  if (!selections[3]) { alert('Please select a Wash Type.'); return; }
+  if (!selections[4]) { alert('Please select Pickup Details.'); return; }
+
+  renderSidebar(5);
+  renderConfirmation();
+}
+
+function renderConfirmation() {
+  const panel = document.getElementById('mainPanel');
+
+  const payOpts = paymentItems.map(p => `
+    <div class="payment-option${selectedPayment === p.name ? ' selected' : ''}" onclick="selectPayment('${p.name}')">
+      <div class="payment-icon">${p.icon}</div>
+      <div>
+        <div class="payment-name">${p.name}</div>
+        <div class="payment-note">${p.note}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Soap items — editable in confirmation
+  const soapHtml = selections[1].length === 0
+    ? '<p style="font-size:12.5px;color:var(--muted);margin:0;">No soap selected. Go back to add one.</p>'
+    : selections[1].map(item => `
+    <div class="confirm-item-row">
+      <div><div class="confirm-item-name">${item.name}</div></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button class="conf-qty-btn" onclick="confirmChangeQty(1,'${item.name}',-1)">-</button>
+          <span style="font-size:13px;font-weight:700;min-width:20px;text-align:center;">${item.qty}</span>
+          <button class="conf-qty-btn" onclick="confirmChangeQty(1,'${item.name}',1)">+</button>
+        </div>
+        <div class="confirm-item-price">P${item.price * item.qty}</div>
+        <button class="btn-remove" onclick="confirmRemoveItem(1,'${item.name}')">Remove</button>
+      </div>
+    </div>`).join('');
+
+  // Fabcon items — editable in confirmation
+  const fabconHtml = selections[2].length === 0
+    ? '<p style="font-size:12.5px;color:var(--muted);margin:0;">No fabric conditioner selected. Go back to add one.</p>'
+    : selections[2].map(item => `
+    <div class="confirm-item-row">
+      <div><div class="confirm-item-name">${item.name}</div></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button class="conf-qty-btn" onclick="confirmChangeQty(2,'${item.name}',-1)">-</button>
+          <span style="font-size:13px;font-weight:700;min-width:20px;text-align:center;">${item.qty}</span>
+          <button class="conf-qty-btn" onclick="confirmChangeQty(2,'${item.name}',1)">+</button>
+        </div>
+        <div class="confirm-item-price">P${item.price * item.qty}</div>
+        <button class="btn-remove" onclick="confirmRemoveItem(2,'${item.name}')">Remove</button>
+      </div>
+    </div>`).join('');
+
+  // Wash dropdown
+  const washOpts = stepContents[3].items.map(i =>
+    `<option value="${i.name}" ${selections[3]?.name === i.name ? 'selected' : ''}>${i.name} — P${i.price}</option>`
+  ).join('');
+
+  // Pickup dropdown
+  const pickupOpts = stepContents[4].items.map(i =>
+    `<option value="${i.name}" ${selections[4]?.name === i.name ? 'selected' : ''}>${i.name}${i.price > 0 ? ' — +P' + i.price : ' — Free'}</option>`
+  ).join('');
+
+  panel.innerHTML = `
+    <div class="confirm-wrap">
+
+      <!-- LEFT: Order Details Form -->
+      <div class="confirm-form">
+        <div class="confirm-form-title">Order Details</div>
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" id="custName" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input class="form-input" id="custAddress" placeholder="Enter your complete address" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Delivery Method</label>
+          <select class="form-select" id="pickupType" onchange="toggleDelivery(this.value)">
+            <option value="store" ${deliveryFee === 0 ? 'selected' : ''}>Store Pickup — Free</option>
+            <option value="delivery" ${deliveryFee === 40 ? 'selected' : ''}>Home Delivery — +P40</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Load Weight (kg)</label>
+          <div class="qty-ctrl">
+            <button onclick="updateKg(${kg - 1})" ${kg <= 1 ? 'disabled' : ''}>-</button>
+            <input type="number" id="kgInput" value="${kg}" min="1" onchange="updateKg(this.value)">
+            <button onclick="updateKg(${kg + 1})">+</button>
+          </div>
+          ${kg > 8 ? '<div class="kg-note">Additional P5 charge applies above 8 kg.</div>' : ''}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Number of Orders</label>
+          <div class="qty-ctrl">
+            <button onclick="changeQty(-1)" ${orderQuantity <= 1 ? 'disabled' : ''}>-</button>
+            <input type="text" id="qtyDisplay" value="${orderQuantity}" readonly>
+            <button onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+
+        <div class="info-box">
+          All selections in the summary can be changed before confirming. Once you press Confirm Final Order, your booking will be submitted.
+        </div>
+      </div>
+
+      <!-- RIGHT: Order Summary -->
+      <div class="confirm-summary">
+        <div class="confirm-summary-title">Order Summary</div>
+        <div class="confirm-summary-sub">Review and edit your selections below.</div>
+
+        <!-- Soap -->
+        <div class="confirm-block">
+          <div class="confirm-block-title">Laundry Soap</div>
+          ${soapHtml}
+        </div>
+
+        <!-- Fabcon -->
+        <div class="confirm-block">
+          <div class="confirm-block-title">Fabric Conditioner</div>
+          ${fabconHtml}
+        </div>
+
+        <!-- Wash Type -->
+        <div class="confirm-block">
+          <div class="confirm-block-title">Wash Type</div>
+          <select class="confirm-select" onchange="updateSingleSelection(3, this.value)">${washOpts}</select>
+        </div>
+
+        <!-- Pickup -->
+        <div class="confirm-block">
+          <div class="confirm-block-title">Pickup Schedule</div>
+          <select class="confirm-select" onchange="updateSingleSelection(4, this.value)">${pickupOpts}</select>
+        </div>
+
+        <!-- Payment -->
+        <div class="confirm-block">
+          <div class="confirm-block-title">Payment Method</div>
+          <div class="payment-options">${payOpts}</div>
+        </div>
+
+        <!-- Total -->
+        <div class="total-bar">
+          <span class="total-bar-label">Grand Total</span>
+          <span class="total-bar-amount" id="totalLive">P${getTotal().toLocaleString()}</span>
+        </div>
+
+        <button class="btn-confirm" onclick="confirmFinalOrder()">Confirm Final Order</button>
+      </div>
+
+    </div>`;
+}
+
+// Confirmation helpers
+function toggleDelivery(val) {
+  deliveryFee = val === 'delivery' ? 40 : 0;
+  updateTotalLive();
+}
+
+function updateKg(val) {
+  kg = Math.max(1, parseInt(val) || 1);
+  renderConfirmation();
+}
+
+function changeQty(delta) {
+  orderQuantity = Math.max(1, orderQuantity + delta);
+  const d = document.getElementById('qtyDisplay');
+  if (d) d.value = orderQuantity;
+  updateTotalLive();
+}
+
+function selectPayment(name) {
+  selectedPayment = name;
+  document.querySelectorAll('.payment-option').forEach(el => {
+    el.classList.toggle('selected', el.onclick?.toString().includes(`'${name}'`));
+  });
+  // Re-render payment block only
+  document.querySelectorAll('.payment-option').forEach(el => {
+    const match = el.getAttribute('onclick')?.includes(`'${name}'`);
+    el.classList.toggle('selected', !!match);
+  });
+  updateTotalLive();
+  // Quick re-render of payment options to reflect class
+  const payWrap = document.querySelector('.payment-options');
+  if (payWrap) {
+    payWrap.innerHTML = paymentItems.map(p => `
+      <div class="payment-option${selectedPayment === p.name ? ' selected' : ''}" onclick="selectPayment('${p.name}')">
+        <div class="payment-icon">${p.icon}</div>
+        <div>
+          <div class="payment-name">${p.name}</div>
+          <div class="payment-note">${p.note}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  updateTotalLive();
+}
+
+function updateSingleSelection(step, value) {
+  const item = stepContents[step].items.find(i => i.name === value);
+  if (item) {
+    selections[step] = item;
+    // If pickup changes and affects deliveryFee
+    if (step === 4 && item.name === 'Home Delivery') deliveryFee = 40;
+    else if (step === 4) deliveryFee = 0;
+  }
+  renderSidebar(5);
+  updateTotalLive();
+}
+
+// ──────────────────────────────────────────────
+// EDIT SOAP / FABCON INSIDE CONFIRMATION
+// ──────────────────────────────────────────────
+function confirmRemoveItem(step, name) {
+  selections[step] = selections[step].filter(i => i.name !== name);
+  renderSidebar(5);
+  renderConfirmation();
+}
+
+function confirmChangeQty(step, name, delta) {
+  const item = selections[step].find(i => i.name === name);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  renderConfirmation();
+}
+
+// ──────────────────────────────────────────────
+// FINAL CONFIRM
+// ──────────────────────────────────────────────
+function confirmFinalOrder() {
+  const name    = document.getElementById('custName')?.value?.trim();
+  const address = document.getElementById('custAddress')?.value?.trim();
+
+  if (!name || !address) { alert('Please enter your full name and address.'); return; }
+
+  const ticketNumber = Math.floor(100 + Math.random() * 900).toString();
+
+  const newOrder = {
+    ticket: ticketNumber,
+    name,
+    address,
+    service: selections[3]?.name || 'Laundry Service',
+    soap: selections[1].map(i => `${i.name} x${i.qty}`).join(', '),
+    fabcon: selections[2].map(i => `${i.name} x${i.qty}`).join(', '),
+    pickup: selections[4]?.name || '',
+    payment: selectedPayment,
+    kg,
+    quantity: orderQuantity,
+    amount: getTotal(),
+    status: 'Pending',
+    pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup'
+  };
+
+  // LocalStorage
+  let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  orders.push(newOrder);
+  localStorage.setItem('orders', JSON.stringify(orders));
+
+  // Database
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newOrder)
+  }).then(r => r.json()).then(d => console.log('Saved to DB:', d)).catch(e => console.log('DB Error:', e));
+
+  alert(`ORDER CONFIRMED!\n\nTicket: ${ticketNumber}\nCustomer: ${name}\nTotal: P${getTotal()}\n\nYou can now track your laundry.`);
+  window.location.href = `../HTML/tracklaundry.html?ticket=${ticketNumber}`;
+}
+
+// ──────────────────────────────────────────────
+// ADMIN PRICING SYNC
+// ──────────────────────────────────────────────
+function loadPricingFromStorage() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('laundryPricing'));
+    if (!saved) return;
+    if (Array.isArray(saved.step1)) {
+      stepContents[1].items.forEach((item, i) => {
+        if (!item.name.startsWith('Personal') && saved.step1[i] !== undefined)
+          stepContents[1].items[i].price = saved.step1[i];
+      });
+    }
+    if (Array.isArray(saved.step2)) {
+      stepContents[2].items.forEach((item, i) => {
+        if (!item.name.startsWith('Personal') && saved.step2[i] !== undefined)
+          stepContents[2].items[i].price = saved.step2[i];
+      });
+    }
+    if (Array.isArray(saved.step3)) {
+      stepContents[3].items.forEach((item, i) => {
+        if (saved.step3[i] !== undefined) stepContents[3].items[i].price = saved.step3[i];
+      });
+    }
+    if (saved.deliveryFee !== undefined) deliveryFee = saved.deliveryFee;
+  } catch(e) { console.log('Pricing load error:', e); }
+}
+
+// ──────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────
+loadPricingFromStorage();
+window.addEventListener('pricingUpdated', loadPricingFromStorage);
+renderAllSteps();
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+  if (confirm('Are you sure you want to log out?')) {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = '../HTML/login.html';
   }
 });
 </script>
-
 </body>
 </html>
