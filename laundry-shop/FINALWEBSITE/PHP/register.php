@@ -1,14 +1,26 @@
 <?php
-include "../db.php";
+header("Content-Type: application/json");
 
-$fullname = $_POST['fullname'];
-$email = $_POST['email'];
-$username = $_POST['username'];
-$password = $_POST['password'];
-$confirmPassword = $_POST['confirmPassword'];
+include "db.php";
+
+$fullname = $_POST['fullname'] ?? '';
+$email = $_POST['email'] ?? '';
+$username = $_POST['username'] ?? '';
+$password = $_POST['password'] ?? '';
+$confirmPassword = $_POST['confirmPassword'] ?? '';
+
+if (!$fullname || !$email || !$username || !$password || !$confirmPassword) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Missing fields"
+    ]);
+    exit();
+}
 
 if ($password !== $confirmPassword) {
-    echo "password_mismatch";
+    echo json_encode([
+        "status" => "password_mismatch"
+    ]);
     exit();
 }
 
@@ -18,17 +30,16 @@ $check->execute();
 $check->store_result();
 
 if ($check->num_rows > 0) {
-    echo "exists";
+    echo json_encode([
+        "status" => "exists"
+    ]);
     exit();
 }
 
-// Hash password
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-// Default role for all new users
 $role = "customer";
 
-// Insert user
 $stmt = $conn->prepare(
     "INSERT INTO users (fullname, email, username, password, role)
      VALUES (?, ?, ?, ?, ?)"
@@ -44,8 +55,17 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-    echo "success";
+
+    echo json_encode([
+        "status" => "success"
+    ]);
+
 } else {
-    echo "error: " . $conn->error;
+
+    echo json_encode([
+        "status" => "error",
+        "message" => $conn->error
+    ]);
+
 }
 ?>

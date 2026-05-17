@@ -16,13 +16,23 @@ form.addEventListener('submit', function (e) {
 
     if (data.status === "success") {
 
-      if (data.role === "admin") {
-        window.location.href = "../HTML/admin.html";
-      } else {
-        window.location.href = "../HTML/index.html";
-      }
+  const userData = {
+    fullname: data.fullname || data.username,
+    username: data.username,
+    email: data.email,
+    contact: data.contact || "",
+    address: data.address || "",
+    profilePicture: ""
+  };
 
-    } 
+  localStorage.setItem("loggedInUser", JSON.stringify(userData));
+
+  if (data.role === "admin") {
+    window.location.href = "../HTML/admin.html";
+  } else {
+    window.location.href = "../HTML/index.html";
+  }
+}
     else if (data.status === "wrong_password") {
       alert("Wrong password!");
     } 
@@ -35,4 +45,44 @@ form.addEventListener('submit', function (e) {
     console.error(err);
     alert("Server error");
   });
+});
+// ===============================
+// GOOGLE LOGIN (SIMULATED)
+// ===============================
+document.getElementById("googleLoginBtn").addEventListener("click", function () {
+  const googleUser = {
+    fullname: "Google User",
+    username: "google_user",
+    email: "googleuser@gmail.com",
+    contact: "",
+    address: "",
+    profilePicture: ""
+  };
+
+  // Save user data
+  localStorage.setItem("loggedInUser", JSON.stringify(googleUser));
+
+  // Redirect to website
+  window.location.href = "../HTML/index.html";
+});
+
+
+// ===============================
+// FACEBOOK LOGIN (SIMULATED)
+// ===============================
+document.getElementById("facebookLoginBtn").addEventListener("click", function () {
+  const facebookUser = {
+    fullname: "Facebook User",
+    username: "facebook_user",
+    email: "facebookuser@facebook.com",
+    contact: "",
+    address: "",
+    profilePicture: ""
+  };
+
+  // Save user data
+  localStorage.setItem("loggedInUser", JSON.stringify(facebookUser));
+
+  // Redirect to website
+  window.location.href = "../HTML/index.html";
 });

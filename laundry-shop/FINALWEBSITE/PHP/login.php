@@ -20,21 +20,29 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
+
     $user = $result->fetch_assoc();
 
-    // Verify hashed password
     if (password_verify($password, $user['password'])) {
 
+        // session (optional but good)
         $_SESSION['user_id'] = $user['id'];
 
         echo json_encode([
             "status" => "success",
-            "role" => $user['role'] ?? 'customer'
+            "id" => $user['id'],
+            "fullname" => $user['fullname'],
+            "username" => $user['username'],
+            "email" => $user['email'],
+            "contact" => $user['contact'] ?? "",
+            "address" => $user['address'] ?? "",
+            "role" => $user['role'] ?? "customer"
         ]);
 
     } else {
         echo json_encode(["status" => "wrong_password"]);
     }
+
 } else {
     echo json_encode(["status" => "not_found"]);
 }

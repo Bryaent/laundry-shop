@@ -37,13 +37,21 @@
   <section class="account-container">
     <div class="account-card">
       <h2>My Account</h2>
-      <div class="profile-info">
-        <div class="profile-pic">
-          <img src="../img/lance.jpg" alt="Profile Picture">
-        </div>
+      <div class="profile-pic">
+  <img id="profileImage" src="" alt="Profile Picture" style="display:none;">
+  <div id="noProfileText">No Profile Picture</div>
+
+  <input
+    type="file"
+    id="profileUpload"
+    accept="image/*"
+    style="margin-top: 10px;"
+  >
+</div>
 
         <div class="details">
           <p><strong>Name:</strong> <span id="accName">Customer Name</span></p>
+          <p><strong>Username:</strong> <span id="accUsername">username</span></p>
           <p><strong>Email:</strong> <span id="accEmail">customer@email.com</span></p>
           <p><strong>Contact:</strong> <span id="accContact">0912 345 6789</span></p>
           <p><strong>Address:</strong> <span id="accAddress">123 Laundry Street, City</span></p>
@@ -164,6 +172,85 @@ saveBtn.addEventListener("click", () => {
     console.error(error);
     alert("Error updating profile.");
   });
+});
+</script>
+<script>
+// ================================
+// LOAD USER DATA
+// ================================
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if (!user) {
+  alert("Please login first.");
+  window.location.href = "../HTML/login.html";
+}
+
+// Display user info
+document.getElementById("accName").textContent =
+  user.fullname || user.name || "No Name";
+
+document.getElementById("accUsername").textContent =
+  user.username || "No Username";
+
+document.getElementById("accEmail").textContent =
+  user.email || "No Email";
+
+document.getElementById("accContact").textContent =
+  user.contact || "";
+
+document.getElementById("accAddress").textContent =
+  user.address || "";
+
+
+// ================================
+// PROFILE PICTURE LOAD
+// ================================
+const profileImage = document.getElementById("profileImage");
+const noProfileText = document.getElementById("noProfileText");
+
+if (user.profilePicture) {
+  profileImage.src = user.profilePicture;
+  profileImage.style.display = "block";
+  noProfileText.style.display = "none";
+}
+
+
+// ================================
+// PROFILE PICTURE UPLOAD
+// ================================
+document.getElementById("profileUpload").addEventListener("change", function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const imageData = e.target.result;
+
+    profileImage.src = imageData;
+    profileImage.style.display = "block";
+    noProfileText.style.display = "none";
+
+    user.profilePicture = imageData;
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+    alert("Profile picture updated successfully!");
+  };
+
+  reader.readAsDataURL(file);
+});
+
+
+// ================================
+// LOGOUT
+// ================================
+document.getElementById("logoutBtn").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (confirm("Are you sure you want to log out?")) {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "../HTML/login.html";
+  }
 });
 </script>
 </body>

@@ -711,3 +711,23 @@ document.addEventListener("click", e => {
         setTimeout(loadSavedPricing, 200);
     }
 });
+
+// LOGOUT BUTTON FUNCTIONALITY
+const logoutBtn = document.querySelector(".logout-btn");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+        const confirmLogout = confirm("Are you sure you want to logout?");
+        if (!confirmLogout) return;
+
+        // Optional: clear saved session data
+        localStorage.removeItem("loggedInUser");
+        sessionStorage.clear();
+
+        // Redirect to login page
+        window.location.href = "../HTML/login.html";
+        // Kung nasa ibang folder ang login page, palitan ito ng tamang path.
+        // Halimbawa:
+        // window.location.href = "../HTML/login.html";
+    });
+}
