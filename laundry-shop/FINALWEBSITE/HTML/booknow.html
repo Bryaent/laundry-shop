@@ -40,7 +40,6 @@
       overflow-x: hidden;
     }
 
-    /* Soft background blobs */
     body::before {
       content: '';
       position: fixed;
@@ -389,7 +388,6 @@
     .btn-select:hover { background: #005fa3; }
     .btn-select.selected { background: var(--green); cursor: default; }
 
-    /* Dots */
     .slider-dots { display: flex; justify-content: center; gap: 7px; margin-top: 14px; }
     .dot {
       width: 8px; height: 8px; border-radius: 50%;
@@ -397,7 +395,6 @@
     }
     .dot.active { background: #0077cc; width: 24px; border-radius: 4px; }
 
-    /* Personal choice — compact inline row */
     .personal-choice-row {
       display: flex; align-items: center; gap: 12px;
       margin-top: 16px; flex-wrap: wrap;
@@ -420,7 +417,6 @@
       box-shadow: 0 0 14px rgba(0,119,204,0.3);
     }
 
-    /* Multi summary */
     .multi-summary {
       margin-top: 18px;
       background: #f0f6ff;
@@ -455,7 +451,6 @@
       color: #0077cc; text-align: right;
     }
 
-    /* Proceed */
     .proceed-wrap {
       margin-top: 44px; padding-top: 30px;
       border-top: 1.5px solid rgba(0,119,204,0.13); text-align: center;
@@ -642,6 +637,163 @@
     }
     .btn-back:hover { background: #0077cc; color: #fff; }
 
+    /* ══════════════════════════════════════════
+       GCASH MODAL
+    ══════════════════════════════════════════ */
+    .gcash-modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(13,27,46,0.72);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .gcash-modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .gcash-modal {
+      background: #fff;
+      border-radius: 22px;
+      border: 2px solid rgba(0,119,204,0.2);
+      box-shadow: 0 24px 80px rgba(0,50,120,0.25);
+      width: 100%; max-width: 560px;
+      padding: 36px 34px 30px;
+      position: relative;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.3s;
+      max-height: 92vh; overflow-y: auto;
+    }
+    .gcash-modal-overlay.open .gcash-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .gcash-modal-close {
+      position: absolute; top: 16px; right: 18px;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: #f0f6ff; border: none; cursor: pointer;
+      font-size: 20px; color: #0077cc; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      transition: 0.2s;
+    }
+    .gcash-modal-close:hover { background: #0077cc; color: #fff; }
+
+    .gcash-modal-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px; font-weight: 900;
+      color: #0077cc; text-transform: uppercase;
+      letter-spacing: 0.04em; margin-bottom: 4px;
+    }
+    .gcash-modal-sub {
+      font-size: 13px; color: var(--text-muted); margin-bottom: 22px;
+    }
+
+    /* QR + Info section */
+    .gcash-info-row {
+      display: flex; gap: 20px; align-items: flex-start;
+      margin-bottom: 22px;
+    }
+    .gcash-qr-box {
+      width: 140px; min-width: 140px; height: 140px;
+      border: 2px dashed rgba(0,119,204,0.35);
+      border-radius: 14px;
+      background: #f0f6ff;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 6px;
+      color: #0077cc; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      text-align: center;
+      overflow: hidden;
+    }
+    .gcash-qr-box img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+      display: none;
+    }
+    .gcash-qr-icon { font-size: 36px; }
+
+    .gcash-details { flex: 1; }
+    .gcash-detail-item {
+      background: #f0f6ff;
+      border: 1.5px solid rgba(0,119,204,0.13);
+      border-radius: 11px; padding: 12px 15px;
+      margin-bottom: 10px;
+    }
+    .gcash-detail-label {
+      font-size: 10px; font-weight: 800; color: #0077cc;
+      text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 4px;
+    }
+    .gcash-detail-value {
+      font-size: 15px; font-weight: 700; color: #0d1b2e;
+    }
+
+    /* Amount to pay */
+    .gcash-amount-bar {
+      background: linear-gradient(135deg, #0077cc, #005fa3);
+      color: #fff; border-radius: 12px; padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .gcash-amount-label { font-size: 13px; font-weight: 700; opacity: 0.85; }
+    .gcash-amount-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px; font-weight: 900;
+    }
+
+    /* Form fields */
+    .gcash-form-group { margin-bottom: 15px; }
+    .gcash-form-label {
+      display: block; font-size: 11px; font-weight: 800; color: #0077cc;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 7px;
+    }
+    .gcash-form-input {
+      width: 100%; padding: 12px 15px;
+      border: 1.5px solid rgba(0,119,204,0.22);
+      border-radius: 11px; font-size: 14px; font-family: inherit;
+      background: #fff; color: #0d1b2e; transition: border 0.2s;
+    }
+    .gcash-form-input:focus { outline: none; border-color: #0077cc; box-shadow: 0 0 0 3px rgba(0,119,204,0.1); }
+
+    /* Proof upload */
+    .gcash-upload-area {
+      border: 2px dashed rgba(0,119,204,0.3);
+      border-radius: 14px; padding: 24px;
+      text-align: center; cursor: pointer;
+      background: #f5f8ff; transition: all 0.2s;
+      position: relative;
+    }
+    .gcash-upload-area:hover { border-color: #0077cc; background: rgba(0,119,204,0.05); }
+    .gcash-upload-area input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .gcash-upload-icon { font-size: 32px; margin-bottom: 8px; }
+    .gcash-upload-text { font-size: 13px; font-weight: 700; color: #0077cc; margin-bottom: 4px; }
+    .gcash-upload-sub { font-size: 11px; color: var(--text-muted); }
+
+    .gcash-preview {
+      margin-top: 12px; display: none;
+      border-radius: 11px; overflow: hidden;
+      border: 1.5px solid rgba(0,119,204,0.2);
+    }
+    .gcash-preview img {
+      width: 100%; max-height: 200px; object-fit: contain;
+      background: #f5f8ff;
+    }
+    .gcash-preview-name {
+      font-size: 12px; color: var(--text-muted); text-align: center;
+      padding: 6px; background: #f0f6ff;
+    }
+
+    .gcash-submit-btn {
+      width: 100%; margin-top: 20px; padding: 16px;
+      background: linear-gradient(135deg, #0077cc, #005fa3);
+      color: #fff; border: none; border-radius: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 900;
+      cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase;
+      box-shadow: 0 4px 22px rgba(0,119,204,0.35);
+      transition: all 0.2s;
+    }
+    .gcash-submit-btn:hover { background: linear-gradient(135deg,#005fa3,#004880); transform: translateY(-2px); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
       .book-layout { flex-direction: column; }
@@ -664,6 +816,8 @@
       .page-wrap { padding: 20px 16px 55px; }
       .book-content { padding: 22px 18px; }
       .page-title { font-size: 36px; }
+      .gcash-info-row { flex-direction: column; }
+      .gcash-qr-box { width: 100%; min-width: unset; height: 180px; }
     }
     @media (max-width: 400px) {
       .product-card { flex: 0 0 100%; }
@@ -693,6 +847,70 @@
   </nav>
 </header>
 
+<!-- ══ GCASH MODAL ══ -->
+<div class="gcash-modal-overlay" id="gcashModal">
+  <div class="gcash-modal">
+    <button class="gcash-modal-close" onclick="closeGcashModal()">&#10005;</button>
+
+    <div class="gcash-modal-title">&#128236; GCash Payment</div>
+    <div class="gcash-modal-sub">Scan the QR code or send to the number below, then fill in your payment details.</div>
+
+    <!-- QR + Details -->
+    <div class="gcash-info-row">
+     <div class="gcash-qr-box" id="gcashQrBox">
+  <img src="../img/gcash-qr.png" alt="GCash QR Code" style="display:block;">
+</div>
+      <div class="gcash-details">
+        <div class="gcash-detail-item">
+          <div class="gcash-detail-label">GCash Name</div>
+          <div class="gcash-detail-value" id="modalGcashName">M &amp; M Laundry</div>
+        </div>
+        <div class="gcash-detail-item">
+          <div class="gcash-detail-label">GCash Number</div>
+          <div class="gcash-detail-value" id="modalGcashNumber">09683010566</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div class="gcash-amount-bar">
+      <span class="gcash-amount-label">Amount to Send</span>
+      <span class="gcash-amount-value" id="gcashAmountDisplay">&#8369;0</span>
+    </div>
+
+    <!-- Customer fills these -->
+    <div class="gcash-form-group">
+      <label class="gcash-form-label">Your GCash Name (Sender)</label>
+      <input class="gcash-form-input" id="gcashSenderName" placeholder="Enter your GCash registered name">
+    </div>
+    <div class="gcash-form-group">
+      <label class="gcash-form-label">Your GCash Number</label>
+      <input class="gcash-form-input" id="gcashSenderNumber" placeholder="09XX-XXX-XXXX" maxlength="13">
+    </div>
+    <div class="gcash-form-group">
+      <label class="gcash-form-label">GCash Reference Number</label>
+      <input class="gcash-form-input" id="gcashRefNumber" placeholder="Enter 13-digit reference number" maxlength="13">
+    </div>
+
+    <!-- Proof of payment upload -->
+    <div class="gcash-form-group">
+      <label class="gcash-form-label">Proof of Payment (Screenshot)</label>
+      <div class="gcash-upload-area" id="gcashUploadArea">
+        <input type="file" id="gcashProofInput" accept="image/*" onchange="handleProofUpload(this)">
+        <div class="gcash-upload-icon">&#128247;</div>
+        <div class="gcash-upload-text">Click or tap to upload screenshot</div>
+        <div class="gcash-upload-sub">PNG, JPG, JPEG accepted</div>
+      </div>
+      <div class="gcash-preview" id="gcashPreview">
+        <img id="gcashPreviewImg" src="" alt="Proof">
+        <div class="gcash-preview-name" id="gcashPreviewName"></div>
+      </div>
+    </div>
+
+    <button class="gcash-submit-btn" onclick="submitGcashPayment()">&#10004; Confirm GCash Payment</button>
+  </div>
+</div>
+
 <div class="page-wrap">
   <div class="page-title-wrap">
     <div class="page-eyebrow">M &amp; M Laundry Shop</div>
@@ -705,6 +923,70 @@
 </div>
 
 <script>
+// ══════════════════════════════════════════════════════
+// GCASH SHOP DETAILS — edit these to match your actual GCash
+// ══════════════════════════════════════════════════════
+const GCASH_NAME   = 'M & M Laundry';
+const GCASH_NUMBER = '09683010566';
+
+// Proof of payment stored as base64 for localStorage
+let gcashProofBase64 = null;
+let gcashProofFileName = '';
+
+function openGcashModal() {
+  document.getElementById('modalGcashName').textContent   = GCASH_NAME;
+  document.getElementById('modalGcashNumber').textContent = GCASH_NUMBER;
+  document.getElementById('gcashAmountDisplay').innerHTML = '&#8369;' + getTotal().toLocaleString();
+  document.getElementById('gcashModal').classList.add('open');
+}
+
+function closeGcashModal() {
+  document.getElementById('gcashModal').classList.remove('open');
+}
+
+// Close on overlay click
+document.getElementById('gcashModal').addEventListener('click', function(e) {
+  if (e.target === this) closeGcashModal();
+});
+
+function handleProofUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  gcashProofFileName = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    gcashProofBase64 = e.target.result;
+    document.getElementById('gcashPreviewImg').src = gcashProofBase64;
+    document.getElementById('gcashPreviewName').textContent = file.name;
+    document.getElementById('gcashPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function submitGcashPayment() {
+  const senderName   = document.getElementById('gcashSenderName').value.trim();
+  const senderNumber = document.getElementById('gcashSenderNumber').value.trim();
+  const refNumber    = document.getElementById('gcashRefNumber').value.trim();
+
+  if (!senderName)   { alert('Please enter your GCash registered name.'); return; }
+  if (!senderNumber) { alert('Please enter your GCash number.'); return; }
+  if (!refNumber)    { alert('Please enter the GCash reference number.'); return; }
+  if (!gcashProofBase64) { alert('Please upload your proof of payment screenshot.'); return; }
+
+  // Store gcash details to be used in final order
+  window._gcashPaymentDetails = {
+    senderName,
+    senderNumber,
+    refNumber,
+    proofImage: gcashProofBase64,
+    proofFileName: gcashProofFileName
+  };
+
+  closeGcashModal();
+  // Trigger final order after gcash confirmed
+  finalizeOrder();
+}
+
 // ══════════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════════
@@ -762,9 +1044,7 @@ let kg              = 1;
 let deliveryFee     = 0;
 const sliderPage    = { 1: 0, 2: 0, 3: 0 };
 
-// ══════════════════════════════════════════════════════
-// SIDEBAR
-// ══════════════════════════════════════════════════════
+// ── SIDEBAR ──
 const sidebarMeta = [
   { label: "Laundry Soap",       hint: "Step 1" },
   { label: "Fabric Conditioner", hint: "Step 2" },
@@ -808,9 +1088,7 @@ function sidebarClick(n) {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ══════════════════════════════════════════════════════
-// TOTALS
-// ══════════════════════════════════════════════════════
+// ── TOTALS ──
 function getSubtotal() {
   let t = 0;
   selections[1].forEach(i => t += i.price * i.qty);
@@ -826,9 +1104,7 @@ function updateTotalLive() {
   if (el) el.innerHTML = '&#8369;' + getTotal().toLocaleString();
 }
 
-// ══════════════════════════════════════════════════════
-// CAROUSEL
-// ══════════════════════════════════════════════════════
+// ── CAROUSEL ──
 function applySlider(step) {
   const track = document.getElementById(`track-${step}`);
   const prevBtn = document.getElementById(`prev-${step}`);
@@ -865,9 +1141,7 @@ function slideNext(step) {
 }
 function initSliders() { requestAnimationFrame(() => { [1,2,3].forEach(s => applySlider(s)); }); }
 
-// ══════════════════════════════════════════════════════
-// CARD BUILDERS
-// ══════════════════════════════════════════════════════
+// ── CARD BUILDERS ──
 function buildMultiCard(step, item, index) {
   const isAdded = !!selections[step].find(i => i.name === item.name);
   return `
@@ -915,9 +1189,7 @@ function buildSingleCard(step, item, index) {
     </div>`;
 }
 
-// ══════════════════════════════════════════════════════
-// MULTI-ITEM ACTIONS
-// ══════════════════════════════════════════════════════
+// ── MULTI ACTIONS ──
 function handleQty(step, index, delta) {
   if (selections[step].find(i => i.name === stepContents[step].items[index].name)) {
     alert('Remove the item first before editing quantity.'); return;
@@ -975,9 +1247,7 @@ function refreshSummary(step) {
     <div class="running-total">Running total: &#8369;${getTotal().toLocaleString()}</div>`;
 }
 
-// ══════════════════════════════════════════════════════
-// SINGLE SELECT
-// ══════════════════════════════════════════════════════
+// ── SINGLE SELECT ──
 function selectItem(step, index) {
   selections[step] = stepContents[step].items[index];
   stepContents[step].items.forEach((_, i) => {
@@ -989,9 +1259,7 @@ function selectItem(step, index) {
   renderSidebar(getCurrentStep());
 }
 
-// ══════════════════════════════════════════════════════
-// PERSONAL CHOICE
-// ══════════════════════════════════════════════════════
+// ── PERSONAL CHOICE ──
 function usePersonalChoice(step) {
   if (!selections[step].find(i => i.name === 'Personal Choice')) {
     selections[step].push({ name: 'Personal Choice', img: '', price: 0, desc: '', qty: 1 });
@@ -1002,9 +1270,7 @@ function usePersonalChoice(step) {
   if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ══════════════════════════════════════════════════════
-// SCROLL SYNC
-// ══════════════════════════════════════════════════════
+// ── SCROLL SYNC ──
 let _observer = null;
 function getCurrentStep() {
   for (let s = 1; s <= 3; s++) {
@@ -1031,9 +1297,7 @@ function initScrollSync() {
   }
 }
 
-// ══════════════════════════════════════════════════════
-// RENDER ALL STEPS
-// ══════════════════════════════════════════════════════
+// ── RENDER ALL STEPS ──
 function renderAllSteps() {
   const content = document.getElementById('bookContent');
   let html = '';
@@ -1085,9 +1349,7 @@ function renderAllSteps() {
   window.addEventListener('resize', () => { [1,2,3].forEach(s => applySlider(s)); });
 }
 
-// ══════════════════════════════════════════════════════
-// VALIDATION
-// ══════════════════════════════════════════════════════
+// ── VALIDATION ──
 function goToConfirmation() {
   if (selections[1].length === 0) { alert('Please select at least one Laundry Soap (or use Personal Choice).'); return; }
   if (selections[2].length === 0) { alert('Please select at least one Fabric Conditioner (or use Personal Choice).'); return; }
@@ -1097,9 +1359,7 @@ function goToConfirmation() {
   renderConfirmation();
 }
 
-// ══════════════════════════════════════════════════════
-// CONFIRMATION
-// ══════════════════════════════════════════════════════
+// ── CONFIRMATION ──
 function renderConfirmation() {
   const content = document.getElementById('bookContent');
   const soapRows = selections[1].map(item => `
@@ -1247,26 +1507,42 @@ function goBack() {
 function toggleDelivery(val) { deliveryFee = val === 'delivery' ? 40 : 0; updateTotalLive(); }
 function updateKg(val) { kg = Math.max(1, parseInt(val) || 1); renderConfirmation(); }
 function changeQty(delta) { orderQuantity = Math.max(1, orderQuantity + delta); const d = document.getElementById('qtyDisplay'); if (d) d.value = orderQuantity; updateTotalLive(); }
-function selectPayment(name) { selectedPayment = name; document.querySelectorAll('.payment-option').forEach(el => el.classList.toggle('selected', el.getAttribute('onclick')?.includes(`'${name}'`))); updateTotalLive(); }
+function selectPayment(name) {
+  selectedPayment = name;
+  document.querySelectorAll('.payment-option').forEach(el => el.classList.toggle('selected', el.getAttribute('onclick')?.includes(`'${name}'`)));
+  updateTotalLive();
+}
 function updateSingleSelection(step, value) { const item = stepContents[step].items.find(i => i.name === value); if (item) selections[step] = item; updateTotalLive(); }
 function confirmRemoveItem(step, name) { selections[step] = selections[step].filter(i => i.name !== name); renderConfirmation(); }
 function confirmChangeQty(step, name, delta) { const item = selections[step].find(i => i.name === name); if (item) item.qty = Math.max(1, item.qty + delta); renderConfirmation(); }
 
 // ══════════════════════════════════════════════════════
-// FINAL ORDER
+// CONFIRM FINAL ORDER
 // ══════════════════════════════════════════════════════
 function confirmFinalOrder() {
   const name     = document.getElementById('custName')?.value?.trim();
   const address  = document.getElementById('custAddress')?.value?.trim();
-  const schedule = document.getElementById('pickupSchedule')?.value || 'Morning';
-  const expressCharge = schedule === 'Express' ? 50 : 0;
 
-  if (!name || !address)          { alert('Please enter your full name and address.'); return; }
+  if (!name || !address) { alert('Please enter your full name and address.'); return; }
   if (selections[1].length === 0) { alert('Laundry soap is empty. Please go back.'); return; }
   if (selections[2].length === 0) { alert('Fabric conditioner is empty. Please go back.'); return; }
   if (!selections[3])             { alert('No wash type selected. Please go back.'); return; }
 
+  if (selectedPayment === 'GCash') {
+    // Open GCash modal — actual finalization happens after modal submit
+    openGcashModal();
+  } else {
+    finalizeOrder();
+  }
+}
+
+function finalizeOrder() {
+  const name     = document.getElementById('custName')?.value?.trim();
+  const address  = document.getElementById('custAddress')?.value?.trim();
+  const schedule = document.getElementById('pickupSchedule')?.value || 'Morning';
+  const expressCharge = schedule === 'Express' ? 50 : 0;
   const ticketNumber = Math.floor(100 + Math.random() * 900).toString();
+
   const newOrder = {
     ticket: ticketNumber, name, address,
     service: selections[3]?.name || 'Laundry Service',
@@ -1278,6 +1554,12 @@ function confirmFinalOrder() {
     status: 'Pending',
     pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup'
   };
+
+  // Attach GCash details if applicable
+  if (selectedPayment === 'GCash' && window._gcashPaymentDetails) {
+    newOrder.gcash = window._gcashPaymentDetails;
+    window._gcashPaymentDetails = null;
+  }
 
   const orders = JSON.parse(localStorage.getItem('orders') || '[]');
   orders.push(newOrder);
@@ -1291,9 +1573,7 @@ function confirmFinalOrder() {
   window.location.href = `../HTML/tracklaundry.html?ticket=${ticketNumber}`;
 }
 
-// ══════════════════════════════════════════════════════
-// ADMIN PRICING SYNC
-// ══════════════════════════════════════════════════════
+// ── ADMIN PRICING SYNC ──
 function loadPricingFromStorage() {
   try {
     const saved = JSON.parse(localStorage.getItem('laundryPricing'));
@@ -1305,9 +1585,7 @@ function loadPricingFromStorage() {
   } catch(e) { console.log('Pricing load error:', e); }
 }
 
-// ══════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════
+// ── INIT ──
 loadPricingFromStorage();
 window.addEventListener('pricingUpdated', loadPricingFromStorage);
 renderAllSteps();

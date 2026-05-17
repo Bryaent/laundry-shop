@@ -11,30 +11,33 @@ function canComplete(order) {
 }
 
 // ══════════════════════════════════════════════════════
+// STATUS FILTER STATE
+// ══════════════════════════════════════════════════════
+let activeStatusFilter = 'All';
+
+// ══════════════════════════════════════════════════════
 // LOAD ORDERS  +  LIVE POLLING (every 5 seconds)
 // ══════════════════════════════════════════════════════
 function loadOrders() {
     fetch("http://localhost:3000/laundry-shop/FINALWEBSITE/PHP/orders.php")
         .then(res => res.json())
         .then(data => {
-            // Merge server data with local state (preserve wasReady, completedDate, etc.)
             orders = data.map(serverOrder => {
                 const local = orders.find(o => o.id === serverOrder.id || o.ticket === serverOrder.ticket);
                 return {
                     ...serverOrder,
-                    status:      serverOrder.status      || "Pending",
-                    wasReady:    local ? local.wasReady  : (serverOrder.wasReady === true),
+                    status:        serverOrder.status      || "Pending",
+                    wasReady:      local ? local.wasReady  : (serverOrder.wasReady === true),
                     completedDate: local ? local.completedDate : serverOrder.completedDate,
-                    month:       local ? local.month     : serverOrder.month,
-                    year:        local ? local.year      : serverOrder.year,
-                    day:         local ? local.day       : serverOrder.day,
+                    month:         local ? local.month     : serverOrder.month,
+                    year:          local ? local.year      : serverOrder.year,
+                    day:           local ? local.day       : serverOrder.day,
                 };
             });
             renderOrders();
             renderRevenueChart();
         })
         .catch(() => {
-            // Fallback to localStorage when server is unavailable
             const saved = JSON.parse(localStorage.getItem("orders")) || [];
             orders = saved.map(o => ({
                 ...o,
@@ -46,11 +49,74 @@ function loadOrders() {
         });
 }
 
-// Initial load
 loadOrders();
-
-// ── Auto-refresh every 5 seconds (live orders) ──
 setInterval(loadOrders, 5000);
+
+// ══════════════════════════════════════════════════════
+// STATUS FILTER BUTTONS (inject into DOM after load)
+// ══════════════════════════════════════════════════════
+function renderStatusFilterBar() {
+    const existing = document.getElementById('statusFilterBar');
+    if (existing) return; // already injected
+
+    const liveSection = document.querySelector('#orders .table-section');
+    if (!liveSection) return;
+
+    const statuses = ['All', 'Pending', 'Received', 'In Progress', 'Ready'];
+    const bar = document.createElement('div');
+    bar.id = 'statusFilterBar';
+    bar.style.cssText = `
+        display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        margin-bottom: 18px; padding: 14px 18px;
+        background: #fff; border-radius: 14px;
+        border: 1.5px solid rgba(0,100,200,0.12);
+        box-shadow: 0 2px 10px rgba(0,50,120,0.06);
+    `;
+
+    const label = document.createElement('span');
+    label.textContent = 'Filter by Status:';
+    label.style.cssText = 'font-size:12px;font-weight:800;color:#5a7194;text-transform:uppercase;letter-spacing:0.1em;margin-right:4px;';
+    bar.appendChild(label);
+
+    statuses.forEach(status => {
+        const btn = document.createElement('button');
+        btn.textContent = status;
+        btn.dataset.status = status;
+        btn.className = 'status-filter-btn' + (status === activeStatusFilter ? ' sf-active' : '');
+        btn.style.cssText = getFilterBtnStyle(status, status === activeStatusFilter);
+        btn.onclick = () => {
+            activeStatusFilter = status;
+            document.querySelectorAll('.status-filter-btn').forEach(b => {
+                const s = b.dataset.status;
+                b.className = 'status-filter-btn' + (s === status ? ' sf-active' : '');
+                b.style.cssText = getFilterBtnStyle(s, s === status);
+            });
+            renderOrders();
+        };
+        bar.appendChild(btn);
+    });
+
+    liveSection.insertBefore(bar, liveSection.querySelector('.section-header').nextSibling);
+}
+
+function getFilterBtnStyle(status, active) {
+    const colorMap = {
+        'All':        { bg: '#0077cc', shadow: 'rgba(0,119,204,0.3)' },
+        'Pending':    { bg: '#f59e0b', shadow: 'rgba(245,158,11,0.3)' },
+        'Received':   { bg: '#6366f1', shadow: 'rgba(99,102,241,0.3)' },
+        'In Progress':{ bg: '#3b82f6', shadow: 'rgba(59,130,246,0.3)' },
+        'Ready':      { bg: '#10b981', shadow: 'rgba(16,185,129,0.3)' }
+    };
+    const c = colorMap[status] || colorMap['All'];
+    if (active) {
+        return `padding:7px 18px;border-radius:30px;border:none;cursor:pointer;
+                font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;
+                background:${c.bg};color:#fff;box-shadow:0 0 14px ${c.shadow};transition:0.2s;font-family:inherit;`;
+    }
+    return `padding:7px 18px;border-radius:30px;border:1.5px solid rgba(0,100,200,0.2);cursor:pointer;
+            font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+            background:#f0f6ff;color:#5a7194;transition:0.2s;font-family:inherit;`;
+}
 
 // ══════════════════════════════════════════════════════
 // RENDER ORDERS
@@ -58,10 +124,12 @@ setInterval(loadOrders, 5000);
 function renderOrders() {
     if (!ordersTable || !completedOrdersTable) return;
 
+    // Inject filter bar first time
+    renderStatusFilterBar();
+
     ordersTable.innerHTML          = "";
     completedOrdersTable.innerHTML = "";
 
-    // Overview cards
     const totalOrders    = orders.length;
     const completedCount = orders.filter(o => o.status === "Completed").length;
     const pendingCount   = totalOrders - completedCount;
@@ -101,13 +169,14 @@ function renderOrders() {
             `;
             completedOrdersTable.appendChild(tr);
 
-        // ── LIVE TABLE ──
+        // ── LIVE TABLE (apply status filter) ──
         } else {
-            hasLive = true;
             const currentStatus = o.status || "Pending";
-            const statusClass   = currentStatus.toLowerCase().replace(/\s+/g, "");
+            // Apply filter
+            if (activeStatusFilter !== 'All' && currentStatus !== activeStatusFilter) return;
 
-            // Complete button locked until "Ready" was clicked
+            hasLive = true;
+            const statusClass   = currentStatus.toLowerCase().replace(/\s+/g, "");
             const completeLocked = canComplete(o) ? "" : "disabled";
 
             tr.innerHTML = `
@@ -122,11 +191,11 @@ function renderOrders() {
                 <td><span class="status ${statusClass}">${currentStatus}</span></td>
                 <td>${pickup}</td>
                 <td>
-                    <button class="action-btn received-btn" onclick="updateStatus(${i},'Received')">Received</button>
-                    <button class="action-btn progress-btn" onclick="updateStatus(${i},'In Progress')">In Progress</button>
-                    <button class="action-btn ready-btn"    onclick="updateStatus(${i},'Ready')">Ready</button>
-                    <button class="action-btn complete-btn" onclick="updateStatus(${i},'Completed')" ${completeLocked}>Complete</button>
-                    <button class="action-btn delete-btn"   onclick="deleteOrder(${i})">Delete</button>
+                    <button class="action-btn received-btn"  onclick="updateStatus(${i},'Received')">Received</button>
+                    <button class="action-btn progress-btn"  onclick="updateStatus(${i},'In Progress')">In Progress</button>
+                    <button class="action-btn ready-btn"     onclick="updateStatus(${i},'Ready')">Ready</button>
+                    <button class="action-btn complete-btn"  onclick="updateStatus(${i},'Completed')" ${completeLocked}>Complete</button>
+                    <button class="action-btn delete-btn"    onclick="deleteOrder(${i})">Delete</button>
                 </td>
             `;
             ordersTable.appendChild(tr);
@@ -134,8 +203,11 @@ function renderOrders() {
     });
 
     if (!hasLive) {
+        const msg = activeStatusFilter !== 'All'
+            ? `No orders with status "${activeStatusFilter}"`
+            : 'No live orders';
         ordersTable.innerHTML = `
-            <tr><td colspan="9" style="text-align:center;padding:30px;color:#64748b;">No live orders</td></tr>`;
+            <tr><td colspan="9" style="text-align:center;padding:30px;color:#64748b;">${msg}</td></tr>`;
     }
     if (!hasCompleted) {
         completedOrdersTable.innerHTML = `
@@ -144,6 +216,9 @@ function renderOrders() {
 
     localStorage.setItem("orders", JSON.stringify(orders));
     setupSelectAll();
+
+    // Also refresh gcash payments list if that tab exists
+    renderGcashPayments();
 }
 
 // ══════════════════════════════════════════════════════
@@ -153,12 +228,10 @@ function updateStatus(i, status) {
     const order = orders[i];
     if (!order) return;
 
-    // Track when Ready is clicked
     if (status === "Ready") {
         order.wasReady = true;
     }
 
-    // Hard block — Complete only after Ready
     if (status === "Completed" && !canComplete(order)) {
         return;
     }
@@ -190,7 +263,7 @@ function deleteOrder(i) {
 }
 
 // ══════════════════════════════════════════════════════
-// DELETE — COMPLETED ORDER (subtracts from all revenue)
+// DELETE — COMPLETED ORDER
 // ══════════════════════════════════════════════════════
 function deleteCompletedOrder(i) {
     const order = orders[i];
@@ -247,8 +320,9 @@ function switchTab(tabId) {
     const tab = document.getElementById(tabId);
     if (btn) btn.classList.add("active");
     if (tab) tab.classList.add("active-tab");
-    if (tabId === "settings") loadSavedPricing();
-    if (tabId === "revenue")  setTimeout(() => renderRevenueChart(), 80);
+    if (tabId === "settings")  loadSavedPricing();
+    if (tabId === "revenue")   setTimeout(() => renderRevenueChart(), 80);
+    if (tabId === "gcashpay")  renderGcashPayments();
 }
 
 menuButtons.forEach(btn =>
@@ -259,7 +333,7 @@ document.querySelectorAll(".clickable-card").forEach(card =>
 );
 
 // ══════════════════════════════════════════════════════
-// SEARCH — filters both tables live
+// SEARCH
 // ══════════════════════════════════════════════════════
 const searchInput = document.getElementById("searchInput");
 if (searchInput) {
@@ -273,6 +347,96 @@ if (searchInput) {
             });
         });
     });
+}
+
+// ══════════════════════════════════════════════════════
+// GCASH PAYMENTS SECTION
+// ══════════════════════════════════════════════════════
+function renderGcashPayments() {
+    const tbody = document.getElementById('gcashPaymentsBody');
+    if (!tbody) return;
+
+    const gcashOrders = orders.filter(o => o.payment === 'GCash' && o.gcash);
+
+    if (!gcashOrders.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:#64748b;">No GCash payments yet</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = gcashOrders.map((o, i) => {
+        const g = o.gcash || {};
+        const hasProof = !!g.proofImage;
+        return `
+            <tr>
+                <td><strong>#${o.ticket || ''}</strong></td>
+                <td>${o.name || ''}</td>
+                <td>
+                    <div style="font-weight:700;font-size:13px;">${g.senderName || '—'}</div>
+                    <div style="font-size:12px;color:#64748b;">${g.senderNumber || '—'}</div>
+                </td>
+                <td style="font-family:monospace;font-weight:700;letter-spacing:0.05em;">${g.refNumber || '—'}</td>
+                <td><strong>₱${Number(o.amount || 0).toLocaleString()}</strong></td>
+                <td>
+                    ${hasProof
+                        ? `<button class="action-btn received-btn" onclick="viewProof(${orders.indexOf(o)})" style="background:#0077cc;color:#fff;border:none;">
+                               <i class="fa-solid fa-image"></i> View Proof
+                           </button>`
+                        : `<span style="font-size:12px;color:#94a3b8;">No proof</span>`}
+                </td>
+                <td><span class="status ${(o.status || 'pending').toLowerCase().replace(/\s+/g,'')}">${o.status || 'Pending'}</span></td>
+            </tr>`;
+    }).join('');
+}
+
+// ── Proof of Payment Viewer Modal ──
+function viewProof(orderIndex) {
+    const o = orders[orderIndex];
+    if (!o || !o.gcash || !o.gcash.proofImage) return;
+
+    // Create or reuse modal
+    let modal = document.getElementById('proofModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'proofModal';
+        modal.style.cssText = `
+            position:fixed;inset:0;z-index:9999;
+            background:rgba(13,27,46,0.8);backdrop-filter:blur(6px);
+            display:flex;align-items:center;justify-content:center;
+        `;
+        modal.onclick = e => { if (e.target === modal) modal.remove(); };
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:18px;padding:28px;max-width:520px;width:95%;
+                    box-shadow:0 24px 80px rgba(0,50,120,0.3);position:relative;">
+            <button onclick="document.getElementById('proofModal').remove()"
+                style="position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;
+                       background:#f0f6ff;border:none;cursor:pointer;font-size:18px;color:#0077cc;
+                       font-weight:900;display:flex;align-items:center;justify-content:center;">&#10005;</button>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;
+                        color:#0077cc;text-transform:uppercase;margin-bottom:4px;">Proof of Payment</div>
+            <div style="font-size:13px;color:#64748b;margin-bottom:16px;">
+                Ticket #${o.ticket} &mdash; ${o.name}
+            </div>
+            <div style="background:#f0f6ff;border-radius:12px;padding:12px;margin-bottom:14px;">
+                <div style="font-size:11px;font-weight:800;color:#0077cc;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">GCash Details</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div><div style="font-size:10px;color:#94a3b8;font-weight:700;">SENDER NAME</div>
+                         <div style="font-size:14px;font-weight:700;">${o.gcash.senderName || '—'}</div></div>
+                    <div><div style="font-size:10px;color:#94a3b8;font-weight:700;">SENDER NUMBER</div>
+                         <div style="font-size:14px;font-weight:700;">${o.gcash.senderNumber || '—'}</div></div>
+                    <div style="grid-column:1/-1;">
+                         <div style="font-size:10px;color:#94a3b8;font-weight:700;">REFERENCE NUMBER</div>
+                         <div style="font-size:15px;font-weight:800;font-family:monospace;letter-spacing:0.08em;color:#0d1b2e;">${o.gcash.refNumber || '—'}</div>
+                    </div>
+                </div>
+            </div>
+            <img src="${o.gcash.proofImage}" alt="Proof of Payment"
+                 style="width:100%;border-radius:12px;border:1.5px solid rgba(0,119,204,0.2);
+                        max-height:380px;object-fit:contain;background:#f5f8ff;">
+            ${o.gcash.proofFileName ? `<div style="font-size:11px;color:#94a3b8;text-align:center;margin-top:6px;">${o.gcash.proofFileName}</div>` : ''}
+        </div>`;
 }
 
 // ══════════════════════════════════════════════════════
@@ -328,7 +492,7 @@ function updateRevenueSummaryCards() {
 }
 
 // ══════════════════════════════════════════════════════
-// REVENUE CHART — Daily / Monthly / Yearly
+// REVENUE CHART
 // ══════════════════════════════════════════════════════
 function renderRevenueChart() {
     const ctx = document.getElementById("revenueChart");
