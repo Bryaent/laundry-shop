@@ -10,6 +10,178 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../CSS/admin.css">
+
+    <!-- ── PAYMENTS TAB STYLES (self-contained, no conflict) ── -->
+    <style>
+        /* Payments tab wrapper */
+        #payments .pay-summary-row {
+            display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px;
+        }
+        #payments .pay-stat-card {
+            flex: 1; min-width: 160px;
+            background: #fff;
+            border: 1.5px solid rgba(0,119,204,0.16);
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 2px 12px rgba(0,50,120,0.07);
+        }
+        #payments .pay-stat-card p {
+            font-size: 12px; font-weight: 700; color: #64748b;
+            text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;
+        }
+        #payments .pay-stat-card h3 {
+            font-size: 26px; font-weight: 800; color: #0d1b2e;
+        }
+        #payments .pay-stat-card { border: none; }
+#payments .pay-stat-card p { color: rgba(255,255,255,0.85); }
+#payments .pay-stat-card h3.blue  { color: #ffffff; }
+#payments .pay-stat-card h3.green { color: #ffffff; }
+#payments .pay-stat-card h3.orange{ color: #ffffff; }
+#payments .pay-stat-card:nth-child(1) { background: #0077cc; }
+#payments .pay-stat-card:nth-child(2) { background: #10b981; }
+#payments .pay-stat-card:nth-child(3) { background: #f59e0b; }
+#payments .pay-stat-card:nth-child(4) { background: #0077cc; }
+
+        /* Payments table card */
+        #payments .pay-table-card {
+            background: #fff;
+            border: 1.5px solid rgba(0,119,204,0.13);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 14px rgba(0,50,120,0.07);
+        }
+        #payments .pay-table-card table {
+            width: 100%; border-collapse: collapse;
+        }
+        #payments .pay-table-card thead tr {
+            background: linear-gradient(135deg,#0077cc,#005fa3);
+            color: #fff;
+        }
+        #payments .pay-table-card thead th {
+            padding: 14px 16px; font-size: 12px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.08em; text-align: left;
+        }
+        #payments .pay-table-card tbody tr {
+            border-bottom: 1px solid rgba(0,119,204,0.08);
+            transition: background 0.15s;
+        }
+        #payments .pay-table-card tbody tr:hover { background: #f5f8ff; }
+        #payments .pay-table-card tbody td {
+            padding: 14px 16px; font-size: 13.5px; color: #0d1b2e; vertical-align: middle;
+        }
+
+        /* Proof thumbnail */
+        .pay-proof-thumb {
+            width: 52px; height: 52px; border-radius: 9px;
+            object-fit: cover;
+            border: 1.5px solid rgba(0,119,204,0.2);
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .pay-proof-thumb:hover { transform: scale(1.1); }
+        .pay-no-proof {
+            font-size: 11px; color: #94a3b8; font-style: italic;
+        }
+
+        /* Status badges */
+        .pay-badge {
+            display: inline-block; padding: 4px 13px;
+            border-radius: 30px; font-size: 11px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.07em;
+        }
+        .pay-badge.pending    { background: rgba(245,158,11,0.12); color: #b45309; }
+        .pay-badge.verified   { background: rgba(16,185,129,0.12); color: #065f46; }
+        .pay-badge.rejected   { background: rgba(239,68,68,0.12);  color: #991b1b; }
+
+        /* Verify / Reject buttons */
+        .pay-action-row { display: flex; gap: 6px; flex-wrap: wrap; }
+        .pay-btn {
+            padding: 6px 14px; border-radius: 30px; border: none;
+            font-size: 11px; font-weight: 800; cursor: pointer;
+            font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em;
+            transition: 0.2s;
+        }
+        .pay-btn.verify  { background: #10b981; color: #fff; }
+        .pay-btn.verify:hover  { background: #059669; }
+        .pay-btn.reject  { background: #ef4444; color: #fff; }
+        .pay-btn.reject:hover  { background: #dc2626; }
+        .pay-btn.delete  { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+        .pay-btn.delete:hover  { background: #ef4444; color: #fff; border-color: #ef4444; }
+
+        /* Filter bar for payments */
+        .pay-filter-bar {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            margin-bottom: 18px; padding: 14px 18px;
+            background: #fff; border-radius: 14px;
+            border: 1.5px solid rgba(0,100,200,0.12);
+            box-shadow: 0 2px 10px rgba(0,50,120,0.06);
+        }
+        .pay-filter-bar span {
+            font-size: 12px; font-weight: 800; color: #5a7194;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-right: 4px;
+        }
+        .pay-filter-btn {
+            padding: 7px 18px; border-radius: 30px; border: 1.5px solid rgba(0,100,200,0.2);
+            cursor: pointer; font-size: 12px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; background: #f0f6ff; color: #5a7194;
+            transition: 0.2s; font-family: inherit;
+        }
+        .pay-filter-btn.pf-active {
+            background: #0077cc; color: #fff; border-color: #0077cc;
+            box-shadow: 0 0 14px rgba(0,119,204,0.3);
+        }
+
+        /* Proof viewer modal */
+        .pay-modal-overlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: rgba(13,27,46,0.78); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s;
+        }
+        .pay-modal-overlay.open { opacity: 1; pointer-events: all; }
+        .pay-modal-box {
+            background: #fff; border-radius: 20px; padding: 30px 28px 24px;
+            max-width: 540px; width: 95%;
+            box-shadow: 0 28px 80px rgba(0,50,120,0.28);
+            position: relative;
+            transform: translateY(20px) scale(0.97); transition: transform 0.25s;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .pay-modal-overlay.open .pay-modal-box { transform: translateY(0) scale(1); }
+        .pay-modal-close {
+            position: absolute; top: 14px; right: 16px;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: #f0f6ff; border: none; cursor: pointer;
+            font-size: 18px; color: #0077cc; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .pay-modal-close:hover { background: #0077cc; color: #fff; }
+        .pay-modal-title {
+            font-size: 20px; font-weight: 800; color: #0077cc;
+            text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+        }
+        .pay-modal-sub { font-size: 13px; color: #64748b; margin-bottom: 18px; }
+        .pay-modal-detail-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            background: #f0f6ff; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;
+        }
+        .pay-modal-field label {
+            font-size: 10px; font-weight: 800; color: #0077cc;
+            text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 3px;
+        }
+        .pay-modal-field span {
+            font-size: 14px; font-weight: 700; color: #0d1b2e;
+        }
+        .pay-modal-field.full { grid-column: 1 / -1; }
+        .pay-modal-proof-img {
+            width: 100%; border-radius: 12px;
+            border: 1.5px solid rgba(0,119,204,0.2);
+            max-height: 360px; object-fit: contain; background: #f5f8ff;
+        }
+        .pay-modal-fname {
+            font-size: 11px; color: #94a3b8; text-align: center; margin-top: 6px;
+        }
+    </style>
 </head>
 
 <body>
@@ -41,6 +213,11 @@
             <button class="menu-btn" data-tab="revenue">
                 <i class="fa-solid fa-money-bill"></i>
                 Revenue
+            </button>
+            <!-- ── NEW PAYMENTS TAB BUTTON ── -->
+            <button class="menu-btn" data-tab="payments">
+                <i class="fa-brands fa-google-pay"></i>
+                Payments
             </button>
             <button class="menu-btn" data-tab="settings">
                 <i class="fa-solid fa-gear"></i>
@@ -252,6 +429,66 @@
         </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════
+         PAYMENTS TAB  (NEW)
+    ══════════════════════════════════════════════════ -->
+    <div id="payments" class="tab-content">
+        <div class="page-header">
+            <h1>GCash Payments</h1>
+            <p>Review and verify customer GCash payment submissions</p>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="pay-summary-row">
+            <div class="pay-stat-card">
+                <p>Total GCash Payments</p>
+                <h3 class="blue" id="pay-total">0</h3>
+            </div>
+            <div class="pay-stat-card">
+                <p>Verified</p>
+                <h3 class="green" id="pay-verified">0</h3>
+            </div>
+            <div class="pay-stat-card">
+                <p>Pending Review</p>
+                <h3 class="orange" id="pay-pending">0</h3>
+            </div>
+            <div class="pay-stat-card">
+                <p>Total GCash Amount</p>
+                <h3 class="blue" id="pay-amount">₱0</h3>
+            </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="pay-filter-bar">
+            <span>Filter:</span>
+            <button class="pay-filter-btn pf-active" data-pf="All"       onclick="setPayFilter('All')">All</button>
+            <button class="pay-filter-btn"            data-pf="Pending"   onclick="setPayFilter('Pending')">Pending</button>
+            <button class="pay-filter-btn"            data-pf="Verified"  onclick="setPayFilter('Verified')">Verified</button>
+            <button class="pay-filter-btn"            data-pf="Rejected"  onclick="setPayFilter('Rejected')">Rejected</button>
+        </div>
+
+        <!-- Table -->
+        <div class="pay-table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket #</th>
+                        <th>Customer</th>
+                        <th>GCash Sender</th>
+                        <th>GCash Number</th>
+                        <th>Reference #</th>
+                        <th>Amount</th>
+                        <th>Proof</th>
+                        <th>Order Status</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentsBody"></tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- SETTINGS / INVENTORY -->
     <div id="settings" class="tab-content">
         <div class="page-header">
@@ -459,6 +696,18 @@
         </div>
     </div>
 
+</div>
+
+<!-- ══ PROOF VIEWER MODAL (Payments tab) ══ -->
+<div class="pay-modal-overlay" id="payProofModal">
+    <div class="pay-modal-box">
+        <button class="pay-modal-close" onclick="closePayModal()">&#10005;</button>
+        <div class="pay-modal-title">&#128247; Proof of Payment</div>
+        <div class="pay-modal-sub" id="payModalSub">Ticket # — Customer Name</div>
+        <div class="pay-modal-detail-grid" id="payModalDetails"></div>
+        <img class="pay-modal-proof-img" id="payModalImg" src="" alt="Proof">
+        <div class="pay-modal-fname" id="payModalFname"></div>
+    </div>
 </div>
 
 <script src="../JS/admin.js"></script>

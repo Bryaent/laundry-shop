@@ -322,7 +322,7 @@ function switchTab(tabId) {
     if (tab) tab.classList.add("active-tab");
     if (tabId === "settings")  loadSavedPricing();
     if (tabId === "revenue")   setTimeout(() => renderRevenueChart(), 80);
-    if (tabId === "gcashpay")  renderGcashPayments();
+    if (tabId === "payments")  renderPaymentsTab();
 }
 
 menuButtons.forEach(btn =>
@@ -350,45 +350,19 @@ if (searchInput) {
 }
 
 // ══════════════════════════════════════════════════════
-// GCASH PAYMENTS SECTION
+// GCASH PAYMENTS SECTION (legacy helper — still called by renderOrders)
 // ══════════════════════════════════════════════════════
 function renderGcashPayments() {
-    const tbody = document.getElementById('gcashPaymentsBody');
-    if (!tbody) return;
-
-    const gcashOrders = orders.filter(o => o.payment === 'GCash' && o.gcash);
-
-    if (!gcashOrders.length) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:#64748b;">No GCash payments yet</td></tr>`;
-        return;
+    // This function is kept for backward compatibility.
+    // The full payments tab is handled by renderPaymentsTab() below.
+    // If the payments tab is currently active, re-render it.
+    const payTab = document.getElementById('payments');
+    if (payTab && payTab.classList.contains('active-tab')) {
+        renderPaymentsTab();
     }
-
-    tbody.innerHTML = gcashOrders.map((o, i) => {
-        const g = o.gcash || {};
-        const hasProof = !!g.proofImage;
-        return `
-            <tr>
-                <td><strong>#${o.ticket || ''}</strong></td>
-                <td>${o.name || ''}</td>
-                <td>
-                    <div style="font-weight:700;font-size:13px;">${g.senderName || '—'}</div>
-                    <div style="font-size:12px;color:#64748b;">${g.senderNumber || '—'}</div>
-                </td>
-                <td style="font-family:monospace;font-weight:700;letter-spacing:0.05em;">${g.refNumber || '—'}</td>
-                <td><strong>₱${Number(o.amount || 0).toLocaleString()}</strong></td>
-                <td>
-                    ${hasProof
-                        ? `<button class="action-btn received-btn" onclick="viewProof(${orders.indexOf(o)})" style="background:#0077cc;color:#fff;border:none;">
-                               <i class="fa-solid fa-image"></i> View Proof
-                           </button>`
-                        : `<span style="font-size:12px;color:#94a3b8;">No proof</span>`}
-                </td>
-                <td><span class="status ${(o.status || 'pending').toLowerCase().replace(/\s+/g,'')}">${o.status || 'Pending'}</span></td>
-            </tr>`;
-    }).join('');
 }
 
-// ── Proof of Payment Viewer Modal ──
+// ── Proof of Payment Viewer Modal (legacy, kept for Orders tab) ──
 function viewProof(orderIndex) {
     const o = orders[orderIndex];
     if (!o || !o.gcash || !o.gcash.proofImage) return;
@@ -731,3 +705,256 @@ if (logoutBtn) {
         // window.location.href = "../HTML/login.html";
     });
 }
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ██████╗  █████╗ ██╗   ██╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗
+// ██╔══██╗██╔══██╗╚██╗ ██╔╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
+// ██████╔╝███████║ ╚████╔╝ ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   ███████╗
+// ██╔═══╝ ██╔══██║  ╚██╔╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+// ██║     ██║  ██║   ██║   ██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   ███████║
+// ╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
+//  TAB — NEW LOGIC (everything below is purely additive)
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── Payment status stored separately so it doesn't mutate the order itself ──
+// Format: { [ticket]: 'Pending' | 'Verified' | 'Rejected' }
+function getPaymentStatuses() {
+    try { return JSON.parse(localStorage.getItem('gcashPaymentStatuses')) || {}; }
+    catch(e) { return {}; }
+}
+function savePaymentStatuses(obj) {
+    localStorage.setItem('gcashPaymentStatuses', JSON.stringify(obj));
+}
+
+// ── Active filter for payments tab ──
+let activePayFilter = 'All';
+
+function setPayFilter(filter) {
+    activePayFilter = filter;
+    document.querySelectorAll('.pay-filter-btn').forEach(btn => {
+        btn.classList.toggle('pf-active', btn.dataset.pf === filter);
+    });
+    renderPaymentsTab();
+}
+
+// ── Main render function for the Payments tab ──
+function renderPaymentsTab() {
+    const tbody = document.getElementById('paymentsBody');
+    if (!tbody) return;
+
+    // Pull all GCash orders from the shared `orders` array (already loaded)
+    const statuses   = getPaymentStatuses();
+    const gcashOrders = orders.filter(o => o.payment === 'GCash' && o.gcash);
+
+    // Summary counts
+    const total    = gcashOrders.length;
+    const verified = gcashOrders.filter(o => (statuses[o.ticket] || 'Pending') === 'Verified').length;
+    const pending  = gcashOrders.filter(o => (statuses[o.ticket] || 'Pending') === 'Pending').length;
+    const totalAmt = gcashOrders.reduce((s, o) => s + Number(o.amount || 0), 0);
+
+    const el = id => document.getElementById(id);
+    if (el('pay-total'))    el('pay-total').innerText    = total;
+    if (el('pay-verified')) el('pay-verified').innerText = verified;
+    if (el('pay-pending'))  el('pay-pending').innerText  = pending;
+    if (el('pay-amount'))   el('pay-amount').innerText   = `₱${totalAmt.toLocaleString()}`;
+
+    // Apply filter
+    const filtered = activePayFilter === 'All'
+        ? gcashOrders
+        : gcashOrders.filter(o => (statuses[o.ticket] || 'Pending') === activePayFilter);
+
+    if (!filtered.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="10" style="text-align:center;padding:36px;color:#64748b;font-size:14px;">
+                    ${activePayFilter === 'All'
+                        ? 'No GCash payments submitted yet.'
+                        : `No <strong>${activePayFilter}</strong> payments found.`}
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(o => {
+        const g           = o.gcash || {};
+        const payStatus   = statuses[o.ticket] || 'Pending';
+        const badgeClass  = payStatus.toLowerCase();
+        const orderStatus = o.status || 'Pending';
+        const hasProof    = !!g.proofImage;
+
+        // Find real index in `orders` array for actions
+        const realIdx = orders.indexOf(o);
+
+        return `
+            <tr>
+                <td><strong style="color:#0077cc;">#${o.ticket || '—'}</strong></td>
+                <td>
+                    <div style="font-weight:700;font-size:13.5px;">${o.name || '—'}</div>
+                    <div style="font-size:11px;color:#64748b;">${o.address || ''}</div>
+                </td>
+                <td>
+                    <div style="font-weight:700;">${g.senderName || '—'}</div>
+                </td>
+                <td>
+                    <div style="font-weight:700;font-family:monospace;">${g.senderNumber || '—'}</div>
+                </td>
+                <td>
+                    <div style="font-weight:800;font-family:monospace;letter-spacing:0.06em;color:#0d1b2e;">
+                        ${g.refNumber || '—'}
+                    </div>
+                </td>
+                <td>
+                    <strong style="font-size:15px;color:#0077cc;">₱${Number(o.amount || 0).toLocaleString()}</strong>
+                </td>
+                <td>
+                    ${hasProof
+                        ? `<img class="pay-proof-thumb"
+                                src="${g.proofImage}"
+                                alt="Proof"
+                                title="Click to view full proof"
+                                onclick="openPayModal(${realIdx})">`
+                        : `<span class="pay-no-proof">No screenshot</span>`}
+                </td>
+                <td>
+                    <span class="status ${orderStatus.toLowerCase().replace(/\s+/g,'')}">${orderStatus}</span>
+                </td>
+                <td>
+                    <span class="pay-badge ${badgeClass}">${payStatus}</span>
+                </td>
+                <td>
+                    <div class="pay-action-row">
+                        ${hasProof
+                            ? `<button class="pay-btn verify" onclick="openPayModal(${realIdx})">
+                                   <i class="fa-solid fa-eye"></i> View
+                               </button>`
+                            : ''}
+                        <button class="pay-btn verify"
+                            onclick="setPaymentStatus('${o.ticket}', 'Verified')"
+                            ${payStatus === 'Verified' ? 'disabled style="opacity:0.45;cursor:default;"' : ''}>
+                            <i class="fa-solid fa-check"></i> Verify
+                        </button>
+                        <button class="pay-btn reject"
+                            onclick="setPaymentStatus('${o.ticket}', 'Rejected')"
+                            ${payStatus === 'Rejected' ? 'disabled style="opacity:0.45;cursor:default;"' : ''}>
+                            <i class="fa-solid fa-xmark"></i> Reject
+                        </button>
+                        <button class="pay-btn delete"
+                            onclick="deletePaymentRecord('${o.ticket}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
+    }).join('');
+}
+
+// ── Set payment verification status ──
+function setPaymentStatus(ticket, status) {
+    const statuses = getPaymentStatuses();
+    statuses[ticket] = status;
+    savePaymentStatuses(statuses);
+    renderPaymentsTab();
+}
+
+// ── Delete a GCash payment record (removes gcash data from order, keeps order itself) ──
+function deletePaymentRecord(ticket) {
+    if (!confirm(`Remove GCash payment record for ticket #${ticket}?\n\nThe order itself will remain but the payment details will be cleared.`)) return;
+    const idx = orders.findIndex(o => o.ticket === ticket);
+    if (idx !== -1) {
+        delete orders[idx].gcash;
+        // Also clear payment status
+        const statuses = getPaymentStatuses();
+        delete statuses[ticket];
+        savePaymentStatuses(statuses);
+        localStorage.setItem('orders', JSON.stringify(orders));
+    }
+    renderPaymentsTab();
+}
+
+// ── Open full proof viewer modal ──
+function openPayModal(orderIndex) {
+    const o = orders[orderIndex];
+    if (!o) return;
+    const g = o.gcash || {};
+    const statuses  = getPaymentStatuses();
+    const payStatus = statuses[o.ticket] || 'Pending';
+
+    const modal = document.getElementById('payProofModal');
+    if (!modal) return;
+
+    // Populate
+    document.getElementById('payModalSub').textContent =
+        `Ticket #${o.ticket || '—'} — ${o.name || '—'}`;
+
+    document.getElementById('payModalDetails').innerHTML = `
+        <div class="pay-modal-field">
+            <label>GCash Sender Name</label>
+            <span>${g.senderName || '—'}</span>
+        </div>
+        <div class="pay-modal-field">
+            <label>GCash Number</label>
+            <span>${g.senderNumber || '—'}</span>
+        </div>
+        <div class="pay-modal-field full">
+            <label>Reference Number</label>
+            <span style="font-family:monospace;font-size:16px;font-weight:800;letter-spacing:0.08em;color:#0d1b2e;">
+                ${g.refNumber || '—'}
+            </span>
+        </div>
+        <div class="pay-modal-field">
+            <label>Amount Sent</label>
+            <span style="color:#0077cc;font-size:18px;font-weight:800;">
+                ₱${Number(o.amount || 0).toLocaleString()}
+            </span>
+        </div>
+        <div class="pay-modal-field">
+            <label>Payment Status</label>
+            <span class="pay-badge ${payStatus.toLowerCase()}">${payStatus}</span>
+        </div>
+        <div class="pay-modal-field">
+            <label>Order Status</label>
+            <span>${o.status || 'Pending'}</span>
+        </div>
+        <div class="pay-modal-field">
+            <label>Service</label>
+            <span>${o.service || '—'}</span>
+        </div>
+        <div class="pay-modal-field">
+            <label>Delivery Method</label>
+            <span>${o.pickupType || 'Store Pickup'}</span>
+        </div>
+    `;
+
+    const img   = document.getElementById('payModalImg');
+    const fname = document.getElementById('payModalFname');
+    if (g.proofImage) {
+        img.src          = g.proofImage;
+        img.style.display = 'block';
+        fname.textContent = g.proofFileName || '';
+    } else {
+        img.style.display  = 'none';
+        fname.textContent  = 'No proof of payment uploaded.';
+    }
+
+    modal.classList.add('open');
+}
+
+function closePayModal() {
+    const modal = document.getElementById('payProofModal');
+    if (modal) modal.classList.remove('open');
+}
+
+// Close modal on overlay click
+document.addEventListener('click', e => {
+    const modal = document.getElementById('payProofModal');
+    if (modal && e.target === modal) closePayModal();
+});
+
+// ── Auto-refresh Payments tab every 5 s (same cadence as orders polling) ──
+setInterval(() => {
+    const payTab = document.getElementById('payments');
+    if (payTab && payTab.classList.contains('active-tab')) {
+        renderPaymentsTab();
+    }
+}, 5000);

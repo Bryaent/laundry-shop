@@ -1536,6 +1536,9 @@ function confirmFinalOrder() {
   }
 }
 
+// ══════════════════════════════════════════════════════
+// FINALIZE ORDER — UPDATED: adds date + gcash fields
+// ══════════════════════════════════════════════════════
 function finalizeOrder() {
   const name     = document.getElementById('custName')?.value?.trim();
   const address  = document.getElementById('custAddress')?.value?.trim();
@@ -1552,10 +1555,11 @@ function finalizeOrder() {
     kg, quantity: orderQuantity,
     amount: getTotal() + expressCharge,
     status: 'Pending',
-    pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup'
+    pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup',
+    date: new Date().toISOString()
   };
 
-  // Attach GCash details if applicable
+  // Attach GCash details so admin Payments tab can read them
   if (selectedPayment === 'GCash' && window._gcashPaymentDetails) {
     newOrder.gcash = window._gcashPaymentDetails;
     window._gcashPaymentDetails = null;
