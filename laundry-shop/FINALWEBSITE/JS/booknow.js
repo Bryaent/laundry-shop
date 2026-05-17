@@ -1,932 +1,756 @@
-// ===== FIXED PRICING SYNC (PUT AT VERY TOP) =====
+// =====================================================
+// ADMIN PRICING SYNC — load first before anything else
+// =====================================================
 function loadPricingFromStorage() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('laundryPricing'));
-        if (!saved) return console.log('No admin pricing found');
-        
-        if (Array.isArray(saved.step1)) {
-    stepContents[1].items.forEach((item, i) => {
+  try {
+    const saved = JSON.parse(localStorage.getItem('laundryPricing'));
+    if (!saved) return console.log('No admin pricing found');
 
-        // 🔥 FIX: never risk breaking last item rendering
-        if (item.name === "Personal Choice") return;
-
-        if (saved.step1[i] !== undefined) {
-            stepContents[1].items[i].price = saved.step1[i];
-        }
-    });
-}
-        
-        // UPDATE STEP 2 FABCON
-        if(saved.step2) {
-            stepContents[2].items[0].price = saved.step2[0]; // Downy
-            stepContents[2].items[1].price = saved.step2[1]; // Del
-            stepContents[2].items[2].price = saved.step2[2]; // Champion
-            stepContents[2].items[3].price = saved.step2[3]; // Surf Fabcon
-            stepContents[2].items[4].price = saved.step2[4]; // Lala Fabcon
-            stepContents[2].items[5].price = saved.step2[5]; // Personal Choice
-        }
-        
-        // UPDATE STEP 3 WASH
-        if(saved.step3) {
-            stepContents[3].items[0].price = saved.step3[0]; // Quick Wash
-            stepContents[3].items[1].price = saved.step3[1]; // Deep Clean
-            stepContents[3].items[2].price = saved.step3[2]; // Premium Wash
-            stepContents[3].items[3].price = saved.step3[3]; // Eco Wash
-            stepContents[3].items[4].price = saved.step3[4]; // Cold Wash
-            stepContents[3].items[5].price = saved.step3[5]; // Hot Wash
-        }
-        
-        deliveryFee = saved.deliveryFee || 40;
-        
-        console.log('✅ PRICES UPDATED:', {
-            Ariel: stepContents[1].items[0].price,
-            Downy: stepContents[2].items[0].price,
-            'Quick Wash': stepContents[3].items[0].price
-        });
-        
-        // REFRESH UI
-        if(isConfirmed) renderConfirmation();
-        else updateStepUI();
-        
-    } catch(e) {
-        console.log('Pricing load failed:', e);
+    if (Array.isArray(saved.step1)) {
+      stepContents[1].items.forEach((item, i) => {
+        if (item.name === 'Personal Choice') return;
+        if (saved.step1[i] !== undefined) stepContents[1].items[i].price = saved.step1[i];
+      });
     }
+
+    if (Array.isArray(saved.step2)) {
+      stepContents[2].items.forEach((item, i) => {
+        if (saved.step2[i] !== undefined) stepContents[2].items[i].price = saved.step2[i];
+      });
+    }
+
+    if (Array.isArray(saved.step3)) {
+      stepContents[3].items.forEach((item, i) => {
+        if (saved.step3[i] !== undefined) stepContents[3].items[i].price = saved.step3[i];
+      });
+    }
+
+    if (saved.deliveryFee !== undefined) deliveryFee = saved.deliveryFee;
+
+    console.log('✅ PRICES UPDATED:', {
+      Ariel: stepContents[1].items[0].price,
+      Downy: stepContents[2].items[0].price,
+      'Quick Wash': stepContents[3].items[0].price
+    });
+
+    if (isConfirmed) renderConfirmation();
+    else updateStepUI();
+
+  } catch (e) {
+    console.log('Pricing load failed:', e);
+  }
 }
 
+// =====================================================
+// STATE
+// =====================================================
+let isConfirmed   = false;
+let orderQuantity = 1;
+let kg            = 1;
+let deliveryFee   = 0;
 
+// Carousel: which 3-card page is currently shown per step
+// Each step has 6 items → 2 pages (0 = items 0-2, 1 = items 3-5)
+const carouselPage = { 1: 0, 2: 0, 3: 0 };
 
-// ===== KIOSK STEP SYSTEM =====
-let stepBoxes = document.querySelectorAll(".step-box");
-const productsPanel = document.querySelector(".products-panel");
-let currentStep = 1;
-let isConfirmed = false; // ✅ Lock system
-
-// ===== USER SELECTIONS =====
+// =====================================================
+// USER SELECTIONS
+// Step 4 (Pickup Schedule) removed — now a form dropdown
+// =====================================================
 const selections = {
-  1: [], // soaps (multiple)
-  2: [], // fabcon (multiple)
-  3: null,
-  4: null,
-  5: null
+  1: [],   // soaps (multiple)
+  2: [],   // fabcon (multiple)
+  3: null  // wash type (single)
 };
 
-// ===== EXTRA ORDER DATA =====
-let orderQuantity = 1;
-let kg = 1;
-let deliveryFee = 0;
-
-// ===== STEP CONTENTS WITH PRICES =====
+// =====================================================
+// STEP CONTENTS
+// Pickup Schedule removed from stepContents
+// =====================================================
 const stepContents = {
   1: {
     title: "Select Your Laundry Soap",
-    text: "Choose your preferred detergent product.",
+    text: "Choose your preferred detergent. You may select multiple.",
+    multi: true,
     items: [
-      { name: "Ariel", img: "../img/Ariel.jpg", price: 20 },
-      { name: "Tide", img: "../img/tide.jpg", price: 25 },
-      { name: "Breeze", img: "../img/breeze.jpg", price: 18 },
-      { name: "Surf", img: "../img/surf.jpg", price: 15 },
-      { name: "Pride", img: "../img/pride.jpg", price: 17 },
-      { name: "Wings", img: "../img/wings.jpg", price: 16 },
-      { name: "Personal Choice", img: "../img/personal.jpg", price: 0  }
+      { name: "Ariel",  img: "../img/Ariel.jpg",  price: 20, desc: "Powerful stain removal trusted by families." },
+      { name: "Tide",   img: "../img/tide.jpg",   price: 25, desc: "Superior clean even in cold water." },
+      { name: "Breeze", img: "../img/breeze.jpg", price: 18, desc: "Gentle on fabrics, tough on stains." },
+      { name: "Surf",   img: "../img/surf.jpg",   price: 15, desc: "Affordable cleaning with a fresh scent." },
+      { name: "Pride",  img: "../img/pride.jpg",  price: 17, desc: "Everyday clean at a great value." },
+      { name: "Wings",  img: "../img/wings.jpg",  price: 16, desc: "Trusted Filipino detergent for daily use." }
     ]
   },
 
   2: {
     title: "Select Fabric Conditioner",
-    text: "Choose your preferred fabric conditioner.",
+    text: "Choose your preferred fabric conditioner. You may select multiple.",
+    multi: true,
     items: [
-      { name: "Downy", img: "../img/downy.jpg", price: 30 },
-      { name: "Del", img: "../img/del.jpg", price: 20 },
-      { name: "Champion", img: "../img/champ.jpg", price: 22 },
-      { name: "Surf Fabcon", img: "../img/serf.jpg", price: 18 },
-      { name: "Lala Fabcon", img: "../img/lala.jpg", price: 15 },
-      { name: "Personal Choice", img: "../img/personal.jpg", price: 0 }
+      { name: "Downy",       img: "../img/downy.jpg", price: 30, desc: "Softens with a lasting fresh fragrance." },
+      { name: "Del",         img: "../img/del.jpg",   price: 20, desc: "Gentle conditioner for smooth, soft fabrics." },
+      { name: "Champion",    img: "../img/champ.jpg", price: 22, desc: "Long-lasting scent all day long." },
+      { name: "Surf Fabcon", img: "../img/serf.jpg",  price: 18, desc: "Fresh scent with softening care." },
+      { name: "Lala Fabcon", img: "../img/lala.jpg",  price: 15, desc: "Mild and budget-friendly conditioner." },
+      { name: "Personal Choice", img: "../img/personal.jpg", price: 0, desc: "Bring your own fabric conditioner." }
     ]
   },
 
   3: {
     title: "Select Wash Type",
     text: "Choose your wash preference.",
+    multi: false,
     items: [
-      { name: "Quick Wash", img: "../img/quick.jpg", price: 50 },
-      { name: "Deep Clean", img: "../img/deep.jpg", price: 80 },
-      { name: "Premium Wash", img: "../img/premium.jpg", price: 120 },
-      { name: "Eco Wash", img: "../img/eco.jpg", price: 60 },
-      { name: "Cold Wash", img: "../img/cold.jpg", price: 40 },
-      { name: "Hot Wash", img: "../img/hot.jpg", price: 70 }
+      { name: "Quick Wash",   img: "../img/quick.jpg",   price: 50,  desc: "Fast 30-min cycle for lightly soiled clothes." },
+      { name: "Deep Clean",   img: "../img/deep.jpg",    price: 80,  desc: "Thorough wash for heavily soiled garments." },
+      { name: "Premium Wash", img: "../img/premium.jpg", price: 120, desc: "Top-tier care with premium fabric-safe detergents." },
+      { name: "Eco Wash",     img: "../img/eco.jpg",     price: 60,  desc: "Energy-efficient, kind to the planet." },
+      { name: "Cold Wash",    img: "../img/cold.jpg",    price: 40,  desc: "Gentle cold cycle, ideal for colored fabrics." },
+      { name: "Hot Wash",     img: "../img/hot.jpg",     price: 70,  desc: "High-temp wash that eliminates bacteria." }
     ]
-  },
-
-  4: {
-    title: "Pickup Details",
-    text: "Choose your pickup schedule.",
-    items: [
-      { name: "Morning", img: "../img/morning.jpg", price: 0 },
-      { name: "Afternoon", img: "../img/afternoon.jpg", price: 0 },
-      { name: "Evening", img: "../img/evening.jpg", price: 0 },
-      { name: "Express Pickup", img: "../img/express.jpg", price: 50 },
-      { name: "Store Pickup", img: "../img/A1.jpg", price: 0 },
-      { name: "Home Delivery", img: "../img/home.png", price: 40 }
-    ]
-  },
-
-  5: {
-  title: "Select Payment",
-  text: "Choose your payment method.",
-  items: [
-    { name: "Cash", img: "../img/cash.jpg", price: 0 },
-    { name: "GCash", img: "../img/gcash.jpg", price: 5 }
-  ]
-}
+  }
 };
 
-// ===== TOTAL =====
+const paymentItems = [
+  { name: "Cash",  note: "Pay upon pickup or delivery", icon: "&#8369;", price: 0 },
+  { name: "GCash", note: "+&#8369;5 processing fee",    icon: "G",       price: 5 }
+];
+
+let selectedPayment = "Cash";
+
+// =====================================================
+// SIDEBAR — 4 steps (no pickup)
+// =====================================================
+const sidebarMeta = [
+  { label: "Laundry Soap",       hint: "Step 1" },
+  { label: "Fabric Conditioner", hint: "Step 2" },
+  { label: "Wash Type",          hint: "Step 3" },
+  { label: "Confirm Order",      hint: "Step 4" }
+];
+
+function isStepDone(n) {
+  if (n === 1) return selections[1].length > 0;
+  if (n === 2) return selections[2].length > 0;
+  if (n === 3) return !!selections[3];
+  if (n === 4) return selections[1].length > 0 && selections[2].length > 0 && !!selections[3];
+  return false;
+}
+
+function renderSidebar(activeStep) {
+  const sidebar = document.getElementById('stepsSidebar');
+  if (!sidebar) return;
+
+  let html = '<div class="sidebar-label">Your Progress</div>';
+
+  sidebarMeta.forEach((s, i) => {
+    const n    = i + 1;
+    const done = isStepDone(n);
+    const circleClass = done ? 'done' : (n === activeStep ? 'active' : '');
+    const isLast = n === sidebarMeta.length;
+
+    html += `
+      <div class="step-item">
+        <div class="step-connector">
+          <div class="step-circle ${circleClass}">${done ? '&#10003;' : n}</div>
+          ${!isLast ? `<div class="step-line${done ? ' done' : ''}"></div>` : ''}
+        </div>
+        <button class="step-btn${n === activeStep ? ' active' : ''}" onclick="sidebarClick(${n})">
+          <span class="step-name">${s.label}</span>
+          <span class="step-hint">${s.hint}</span>
+        </button>
+      </div>`;
+  });
+
+  sidebar.innerHTML = html;
+}
+
+function sidebarClick(n) {
+  const id = n <= 3 ? `section-step-${n}` : 'section-proceed';
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// =====================================================
+// TOTALS
+// =====================================================
 function getSubtotal() {
-  let total = 0;
-
-  (selections[1] || []).forEach(item => {
-    total += item.price * item.qty;
-  });
-
-  (selections[2] || []).forEach(item => {
-    total += item.price * item.qty;
-  });
-
-  for (let i = 3; i <= 5; i++) {
-    if (selections[i]) {
-      total += selections[i].price;
-    }
-  }
-
-  return total;
+  let t = 0;
+  selections[1].forEach(i => t += i.price * i.qty);
+  selections[2].forEach(i => t += i.price * i.qty);
+  if (selections[3]) t += selections[3].price;
+  const pay = paymentItems.find(p => p.name === selectedPayment);
+  if (pay) t += pay.price;
+  return t;
 }
 
 function getTotal() {
-  let base = getSubtotal() * orderQuantity;
-  let kgCharge = kg > 8 ? 5 : 0;
-  return base + kgCharge + deliveryFee;
+  return getSubtotal() * orderQuantity + (kg > 8 ? 5 : 0) + deliveryFee;
 }
 
-// ===== STEP CHECKS =====
-function updateStepChecks() {
-  stepBoxes.forEach((step, index) => {
-    const span = step.querySelector("span");
-    const stepNum = index + 1;
+function updateTotalLive() {
+  const el = document.getElementById('totalLive');
+  if (el) el.innerHTML = '&#8369;' + getTotal().toLocaleString();
+}
 
-    let isDone = false;
+// =====================================================
+// CAROUSEL — one click = jump a full page of 3 cards
+// =====================================================
+function applyCarousel(step) {
+  const track  = document.getElementById(`track-${step}`);
+  const winEl  = document.getElementById(`win-${step}`);
+  const prevBtn = document.getElementById(`prev-${step}`);
+  const nextBtn = document.getElementById(`next-${step}`);
+  const dotsEl  = document.getElementById(`dots-${step}`);
+  if (!track || !winEl) return;
 
-    if (stepNum === 1 || stepNum === 2) {
-      isDone = selections[stepNum]?.length > 0;
+  const total = stepContents[step].items.length;
+  const pages = Math.ceil(total / 3);
+  const page  = carouselPage[step];
+
+  // Calculate shift: 3 cards + 2 gaps per page
+  const winW  = winEl.offsetWidth;
+  const cardW = (winW - 28) / 3;          // 28 = 2 gaps × 14px
+  const shift = page * ((cardW + 14) * 3); // jump 3 cards at a time
+
+  track.style.transform = `translateX(-${shift}px)`;
+
+  if (prevBtn) prevBtn.disabled = page === 0;
+  if (nextBtn) nextBtn.disabled = page >= pages - 1;
+
+  if (dotsEl) {
+    dotsEl.innerHTML = '';
+    for (let d = 0; d < pages; d++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (d === page ? ' active' : '');
+      dot.onclick = () => { carouselPage[step] = d; applyCarousel(step); };
+      dotsEl.appendChild(dot);
     }
+  }
+}
 
-    else if (stepNum >= 3 && stepNum <= 5) {
-      isDone = selections[stepNum] !== null && selections[stepNum] !== undefined;
-    }
+function slidePrev(step) {
+  if (carouselPage[step] > 0) { carouselPage[step]--; applyCarousel(step); }
+}
 
-    if (isDone) {
-      span.textContent = "✔";
-      span.style.background = "#28a745";
-    } else {
-      span.textContent = stepNum;
-      span.style.background = "#0094ff";
-    }
+function slideNext(step) {
+  const pages = Math.ceil(stepContents[step].items.length / 3);
+  if (carouselPage[step] < pages - 1) { carouselPage[step]++; applyCarousel(step); }
+}
+
+function initCarousels() {
+  requestAnimationFrame(() => {
+    [1, 2, 3].forEach(s => applyCarousel(s));
   });
 }
 
-// ✅ LOCK STEPS FUNCTION
-function lockPreviousSteps() {
-  stepBoxes.forEach((step, index) => {
-    const stepNum = index + 1;
-    
-    if (stepNum < 6 && isConfirmed) {
-      step.style.pointerEvents = "none";
-      step.style.opacity = "0.6";
-      step.style.cursor = "not-allowed";
-    } else if (stepNum === 6 && isConfirmed) {
-      step.style.pointerEvents = "none";
-      step.style.opacity = "1";
-      step.style.cursor = "default";
-    }
-  });
+// =====================================================
+// CARD BUILDERS
+// =====================================================
+function buildMultiCard(step, item, index) {
+  const isAdded = !!selections[step].find(i => i.name === item.name);
+  return `
+    <div class="product-card${isAdded ? ' is-added' : ''}" id="card-${step}-${index}">
+      <div class="card-img-area">
+        <img src="${item.img}" alt="${item.name}" onerror="this.src='../img/placeholder.jpg'">
+      </div>
+      <div class="card-body">
+        <div class="card-name">${item.name}</div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-qty-row">
+          <button onclick="handleQty(${step},${index},-1)">&#8722;</button>
+          <input type="number" id="qty-${step}-${index}" value="1" min="1" readonly>
+          <button onclick="handleQty(${step},${index},1)">&#43;</button>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">${item.price > 0 ? '&#8369;' + item.price : 'Free'}</div>
+          <button id="addBtn-${step}-${index}"
+            class="card-add-btn${isAdded ? ' added' : ''}"
+            onclick="addItem(${step},${index})"
+            ${isAdded ? 'disabled' : ''}>
+            ${isAdded ? 'Added &#10003;' : 'Add'}
+          </button>
+        </div>
+      </div>
+    </div>`;
 }
 
-// ===== STEP CLICK (LOCKED) =====
-function activateStepClicks() {
-  stepBoxes = document.querySelectorAll(".step-box");
+function buildSingleCard(step, item, index) {
+  const isSel = selections[step]?.name === item.name;
+  return `
+    <div class="product-card${isSel ? ' is-selected' : ''}" id="card-${step}-${index}">
+      <div class="card-img-area">
+        <img src="${item.img}" alt="${item.name}" onerror="this.src='../img/placeholder.jpg'">
+      </div>
+      <div class="card-body">
+        <div class="card-name">${item.name}</div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-footer">
+          <div class="card-price">${item.price > 0 ? '&#8369;' + item.price : 'Free'}</div>
+          <button id="selBtn-${step}-${index}"
+            class="card-add-btn${isSel ? ' selected-single' : ''}"
+            onclick="selectItem(${step},${index})">
+            ${isSel ? 'Selected &#10003;' : 'Select'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
 
-  stepBoxes.forEach((step, index) => {
-    step.onclick = () => {
-      const stepNum = index + 1;
-      
-      if (isConfirmed || stepNum >= currentStep) {
-        return; // Locked!
+// =====================================================
+// MULTI-ITEM ACTIONS
+// =====================================================
+function handleQty(step, index, delta) {
+  if (selections[step].find(i => i.name === stepContents[step].items[index].name)) {
+    alert('Remove the item first before editing quantity.');
+    return;
+  }
+  const inp = document.getElementById(`qty-${step}-${index}`);
+  inp.value = Math.max(1, parseInt(inp.value) + delta);
+}
+
+function addItem(step, index) {
+  const item = stepContents[step].items[index];
+  const inp  = document.getElementById(`qty-${step}-${index}`);
+  const qty  = Math.max(1, parseInt(inp.value) || 1);
+  if (selections[step].find(i => i.name === item.name)) return;
+  selections[step].push({ ...item, qty });
+
+  const btn  = document.getElementById(`addBtn-${step}-${index}`);
+  const card = document.getElementById(`card-${step}-${index}`);
+  if (btn)  { btn.classList.add('added'); btn.innerHTML = 'Added &#10003;'; btn.disabled = true; }
+  if (card) card.classList.add('is-added');
+  refreshSummary(step);
+  renderSidebar(getCurrentStep());
+}
+
+function removeItem(step, name) {
+  const index = stepContents[step].items.findIndex(i => i.name === name);
+  selections[step] = selections[step].filter(i => i.name !== name);
+  const btn  = document.getElementById(`addBtn-${step}-${index}`);
+  const inp  = document.getElementById(`qty-${step}-${index}`);
+  const card = document.getElementById(`card-${step}-${index}`);
+  if (btn)  { btn.classList.remove('added'); btn.innerHTML = 'Add'; btn.disabled = false; }
+  if (inp)  inp.value = 1;
+  if (card) card.classList.remove('is-added');
+  refreshSummary(step);
+  renderSidebar(getCurrentStep());
+}
+
+function refreshSummary(step) {
+  const box = document.getElementById(`summary-${step}`);
+  if (!box) return;
+  if (selections[step].length === 0) {
+    box.innerHTML = '<p style="font-size:12px;color:#64748b;">No items selected yet.</p>';
+    return;
+  }
+  box.innerHTML = `
+    <h4>Selected Items</h4>
+    ${selections[step].map(item => `
+      <div class="summary-item-row">
+        <div class="si-left">
+          <strong>${item.name}</strong>
+          <span>Qty: ${item.qty}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="si-price">&#8369;${item.price * item.qty}</div>
+          <button class="remove-btn" onclick="removeItem(${step},'${item.name}')">Remove</button>
+        </div>
+      </div>`).join('')}
+    <div class="running-total-row">Running total: &#8369;${getTotal().toLocaleString()}</div>`;
+}
+
+// =====================================================
+// SINGLE SELECT
+// =====================================================
+function selectItem(step, index) {
+  selections[step] = stepContents[step].items[index];
+  stepContents[step].items.forEach((_, i) => {
+    const btn  = document.getElementById(`selBtn-${step}-${i}`);
+    const card = document.getElementById(`card-${step}-${i}`);
+    const isSel = i === index;
+    if (btn)  { btn.classList.toggle('selected-single', isSel); btn.innerHTML = isSel ? 'Selected &#10003;' : 'Select'; }
+    if (card) card.classList.toggle('is-selected', isSel);
+  });
+  renderSidebar(getCurrentStep());
+}
+
+// =====================================================
+// PERSONAL CHOICE
+// =====================================================
+function usePersonalChoice(step) {
+  if (!selections[step].find(i => i.name === 'Personal Choice')) {
+    selections[step].push({ name: 'Personal Choice', img: '', price: 0, desc: '', qty: 1 });
+  }
+  refreshSummary(step);
+  renderSidebar(getCurrentStep());
+  const next = document.getElementById(`section-step-${step + 1}`);
+  if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// =====================================================
+// SCROLL SYNC — sidebar active step follows scroll
+// =====================================================
+let _observer = null;
+
+function getCurrentStep() {
+  for (let s = 1; s <= 3; s++) {
+    const el = document.getElementById(`section-step-${s}`);
+    if (!el) continue;
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.6 && r.bottom > 0) return s;
+  }
+  return 1;
+}
+
+function initScrollSync() {
+  if (_observer) _observer.disconnect();
+
+  _observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const step = parseInt(e.target.dataset.step);
+        renderSidebar(step);
       }
-      
-      currentStep = stepNum;
-      updateStepUI();
-    };
-  });
+    });
+  }, { threshold: 0.25 });
+
+  for (let s = 1; s <= 3; s++) {
+    const el = document.getElementById(`section-step-${s}`);
+    if (el) _observer.observe(el);
+  }
+
+  // Proceed / confirm section → highlight step 4
+  const proceed = document.getElementById('section-proceed');
+  if (proceed) {
+    const o2 = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) renderSidebar(4);
+    }, { threshold: 0.3 });
+    o2.observe(proceed);
+  }
 }
 
-// ===== EXTRA CONTROLS =====
-function updateKg(val) {
-  kg = val < 1 ? 1 : parseInt(val);
- renderConfirmation();
- updateConfirmationLive();
-}
+// =====================================================
+// RENDER ALL STEPS (3 product steps only)
+// =====================================================
+function renderAllSteps() {
+  const content = document.getElementById('bookContent');
+  let html = '';
 
-function togglePickup(type) {
-  deliveryFee = type === "delivery" ? 40 : 0;
- renderConfirmation();
- updateConfirmationLive();
-}
+  for (let s = 1; s <= 3; s++) {
+    const data    = stepContents[s];
+    const isMulti = data.multi;
+    const cards   = data.items.map((item, i) =>
+      isMulti ? buildMultiCard(s, item, i) : buildSingleCard(s, item, i)
+    ).join('');
 
-// ✅ FULL DROPDOWN CUSTOMIZATION IN CONFIRMATION
-function renderConfirmation() {
-  
-  lockPreviousSteps();
-  updateStepChecks();
+    html += `
+      <div class="step-section" id="section-step-${s}" data-step="${s}">
+        <div class="section-head">
+          <div class="section-num" id="badge-${s}">${s}</div>
+          <div>
+            <div class="section-title">${data.title}</div>
+            <div class="section-sub">${data.text}</div>
+          </div>
+        </div>
 
-  let html = `
-  <div class="confirm-layout">
+        <div class="carousel-shell">
+          <button class="carousel-nav-btn" id="prev-${s}" onclick="slidePrev(${s})">&#8249;</button>
+          <div class="carousel-window" id="win-${s}">
+            <div class="carousel-track" id="track-${s}">
+              ${cards}
+            </div>
+          </div>
+          <button class="carousel-nav-btn" id="next-${s}" onclick="slideNext(${s})">&#8250;</button>
+        </div>
 
-    <!-- LEFT FORM -->
-    <div class="confirm-form">
+        <div class="carousel-dots" id="dots-${s}"></div>
 
-      <h2>Customize Your Order</h2>
-      <p style="color:#28a745; font-weight:600;">Steps locked! Customize quantities & details below:</p>
-
-      <input id="custName" placeholder="Full Name *" required>
-      <input id="custAddress" placeholder="Address *" required>
-
-      <label>Pickup Type</label>
-      <select id="pickupType" onchange="togglePickup(this.value)">
-        <option value="store" ${deliveryFee === 0 ? 'selected' : ''}>Store Pickup (Free)</option>
-        <option value="delivery" ${deliveryFee === 40 ? 'selected' : ''}>Home Delivery (+₱40)</option>
-      </select>
-
-
-      <label>Kilograms</label>
-      <div class="qty-control" style="margin-bottom:12px;">
-        <button onclick="updateKg(${kg-1})" ${kg <= 1 ? 'disabled' : ''}>-</button>
-        <input type="number" id="kgInput" value="${kg}" min="1" style="width:80px;" onchange="updateKg(this.value)">
-        <button onclick="updateKg(${kg+1})">+</button>
-      </div>
-      ${kg > 8 ? `<p style="color:red; font-size:14px;">+₱5 extra charge (above 8kg)</p>` : ""}
-
-      <label>Order Quantity</label>
-      <div class="qty-control">
-        <button onclick="changeQty(-1)">-</button>
-        <input type="text" value="${orderQuantity}" id="qtyDisplay" readonly>
-        <button onclick="changeQty(1)">+</button>
-      </div>
-
-    </div>
-
-    <!-- RIGHT SUMMARY - FULL DROPDOWNS ✅ -->
-    <div class="confirmation-box">
-
-      <h2>Final Selections</h2>
-      <p style="color:#666; font-size:14px;">Click dropdowns to customize your choices:</p>
-
-  `;
-
-  // ✅ FULL DROPDOWN FOR ALL 5 STEPS
-  // ✅ CONFIRMATION DISPLAY
- // ✅ CONFIRMATION DISPLAY
-for (let i = 1; i <= 5; i++) {
-
-  const data = stepContents[i];
+        ${isMulti ? `
+          <div class="multi-summary" id="summary-${s}">
+            <p style="font-size:12px;color:#64748b;">No items selected yet.</p>
+          </div>
+          ${s === 1 || s === 2 ? `
+            <button class="btn-personal-choice" onclick="usePersonalChoice(${s})">
+              &#129514; Use Personal Choice &mdash; Bring Your Own
+            </button>` : ''}
+        ` : ''}
+      </div>`;
+  }
 
   html += `
-    <div style="
-      margin-bottom:15px;
-      padding:12px;
-      background:#f8f9ff;
-      border-radius:10px;
-    ">
-      <div style="
-        font-weight:700;
-        color:#0094ff;
-        margin-bottom:8px;
-        font-size:16px;
-      ">
-        ${data.title}
-      </div>
-  `;
-
-  // ===== STEP 1 & 2 MULTIPLE ITEMS
-  if (i === 1 || i === 2) {
-
-    if (selections[i].length === 0) {
-
-      html += `
-        <p>No selections yet.</p>
-      `;
-
-    } else {
-
-      html += selections[i].map(item => `
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          background:white;
-          padding:10px;
-          border-radius:8px;
-          margin-bottom:8px;
-        ">
-          <div>
-            <strong>${item.name}</strong><br>
-            Qty: ${item.qty}
-          </div>
-
-          <div style="
-            font-weight:700;
-            color:#0094ff;
-          ">
-            ₱${item.price * item.qty}
-          </div>
-        </div>
-      `).join("");
-    }
-
-  } else {
-
-    // ===== NORMAL DROPDOWN
-    html += `
-      <select
-        onchange="updateSelection(${i}, this.value)"
-        style="
-          width:100%;
-          padding:12px;
-          border:2px solid #0094ff;
-          border-radius:10px;
-          font-size:15px;
-          font-weight:600;
-        "
-      >
-        ${data.items.map(item => `
-          <option
-            value="${item.name}"
-            ${selections[i]?.name === item.name ? "selected" : ""}
-          >
-            ${item.name} - ₱${item.price}
-          </option>
-        `).join("")}
-      </select>
-    `;
-  }
-
-  // CLOSE EACH BOX
-  html += `</div>`;
-}
-
-// ===== FINAL SUMMARY
-html += `
-  <hr style="margin: 25px 0;">
-
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
-    background:#e3f2fd;
-    border-radius:12px;
-    margin-bottom:20px;
-  ">
-    <strong style="font-size:22px;">GRAND TOTAL:</strong>
-
-    <span id="totalLive" style="
-      font-size:28px;
-      font-weight:700;
-      color:#0094ff;
-    ">
-      ₱${getTotal().toLocaleString()}
-    </span>
-  </div>
-
-  <button
-    class="select-product-btn confirm-btn"
-    onclick="confirmFinalOrder()"
-    style="margin-bottom:15px;"
-  >
-    CONFIRM FINAL ORDER
-  </button>
-
-  <div style="
-    padding:15px;
-    background:#fff3cd;
-    border:1px solid #ffeaa7;
-    border-radius:10px;
-    font-size:14px;
-    color:#856404;
-  ">
-    <strong>Info:</strong>
-    All selections above are now <strong>FINAL</strong> after confirmation!
-  </div>
-
-</div>
-</div>
-`;
-
-// ===== RENDER
-productsPanel.innerHTML = html;
-
-// ===== UPDATE TOTAL
-updateConfirmationLive();
-
-}
-
-// ===== LIVE UPDATE =====
-function updateConfirmationLive() {
-  const el = document.getElementById("totalLive");
-  if (el) el.textContent = "₱" + getTotal().toLocaleString();
-}
-
-// ✅ DROPDOWN SELECTION - WORKS IN CONFIRMATION
-function updateSelection(step, value) {
-  const item = stepContents[step].items.find(i => i.name === value);
-  selections[step] = item;
-
-  updateStepChecks();
-  updateConfirmationLive();
-}
-
-// ===== QTY =====
-function changeQty(val) {
-  orderQuantity += val;
-
-  if (orderQuantity < 1) {
-    orderQuantity = 1;
-  }
-
-  // I-update lang ang quantity display
-  const qtyDisplay = document.getElementById("qtyDisplay");
-  if (qtyDisplay) {
-    qtyDisplay.value = orderQuantity;
-  }
-
-  // I-update lang ang total
-  updateConfirmationLive();
-}
-
-// ===== MAIN UI =====
-function updateStepUI() {
-  stepBoxes.forEach(s => s.classList.remove("active-step"));
-  if (stepBoxes[currentStep - 1]) {
-    stepBoxes[currentStep - 1].classList.add("active-step");
-  }
-
-  updateStepChecks();
-
-  if (currentStep === 6) {
-    renderConfirmation();
-    return;
-  }
-
-  const data = stepContents[currentStep];
-
-// ===== MULTIPLE SELECT FOR STEP 1 & 2 =====
-if (currentStep === 1 || currentStep === 2) {
-
-  productsPanel.innerHTML = `
-    <h2>${data.title}</h2>
-    <p class="select-text">${data.text}</p>
-
-    <div class="products-grid">
-      ${data.items.map((item, index) => `
-        <div class="product-card">
-
-          <img src="${item.img}">
-          <h3>${item.name}</h3>
-
-          <p>₱${item.price}</p>
-
-          <div class="qty-control" style="
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  margin:15px 0;
-">
-
-  <button onclick="
-  handleQtyChange(${currentStep}, ${index}, -1)
-">-</button>
-
-  <input
-  type="number"
-  min="1"
-  value="1"
-  readonly
-    id="qty-${currentStep}-${index}"
-    style="
-      width:60px;
-      text-align:center;
-      font-weight:700;
-    "
-  >
-
-  
-  <button onclick="
-  handleQtyChange(${currentStep}, ${index}, 1)
-">+</button>
-
-</div>
-
- <button
-  id="addBtn-${currentStep}-${index}"
-  onclick="addMultiItem(${currentStep}, ${index})"
-  style="
-    background:${
-      (selections[currentStep] || []).find(i => i.name === item.name)
-        ? '#28a745'
-        : '#0094ff'
-    };
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:700;
-    transition:0.3s;
-  "
-  ${
-    (selections[currentStep] || []).find(i => i.name === item.name)
-      ? 'disabled'
-      : ''
-  }
->
-  ${
-    (selections[currentStep] || []).find(i => i.name === item.name)
-      ? '✔ Added'
-      : 'Add'
-  }
-</button>
-
-        </div>
-      `).join("")}
-    </div>
-
-    <div id="selectedItems" style="
-      margin-top:30px;
-      text-align:left;
-    ">
-      <p>No items selected yet.</p>
-    </div>
-
-    <button
-  onclick="confirmMultiStep(${currentStep})"
-  style="
-    margin-top:15px;
-    background:#28a745;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:10px;
-    font-size:14px;
-    font-weight:700;
-    cursor:pointer;
-    display:block;
-    margin-left:auto;
-    margin-right:auto;
-  "
->
-      Confirm Selection
-    </button>
-  `;
-
-  renderMultiSummary(currentStep);
-return;
-}
-
-// ===== NORMAL SINGLE SELECT STEPS =====
-productsPanel.innerHTML = `
-  <h2>${data.title}</h2>
-  <p class="select-text">${data.text}</p>
-
-  <div class="products-grid">
-    ${data.items.map((item, index) => `
-      <div class="product-card">
-        <img src="${item.img}">
-        <h3>${item.name}</h3>
-        <p>₱${item.price}</p>
-
-        <button onclick="selectItem(${currentStep}, ${index})">
-          Select
-        </button>
-      </div>
-    `).join("")}
-  </div>
-
-  <div style="
-    margin-top:20px;
-    font-weight:700;
-    color:#0094ff;
-  ">
-    Total: ₱${getTotal().toLocaleString()}
-  </div>
-`;
-}
-
-// ===== SELECT ITEM =====
-function selectItem(step, index) {
-
-  selections[step] =
-    stepContents[step].items[index];
-
-  currentStep++;
-
-  updateStepUI();
-}
-
-// ===== FINAL ORDER CONFIRMATION =====
-function confirmFinalOrder() {
-
-  const name = document.getElementById("custName")?.value;
-  const address = document.getElementById("custAddress")?.value;
-
-  if (!name || !address) {
-    alert("Please fill in your name and address!");
-    return;
-  }
-
-  // ===== GENERATE TICKET =====
-  const ticketNumber =
-  Math.floor(100 + Math.random() * 900).toString();
-
-  // ===== ORDER OBJECT =====
-  const newOrder = {
-    ticket: ticketNumber,
-    name: name,
-    contact: "N/A",
-    address: address,
-
-    service: selections[3]
-      ? selections[3].name
-      : "Laundry Service",
-
-    soap: selections[1]
-  .map(i => `${i.name} x${i.qty}`)
-  .join(", "),
-
-    fabcon: selections[2]
-  .map(i => `${i.name} x${i.qty}`)
-  .join(", "),
-
-    pickup: selections[4]
-      ? selections[4].name
-      : "",
-
-    payment: selections[5]
-      ? selections[5].name
-      : "",
-
-    kg: kg,
-    quantity: orderQuantity,
-
-    amount: getTotal(),
-
-    status: "Pending",
-
-    pickupType:
-      deliveryFee === 40
-        ? "Home Delivery"
-        : "Store Pickup",
-
-  
-  };
-
-  // ===== SAVE TO LOCAL STORAGE =====
-  // ===== SAVE TO LOCAL STORAGE =====
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-orders.push(newOrder);
-localStorage.setItem("orders", JSON.stringify(orders));
-
-// ===== SAVE TO DATABASE (PHP MYSQL) =====
-fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(newOrder)
-})
-.then(res => res.json())
-.then(data => {
-  console.log("Saved to DB:", data);
-})
-.catch(err => {
-  console.log("DB Error:", err);
-});
-
-  // ===== SUCCESS =====
-  alert(
-    "ORDER CONFIRMED!\n\n" +
-    "Ticket Number: " + ticketNumber +
-    "\n\nCustomer: " + name +
-    "\nTotal: ₱" + getTotal() +
-    "\n\nYou can now track your laundry."
-  );
-
-  // ===== REDIRECT =====
-  window.location.href =
-    "../HTML/tracklaundry.html?ticket=" + ticketNumber;
-}
-
-// ===== INITIALIZE =====
-updateStepUI();
-activateStepClicks();
-
-// ===== ADD MULTIPLE ITEMS =====
-function addMultiItem(step, index) {
-
-  const item = stepContents[step].items[index];
- const qtyInput = document.getElementById(`qty-${step}-${index}`);
-if (!qtyInput) return;
-
-  let qty = parseInt(qtyInput.value);
-
-  if (isNaN(qty) || qty < 1) {
-    qty = 1;
-  }
-
-  const existing = selections[step].find(i => i.name === item.name);
-
-  if (existing) {
-    alert("Already added. Remove first before changing quantity.");
-    return;
-  }
-
-  selections[step].push({
-    ...item,
-    qty: qty
+    <div class="proceed-btn-wrap" id="section-proceed">
+      <p style="font-size:13px;color:#64748b;margin-bottom:14px;">Review your selections above, then proceed to confirmation.</p>
+      <button class="proceed-to-confirm" onclick="goToConfirmation()">Proceed to Confirmation &rarr;</button>
+    </div>`;
+
+  content.innerHTML = html;
+  renderSidebar(1);
+  initCarousels();
+  initScrollSync();
+
+  window.addEventListener('resize', () => {
+    [1, 2, 3].forEach(s => applyCarousel(s));
   });
-
-  qtyInput.value = 1;
-
-  renderMultiSummary(step);
-  updateStepChecks(); // optional UI update lang
-  updateConfirmationLive(); // optional live total update
-}
-function bindQtyLiveUpdate(step, index) {
-
-  const input = document.getElementById(`qty-${step}-${index}`);
-  const item = stepContents[step].items[index];
-
-  if (!input) return;
-
-  input.oninput = () => {
-
-    let qty = parseInt(input.value);
-    if (!qty || qty < 1) qty = 1;
-
-    const existing = selections[step].find(i => i.name === item.name);
-
-    if (existing) {
-      existing.qty = qty;
-      renderMultiSummary(step);
-    }
-  };
 }
 
-// ===== REMOVE ITEM =====
-// ===== REMOVE ITEM =====
-function removeMultiItem(step, name) {
-
-  // remove specific item only
-  selections[step] =
-    selections[step].filter(i => i.name !== name);
-
-  // hanapin original index
-  const index =
-    stepContents[step].items.findIndex(
-      item => item.name === name
-    );
-
-  // reset ONLY that qty input
-  const qtyInput =
-    document.getElementById(`qty-${step}-${index}`);
-
-  if (qtyInput) {
-    qtyInput.value = 1;
-  }
-
-  // reset ONLY that button
-  const btn =
-    document.getElementById(`addBtn-${step}-${index}`);
-
-  if (btn) {
-    btn.style.background = "#0094ff";
-    btn.style.color = "white";
-    btn.innerHTML = "Add";
-    btn.disabled = false;
-  }
-
-  // refresh summary
-  renderMultiSummary(step);
+// =====================================================
+// VALIDATION
+// =====================================================
+function goToConfirmation() {
+  if (selections[1].length === 0) { alert('Please select at least one Laundry Soap (or use Personal Choice).'); return; }
+  if (selections[2].length === 0) { alert('Please select at least one Fabric Conditioner (or use Personal Choice).'); return; }
+  if (!selections[3])             { alert('Please select a Wash Type.'); return; }
+  if (_observer) _observer.disconnect();
+  isConfirmed = true;
+  renderSidebar(4);
+  renderConfirmation();
 }
 
-// ===== CONFIRM STEP =====
-function confirmMultiStep(step) {
+// =====================================================
+// CONFIRMATION
+// =====================================================
+function renderConfirmation() {
+  const content = document.getElementById('bookContent');
 
-  if (selections[step].length === 0) {
-    alert("Please select at least one item.");
-    return;
-  }
+  const soapRows = selections[1].map(item => `
+    <div class="confirm-item-row">
+      <div><strong>${item.name}</strong></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <button class="conf-qty-btn" onclick="confirmChangeQty(1,'${item.name}',-1)">&#8722;</button>
+        <span style="font-size:13px;font-weight:700;min-width:20px;text-align:center;">${item.qty}</span>
+        <button class="conf-qty-btn" onclick="confirmChangeQty(1,'${item.name}',1)">&#43;</button>
+        <div class="confirm-item-price">&#8369;${item.price * item.qty}</div>
+        <button class="remove-btn" onclick="confirmRemoveItem(1,'${item.name}')">Remove</button>
+      </div>
+    </div>`).join('');
 
-  currentStep++;
-  updateStepUI();
-}
+  const fabconRows = selections[2].map(item => `
+    <div class="confirm-item-row">
+      <div><strong>${item.name}</strong></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <button class="conf-qty-btn" onclick="confirmChangeQty(2,'${item.name}',-1)">&#8722;</button>
+        <span style="font-size:13px;font-weight:700;min-width:20px;text-align:center;">${item.qty}</span>
+        <button class="conf-qty-btn" onclick="confirmChangeQty(2,'${item.name}',1)">&#43;</button>
+        <div class="confirm-item-price">&#8369;${item.price * item.qty}</div>
+        <button class="remove-btn" onclick="confirmRemoveItem(2,'${item.name}')">Remove</button>
+      </div>
+    </div>`).join('');
 
-function renderMultiSummary(step) {
+  const washOpts = stepContents[3].items.map(i =>
+    `<option value="${i.name}" ${selections[3]?.name === i.name ? 'selected' : ''}>${i.name} &mdash; &#8369;${i.price}</option>`
+  ).join('');
 
-  const box = document.getElementById("selectedItems");
-
-  if (!box) return;
-
-  if (selections[step].length === 0) {
-    box.innerHTML = `
-      <p>No items selected yet.</p>
-    `;
-    return;
-  }
-
-  box.innerHTML = selections[step].map(item => `
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:#f5f7fb;
-      padding:10px;
-      border-radius:10px;
-      margin-bottom:10px;
-    ">
+  const payOpts = paymentItems.map(p => `
+    <div class="payment-option${selectedPayment === p.name ? ' selected' : ''}" onclick="selectPayment('${p.name}')">
+      <div class="payment-icon">${p.icon}</div>
       <div>
-        <strong>${item.name}</strong><br>
-        Qty: ${item.qty}<br>
-        ₱${item.price * item.qty}
+        <div class="payment-name">${p.name}</div>
+        <div class="payment-note">${p.note}</div>
+      </div>
+    </div>`).join('');
+
+  content.innerHTML = `
+    <button class="btn-back" onclick="goBack()">&#8592; Back to Edit</button>
+    <div class="confirm-layout">
+
+      <div class="confirm-form">
+        <h2>Order Details</h2>
+
+        <label>Full Name</label>
+        <input id="custName" placeholder="Enter your full name">
+
+        <label>Address</label>
+        <input id="custAddress" placeholder="Enter your complete address">
+
+        <label>Delivery Method</label>
+        <select id="pickupType" onchange="toggleDelivery(this.value)">
+          <option value="store"    ${deliveryFee === 0  ? 'selected' : ''}>Store Pickup &mdash; Free</option>
+          <option value="delivery" ${deliveryFee === 40 ? 'selected' : ''}>Home Delivery &mdash; +&#8369;40</option>
+        </select>
+
+        <label>Pickup Schedule</label>
+        <select id="pickupSchedule">
+          <option value="Morning">Morning (7 AM &ndash; 12 PM)</option>
+          <option value="Afternoon">Afternoon (12 PM &ndash; 5 PM)</option>
+          <option value="Evening">Evening (5 PM &ndash; 9 PM)</option>
+          <option value="Express">Express &mdash; within 2 hrs (+&#8369;50)</option>
+        </select>
+
+        <label>Load Weight (kg)</label>
+        <div class="qty-control">
+          <button onclick="updateKg(${kg - 1})" ${kg <= 1 ? 'disabled' : ''}>&#8722;</button>
+          <input type="number" id="kgInput" value="${kg}" min="1" onchange="updateKg(this.value)">
+          <button onclick="updateKg(${kg + 1})">&#43;</button>
+        </div>
+        ${kg > 8 ? '<p style="color:red;font-size:13px;margin-top:-5px;">&#9888; +&#8369;5 charge above 8 kg.</p>' : ''}
+
+        <label>Number of Orders</label>
+        <div class="qty-control">
+          <button onclick="changeQty(-1)" ${orderQuantity <= 1 ? 'disabled' : ''}>&#8722;</button>
+          <input type="text" id="qtyDisplay" value="${orderQuantity}" readonly>
+          <button onclick="changeQty(1)">&#43;</button>
+        </div>
+
+        <div style="background:#fff9e6;border:1.5px solid #f5d87a;border-radius:9px;padding:12px 14px;font-size:12px;color:#7a5c00;margin-top:16px;line-height:1.6;">
+          All selections can still be changed below. Once you press <strong>Confirm Final Order</strong>, your booking will be submitted.
+        </div>
       </div>
 
-      <button onclick="
-        removeMultiItem(${step}, '${item.name}')
-      " style="
-        background:red;
-        color:white;
-        border:none;
-        padding:8px 12px;
-        border-radius:8px;
-        cursor:pointer;
-      ">
-        Remove
-      </button>
-    </div>
-  `).join("");
+      <div class="confirmation-box">
+        <h2>Order Summary</h2>
+        <p style="font-size:12px;color:#64748b;margin-bottom:16px;">Review and edit your selections below.</p>
 
-  box.innerHTML += `
-    <div style="
-      margin-top:15px;
-      font-weight:700;
-      color:#0094ff;
-      font-size:18px;
-    ">
-      Current Total:
-      ₱${getTotal().toLocaleString()}
-    </div>
-  `;
+        <div class="confirm-section">
+          <div class="confirm-section-title">Laundry Soap</div>
+          ${soapRows || '<p style="font-size:12px;color:#64748b;">None selected.</p>'}
+        </div>
+
+        <div class="confirm-section">
+          <div class="confirm-section-title">Fabric Conditioner</div>
+          ${fabconRows || '<p style="font-size:12px;color:#64748b;">None selected.</p>'}
+        </div>
+
+        <div class="confirm-section">
+          <div class="confirm-section-title">Wash Type</div>
+          <select class="confirm-select" onchange="updateSingleSelection(3,this.value)">${washOpts}</select>
+        </div>
+
+        <div class="confirm-section">
+          <div class="confirm-section-title">Payment Method</div>
+          <div class="payment-options">${payOpts}</div>
+        </div>
+
+        <div class="confirm-total-bar">
+          <strong>GRAND TOTAL</strong>
+          <span id="totalLive">&#8369;${getTotal().toLocaleString()}</span>
+        </div>
+
+        <button class="confirm-btn" onclick="confirmFinalOrder()">&#10004; CONFIRM FINAL ORDER</button>
+      </div>
+    </div>`;
 }
 
-// ===== HANDLE QTY CHANGE =====
-function handleQtyChange(step, index, change) {
+// =====================================================
+// BACK
+// =====================================================
+function goBack() {
+  isConfirmed = false;
+  renderAllSteps();
+  setTimeout(() => {
+    [1, 2].forEach(s => {
+      selections[s].forEach(item => {
+        const idx = stepContents[s].items.findIndex(i => i.name === item.name);
+        if (idx === -1) return;
+        const btn  = document.getElementById(`addBtn-${s}-${idx}`);
+        const card = document.getElementById(`card-${s}-${idx}`);
+        if (btn)  { btn.classList.add('added'); btn.innerHTML = 'Added &#10003;'; btn.disabled = true; }
+        if (card) card.classList.add('is-added');
+      });
+      refreshSummary(s);
+    });
+    if (selections[3]) {
+      const idx = stepContents[3].items.findIndex(i => i.name === selections[3].name);
+      if (idx !== -1) {
+        const btn  = document.getElementById(`selBtn-3-${idx}`);
+        const card = document.getElementById(`card-3-${idx}`);
+        if (btn)  { btn.classList.add('selected-single'); btn.innerHTML = 'Selected &#10003;'; }
+        if (card) card.classList.add('is-selected');
+      }
+    }
+  }, 60);
+}
 
-  const item = stepContents[step].items[index];
+// =====================================================
+// CONFIRMATION HELPERS
+// =====================================================
+function toggleDelivery(val)      { deliveryFee = val === 'delivery' ? 40 : 0; updateTotalLive(); }
+function updateKg(val)             { kg = Math.max(1, parseInt(val) || 1); renderConfirmation(); }
+function changeQty(delta)          { orderQuantity = Math.max(1, orderQuantity + delta); const d = document.getElementById('qtyDisplay'); if (d) d.value = orderQuantity; updateTotalLive(); }
+function selectPayment(name)       { selectedPayment = name; document.querySelectorAll('.payment-option').forEach(el => el.classList.toggle('selected', el.getAttribute('onclick')?.includes(`'${name}'`))); updateTotalLive(); }
+function updateSingleSelection(step, value) { const item = stepContents[step].items.find(i => i.name === value); if (item) selections[step] = item; updateTotalLive(); }
+function confirmRemoveItem(step, name)      { selections[step] = selections[step].filter(i => i.name !== name); renderConfirmation(); }
+function confirmChangeQty(step, name, delta){ const item = selections[step].find(i => i.name === name); if (item) item.qty = Math.max(1, item.qty + delta); renderConfirmation(); }
 
-  const existing = selections[step].find(
-    i => i.name === item.name
+// =====================================================
+// CONF QTY BTN style (used inline in confirmation HTML)
+// =====================================================
+// Appended via renderConfirmation — no separate element needed
+
+// =====================================================
+// FINAL ORDER
+// =====================================================
+function confirmFinalOrder() {
+  const name     = document.getElementById('custName')?.value?.trim();
+  const address  = document.getElementById('custAddress')?.value?.trim();
+  const schedule = document.getElementById('pickupSchedule')?.value || 'Morning';
+
+  if (!name || !address)          { alert('Please enter your full name and address.'); return; }
+  if (selections[1].length === 0) { alert('Laundry soap is empty. Please go back.'); return; }
+  if (selections[2].length === 0) { alert('Fabric conditioner is empty. Please go back.'); return; }
+  if (!selections[3])             { alert('No wash type selected. Please go back.'); return; }
+
+  const expressCharge = schedule === 'Express' ? 50 : 0;
+  const ticketNumber  = Math.floor(100 + Math.random() * 900).toString();
+
+  const newOrder = {
+    ticket:     ticketNumber,
+    name,
+    address,
+    service:    selections[3]?.name || 'Laundry Service',
+    soap:       selections[1].map(i => `${i.name} x${i.qty}`).join(', '),
+    fabcon:     selections[2].map(i => `${i.name} x${i.qty}`).join(', '),
+    pickup:     schedule,
+    payment:    selectedPayment,
+    kg,
+    quantity:   orderQuantity,
+    amount:     getTotal() + expressCharge,
+    status:     'Pending',
+    pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup'
+  };
+
+  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  orders.push(newOrder);
+  localStorage.setItem('orders', JSON.stringify(orders));
+
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newOrder)
+  }).then(r => r.json()).then(d => console.log('Saved to DB:', d)).catch(e => console.log('DB Error:', e));
+
+  alert(
+    `ORDER CONFIRMED!\n\nTicket: #${ticketNumber}\nCustomer: ${name}\nTotal: ₱${newOrder.amount.toLocaleString()}\n\nYou can now track your laundry.`
   );
-
-  if (existing) {
-    alert(
-      "Remove the item first before editing quantity."
-    );
-    return;
-  }
-
-  const input =
-    document.getElementById(`qty-${step}-${index}`);
-
-  let current = parseInt(input.value);
-
-  if (isNaN(current) || current < 1) {
-    current = 1;
-  }
-
-  current += change;
-
-  if (current < 1) current = 1;
-
-  input.value = current;
+  window.location.href = `../HTML/tracklaundry.html?ticket=${ticketNumber}`;
 }
-// INIT PRICING
+
+// =====================================================
+// STEP BOX CLICKS (for kiosk layout steps panel)
+// =====================================================
+function activateStepClicks() {
+  const stepBoxes = document.querySelectorAll('.step-box');
+  stepBoxes.forEach((step, index) => {
+    step.onclick = () => {
+      if (isConfirmed) return;
+      const s = index + 1;
+      const el = document.getElementById(`section-step-${s}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+  });
+}
+
+// =====================================================
+// INIT
+// =====================================================
 loadPricingFromStorage();
 window.addEventListener('pricingUpdated', loadPricingFromStorage);
+renderAllSteps();
+activateStepClicks();
+
+document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (confirm('Are you sure you want to log out?')) {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = '../HTML/login.html';
+  }
+});

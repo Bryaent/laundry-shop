@@ -6,14 +6,9 @@
     <title>M&M Laundry Admin Dashboard</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link rel="stylesheet" href="../CSS/admin.css">
 </head>
 
@@ -21,56 +16,43 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-
     <div>
-
         <div class="logo-section">
-
             <img src="../img/Logo.png">
-
             <div>
                 <h2>M&M Laundry</h2>
                 <p>Admin Dashboard</p>
             </div>
-
         </div>
 
         <div class="sidebar-menu">
-
             <button class="menu-btn active" data-tab="dashboard">
                 <i class="fa-solid fa-chart-line"></i>
                 Overview
             </button>
-
             <button class="menu-btn" data-tab="orders">
                 <i class="fa-solid fa-box"></i>
                 Orders
             </button>
-
             <button class="menu-btn" data-tab="inquiries">
                 <i class="fa-solid fa-handshake"></i>
                 Franchise Inquiries
             </button>
-
             <button class="menu-btn" data-tab="revenue">
                 <i class="fa-solid fa-money-bill"></i>
                 Revenue
             </button>
-
             <button class="menu-btn" data-tab="settings">
                 <i class="fa-solid fa-gear"></i>
                 Inventory
             </button>
-
         </div>
-
     </div>
 
     <button class="logout-btn">
         <i class="fa-solid fa-right-from-bracket"></i>
         Logout
     </button>
-
 </aside>
 
 <!-- MAIN CONTENT -->
@@ -78,151 +60,89 @@
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="tab-content active-tab">
-
         <div class="page-header">
-
             <h1>Business Overview</h1>
-
-            <p>
-                Monitor laundry shop performance and operations
-            </p>
-
+            <p>Monitor laundry shop performance and operations</p>
         </div>
 
         <section class="large-analytics">
-
-            <div class="large-card blue clickable-card"
-            data-tab-target="orders">
-
+            <div class="large-card blue clickable-card" data-tab-target="orders">
                 <div class="large-card-content">
-
                     <div>
                         <p>Total Orders</p>
                         <h2 id="card-total-orders">0</h2>
                         <span>All customer laundry transactions</span>
                     </div>
-
                     <i class="fa-solid fa-box"></i>
-
                 </div>
-
             </div>
 
-            <div class="large-card purple clickable-card"
-            data-tab-target="revenue">
-
+            <div class="large-card purple clickable-card" data-tab-target="revenue">
                 <div class="large-card-content">
-
                     <div>
                         <p>Total Revenue</p>
                         <h2 id="card-total-revenue">₱0</h2>
                         <span>Completed order earnings</span>
                     </div>
-
                     <i class="fa-solid fa-peso-sign"></i>
-
                 </div>
-
             </div>
 
-            <div class="large-card orange clickable-card"
-            data-tab-target="orders">
-
+            <div class="large-card orange clickable-card" data-tab-target="orders">
                 <div class="large-card-content">
-
                     <div>
                         <p>Pending Orders</p>
                         <h2 id="card-pending">0</h2>
                         <span>Orders currently processing</span>
                     </div>
-
                     <i class="fa-solid fa-clock"></i>
-
                 </div>
-
             </div>
 
-            <div class="large-card green clickable-card"
-            data-tab-target="orders">
-
+            <div class="large-card green clickable-card" data-tab-target="orders">
                 <div class="large-card-content">
-
                     <div>
                         <p>Completed Orders</p>
                         <h2 id="card-completed">0</h2>
                         <span>Successfully finished orders</span>
                     </div>
-
                     <i class="fa-solid fa-circle-check"></i>
-
                 </div>
-
             </div>
-
         </section>
-
     </div>
 
     <!-- ORDERS -->
     <div id="orders" class="tab-content">
-
         <div class="page-header orders-header">
-
             <div>
-
                 <h1>Orders Management</h1>
-
-                <p>
-                    Track and manage customer laundry transactions
-                </p>
-
+                <p>Track and manage customer laundry transactions</p>
             </div>
-
             <div class="search-box">
-
                 <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                type="text"
-                id="searchInput"
-                placeholder="Search customer or service...">
-
+                <input type="text" id="searchInput" placeholder="Search customer or service...">
             </div>
-
         </div>
 
         <!-- LIVE ORDERS -->
         <section class="table-section">
-
             <div class="section-header">
-
                 <div>
                     <h2>Live Orders</h2>
                     <p>Manage active customer laundry requests</p>
                 </div>
-
-                <button class="bulk-delete-btn"
-                onclick="deleteSelectedOrders()">
-
+                <button class="bulk-delete-btn" onclick="deleteSelectedOrders()">
                     <i class="fa-solid fa-trash"></i>
                     Delete Selected
-
                 </button>
-
             </div>
 
             <div class="table-card">
-
                 <table>
-
                     <thead>
-
                         <tr>
-
-                            <th>
-                                <input type="checkbox" id="selectAll">
-                            </th>
-
+                            <th><input type="checkbox" id="selectAll"></th>
                             <th>#</th>
                             <th>Customer</th>
                             <th>Contact</th>
@@ -231,39 +151,26 @@
                             <th>Status</th>
                             <th>Delivery Method</th>
                             <th>Action</th>
-
                         </tr>
-
                     </thead>
-
                     <tbody id="ordersBody"></tbody>
-
                 </table>
-
             </div>
-
         </section>
 
         <!-- COMPLETED -->
         <section class="table-section">
-
             <div class="section-header">
-
                 <div>
                     <h2>Completed Orders</h2>
                     <p>Successfully finished transactions</p>
                 </div>
-
             </div>
 
             <div class="table-card">
-
                 <table>
-
                     <thead>
-
                         <tr>
-
                             <th>#</th>
                             <th>Customer</th>
                             <th>Contact</th>
@@ -271,195 +178,249 @@
                             <th>Amount</th>
                             <th>Status</th>
                             <th>Delivery Method</th>
-
+                            <th>Action</th>
                         </tr>
-
                     </thead>
-
                     <tbody id="completedOrdersBody"></tbody>
-
                 </table>
-
             </div>
-
         </section>
-
     </div>
 
     <!-- REVENUE -->
     <div id="revenue" class="tab-content">
-
         <div class="page-header">
+            <h1>Revenue Analytics</h1>
+            <p>Real-time revenue analytics and performance tracking</p>
+        </div>
 
-            <h1>Monthly Revenue</h1>
+        <!-- Revenue Period Toggle -->
+        <div class="revenue-toggle">
+            <button class="rev-toggle-btn active" data-period="daily" onclick="switchRevenuePeriod('daily')">
+                <i class="fa-solid fa-calendar-day"></i> Daily
+            </button>
+            <button class="rev-toggle-btn" data-period="monthly" onclick="switchRevenuePeriod('monthly')">
+                <i class="fa-solid fa-calendar-week"></i> Monthly
+            </button>
+            <button class="rev-toggle-btn" data-period="yearly" onclick="switchRevenuePeriod('yearly')">
+                <i class="fa-solid fa-calendar"></i> Yearly
+            </button>
+        </div>
 
-            <p>
-                Real-time revenue analytics and performance tracking
-            </p>
-
+        <!-- Revenue Summary Cards -->
+        <div class="revenue-summary">
+            <div class="rev-summary-card">
+                <p>Today's Revenue</p>
+                <h3 id="rev-today">₱0</h3>
+            </div>
+            <div class="rev-summary-card">
+                <p>This Month</p>
+                <h3 id="rev-month">₱0</h3>
+            </div>
+            <div class="rev-summary-card">
+                <p>This Year</p>
+                <h3 id="rev-year">₱0</h3>
+            </div>
         </div>
 
         <div class="chart-card">
             <canvas id="revenueChart"></canvas>
         </div>
-
     </div>
 
     <!-- INQUIRIES -->
     <div id="inquiries" class="tab-content">
-
         <div class="page-header">
-
             <h1>Franchise Inquiries</h1>
-
-            <p>
-                Customer partnership and business requests
-            </p>
-
+            <p>Customer partnership and business requests</p>
         </div>
 
         <div class="table-card">
-
             <table>
-
                 <thead>
-
                     <tr>
-
                         <th>Name</th>
                         <th>Email</th>
                         <th>Contact</th>
                         <th>Message</th>
                         <th>Date</th>
                         <th>Action</th>
-
                     </tr>
-
                 </thead>
-
                 <tbody id="inquiriesBody"></tbody>
-
             </table>
-
         </div>
-
     </div>
 
-    <!-- SETTINGS -->
- <div id="settings" class="tab-content">
+    <!-- SETTINGS / INVENTORY -->
+    <div id="settings" class="tab-content">
         <div class="page-header">
-            <h1>Service Pricing</h1>
-            <p>Configure pricing for all laundry services - <strong>Changes sync instantly to BookNow!</strong></p>
+            <h1>Inventory & Pricing</h1>
+            <p>Manage stock levels and pricing — <strong>Changes sync instantly to BookNow!</strong></p>
         </div>
 
         <div class="settings-grid">
-            
-            <!-- STEP 1: LAUNDRY SOAPS (EXACT MATCH) -->
+
+            <!-- STEP 1: LAUNDRY SOAPS -->
             <div class="pricing-section">
                 <h3><i class="fa-solid fa-soap"></i> Step 1: Laundry Soaps</h3>
                 <div class="pricing-grid">
                     <div class="pricing-card">
+                        <div class="inv-table-head">
+                            <span>Item</span>
+                            <span>Price (₱)</span>
+                            <span>Stock</span>
+                            <span>Status</span>
+                        </div>
                         <div class="price-input-group">
                             <div class="price-item">
                                 <label>Ariel</label>
                                 <input type="number" id="soap-ariel" min="0" step="0.5" value="20">
+                                <input type="number" id="stock-soap-ariel" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-soap-ariel">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Tide</label>
                                 <input type="number" id="soap-tide" min="0" step="0.5" value="25">
+                                <input type="number" id="stock-soap-tide" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-soap-tide">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Breeze</label>
                                 <input type="number" id="soap-breeze" min="0" step="0.5" value="18">
+                                <input type="number" id="stock-soap-breeze" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-soap-breeze">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Surf</label>
                                 <input type="number" id="soap-surf" min="0" step="0.5" value="15">
+                                <input type="number" id="stock-soap-surf" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-soap-surf">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Pride</label>
                                 <input type="number" id="soap-pride" min="0" step="0.5" value="17">
+                                <input type="number" id="stock-soap-pride" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-soap-pride">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Wings</label>
                                 <input type="number" id="soap-wings" min="0" step="0.5" value="16">
+                                <input type="number" id="stock-soap-wings" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-soap-wings">In Stock</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 2: FABRIC CONDITIONERS (EXACT MATCH) -->
+            <!-- STEP 2: FABRIC CONDITIONERS -->
             <div class="pricing-section">
                 <h3><i class="fa-solid fa-spray-can"></i> Step 2: Fabric Conditioners</h3>
                 <div class="pricing-grid">
                     <div class="pricing-card">
+                        <div class="inv-table-head">
+                            <span>Item</span>
+                            <span>Price (₱)</span>
+                            <span>Stock</span>
+                            <span>Status</span>
+                        </div>
                         <div class="price-input-group">
                             <div class="price-item">
                                 <label>Downy</label>
                                 <input type="number" id="fabcon-downy" min="0" step="0.5" value="30">
+                                <input type="number" id="stock-fabcon-downy" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-fabcon-downy">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Del</label>
                                 <input type="number" id="fabcon-del" min="0" step="0.5" value="20">
+                                <input type="number" id="stock-fabcon-del" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-fabcon-del">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Champion</label>
                                 <input type="number" id="fabcon-champion" min="0" step="0.5" value="22">
+                                <input type="number" id="stock-fabcon-champion" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-fabcon-champion">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Surf Fabcon</label>
                                 <input type="number" id="fabcon-surf-fabcon" min="0" step="0.5" value="18">
+                                <input type="number" id="stock-fabcon-surf-fabcon" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-fabcon-surf-fabcon">In Stock</span>
                             </div>
                             <div class="price-item">
                                 <label>Lala Fabcon</label>
                                 <input type="number" id="fabcon-lala-fabcon" min="0" step="0.5" value="15">
+                                <input type="number" id="stock-fabcon-lala-fabcon" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-fabcon-lala-fabcon">In Stock</span>
                             </div>
                             <div class="price-item">
-                                <label>Personal Choice</label>
-                                <input type="number" id="fabcon-personal-choice" min="0" step="0.5" value="10">
+                                <label>Del Gentle</label>
+                                <input type="number" id="fabcon-personal-choice" min="0" step="0.5" value="21">
+                                <input type="number" id="stock-fabcon-personal-choice" min="0" step="1" value="50" class="stock-input">
+                                <span class="stock-badge" id="badge-fabcon-personal-choice">In Stock</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 3: WASH TYPES (EXACT MATCH) -->
+            <!-- STEP 3: WASH TYPES -->
             <div class="pricing-section">
                 <h3><i class="fa-solid fa-tshirt"></i> Step 3: Wash Types</h3>
                 <div class="pricing-grid">
                     <div class="pricing-card">
+                        <div class="inv-table-head">
+                            <span>Item</span>
+                            <span>Price (₱)</span>
+                            <span>Slots/Day</span>
+                            <span>Status</span>
+                        </div>
                         <div class="price-input-group">
                             <div class="price-item">
                                 <label>Quick Wash</label>
                                 <input type="number" id="wash-quick-wash" min="0" step="0.5" value="50">
+                                <input type="number" id="stock-wash-quick-wash" min="0" step="1" value="20" class="stock-input">
+                                <span class="stock-badge" id="badge-wash-quick-wash">Available</span>
                             </div>
                             <div class="price-item">
                                 <label>Deep Clean</label>
                                 <input type="number" id="wash-deep-clean" min="0" step="0.5" value="80">
+                                <input type="number" id="stock-wash-deep-clean" min="0" step="1" value="20" class="stock-input">
+                                <span class="stock-badge" id="badge-wash-deep-clean">Available</span>
                             </div>
                             <div class="price-item">
                                 <label>Premium Wash</label>
                                 <input type="number" id="wash-premium-wash" min="0" step="0.5" value="120">
+                                <input type="number" id="stock-wash-premium-wash" min="0" step="1" value="20" class="stock-input">
+                                <span class="stock-badge" id="badge-wash-premium-wash">Available</span>
                             </div>
                             <div class="price-item">
                                 <label>Eco Wash</label>
                                 <input type="number" id="wash-eco-wash" min="0" step="0.5" value="60">
+                                <input type="number" id="stock-wash-eco-wash" min="0" step="1" value="20" class="stock-input">
+                                <span class="stock-badge" id="badge-wash-eco-wash">Available</span>
                             </div>
                             <div class="price-item">
                                 <label>Cold Wash</label>
                                 <input type="number" id="wash-cold-wash" min="0" step="0.5" value="40">
+                                <input type="number" id="stock-wash-cold-wash" min="0" step="1" value="20" class="stock-input">
+                                <span class="stock-badge" id="badge-wash-cold-wash">Available</span>
                             </div>
                             <div class="price-item">
                                 <label>Hot Wash</label>
                                 <input type="number" id="wash-hot-wash" min="0" step="0.5" value="70">
+                                <input type="number" id="stock-wash-hot-wash" min="0" step="1" value="20" class="stock-input">
+                                <span class="stock-badge" id="badge-wash-hot-wash">Available</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 4 & 5: FEES -->
+            <!-- FEES -->
             <div class="fees-section">
                 <h3><i class="fa-solid fa-truck"></i> Step 4 & 5: Fees & Charges</h3>
                 <div class="fee-card">
@@ -479,7 +440,6 @@
                         <label>GCash Fee</label>
                         <input type="number" id="gcash-fee" min="0" step="1" value="5">
                     </div>
-                    
                 </div>
             </div>
 
@@ -487,7 +447,7 @@
             <div class="save-section">
                 <button class="save-pricing-btn" onclick="savePricing()">
                     <i class="fa-solid fa-save"></i>
-                    Save All Pricing (Syncs to BookNow)
+                    Save All (Pricing + Stocks)
                 </button>
                 <button class="reset-pricing-btn" onclick="resetPricing()">
                     <i class="fa-solid fa-undo"></i>
@@ -495,6 +455,7 @@
                 </button>
                 <div class="pricing-status" id="pricingStatus" style="display: none;"></div>
             </div>
+
         </div>
     </div>
 
