@@ -5,7 +5,7 @@ form.addEventListener('submit', function (e) {
 
   const formData = new FormData(form);
 
-  fetch("../PHP/login.php", {
+  fetch("http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/login.php", {
     method: "POST",
     body: formData
   })
