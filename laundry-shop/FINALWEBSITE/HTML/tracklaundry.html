@@ -5,19 +5,18 @@
   <title>Track Your Laundry</title>
   <link rel="stylesheet" href="../CSS/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- FIXED HEADER - MATCHES INDEX.HTML -->
+
+  <!-- HEADER — matches index.html -->
   <header>
     <div class="header-left">
-      <div id="Lugu">
-        <img src="../img/Logo.png" alt="Logo">
-      </div>
-      <div class="tagline">
-        <span>FAST AND FRESH LAUNDRY JUST</span>
-        <a href="../HTML/booknow.html">
-          <button>CLICK AWAY!</button>
+      <img src="../img/Logo.png" alt="M&M Laundry">
+      <div class="header-tagline">
+        <span class="header-tagline-text">FAST AND FRESH LAUNDRY JUST</span>
+        <a href="../HTML/booknow.html" style="text-decoration:none;">
+          <span class="header-tagline-pill">CLICK AWAY!</span>
         </a>
       </div>
     </div>
@@ -28,7 +27,7 @@
         <li><a href="../HTML/index.html#Service">SERVICE</a></li>
         <li><a href="../HTML/index.html#About">ABOUT US</a></li>
         <li><a href="../HTML/index.html#Contact">CONTACT US</a></li>
-        <li><a href="../HTML/account.html" class="account-btn active">ACCOUNT</a></li>
+        <li><a href="../HTML/account.html" class="account-btn">ACCOUNT</a></li>
         <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
       </ul>
     </nav>
@@ -36,39 +35,58 @@
 
   <!-- MAIN CONTENT -->
   <div class="tracklaundry-page">
+
     <div class="track-container">
-      <a href="../HTML/booknow.html" class="back-btn">
-        <i class="fas fa-arrow-left"></i> Back to Booking
-      </a>
+
+      <!-- BACK BUTTON -->
+      <button class="track-back-btn" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+
+      <!-- ICON -->
+      <div class="track-icon-wrap">
+        <i class="fas fa-tshirt"></i>
+      </div>
+
       <h2>Track Your Laundry</h2>
       <p>Enter your ticket number to check your order status.</p>
 
       <form id="trackForm">
-        <input type="text" id="ticketInput" placeholder="Enter ticket number" required>
-        <br>
-        <button type="submit">Track Order</button>
+        <div class="track-input-wrap">
+          <i class="fas fa-ticket-alt"></i>
+          <input type="text" id="ticketInput" placeholder="Enter ticket number" required>
+        </div>
+        <button type="submit" class="track-submit-btn">
+          <i class="fas fa-search"></i> Track Order
+        </button>
       </form>
 
       <div id="trackResult"></div>
+
     </div>
   </div>
 
   <!-- SCRIPTS -->
   <script src="../JS/web.js"></script>
+
   <script>
-    // TRACK LAUNDRY FUNCTIONALITY
+    document.getElementById("logoutBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      if (confirm("Are you sure you want to log out?")) {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "../HTML/login.html";
+      }
+    });
+
     const form = document.getElementById("trackForm");
     const resultBox = document.getElementById("trackResult");
 
-    // AUTO TICKET FROM URL
     const params = new URLSearchParams(window.location.search);
     const autoTicket = params.get("ticket");
-
     if (autoTicket) {
       document.getElementById("ticketInput").value = autoTicket;
     }
 
-    // TRACK FORM SUBMISSION
     form.addEventListener("submit", function(e) {
       e.preventDefault();
       const code = document.getElementById("ticketInput").value.trim();
@@ -82,17 +100,18 @@
           <div class="track-success">
             <h3><i class="fas fa-check-circle"></i> Order Found!</h3>
             <div class="track-details">
-              <p><strong>Ticket:</strong> ${match.ticket}</p>
-              <p><strong>Name:</strong> ${match.name}</p>
-              <p><strong>Address:</strong> ${match.address}</p>
-              <p><strong>Service:</strong> ${match.service}</p>
-              <p><strong>Soap:</strong> ${match.soap}</p>
-              <p><strong>Fabcon:</strong> ${match.fabcon}</p>
-              <p><strong>Payment:</strong> ${match.payment}</p>
-              <p><strong>Amount:</strong> ₱${match.amount}</p>
-              <p><strong>Status:</strong> 
+              <div class="track-row"><span class="track-label">Ticket</span><span class="track-value">${match.ticket}</span></div>
+              <div class="track-row"><span class="track-label">Name</span><span class="track-value">${match.name}</span></div>
+              <div class="track-row"><span class="track-label">Address</span><span class="track-value">${match.address}</span></div>
+              <div class="track-row"><span class="track-label">Service</span><span class="track-value">${match.service}</span></div>
+              <div class="track-row"><span class="track-label">Soap</span><span class="track-value">${match.soap}</span></div>
+              <div class="track-row"><span class="track-label">Fabcon</span><span class="track-value">${match.fabcon}</span></div>
+              <div class="track-row"><span class="track-label">Payment</span><span class="track-value">${match.payment}</span></div>
+              <div class="track-row"><span class="track-label">Amount</span><span class="track-value">₱${match.amount}</span></div>
+              <div class="track-row">
+                <span class="track-label">Status</span>
                 <span class="status-badge ${match.status.toLowerCase()}">${match.status}</span>
-              </p>
+              </div>
             </div>
           </div>
         `;
@@ -107,209 +126,321 @@
       }
     });
 
-    // AUTO TRACK IF TICKET IN URL
     if (autoTicket) {
       form.dispatchEvent(new Event("submit"));
     }
   </script>
 
   <style>
-    /* TRACK LAUNDRY PAGE SPECIFIC STYLES */
+    /* ===== TRACK LAUNDRY PAGE ===== */
     .tracklaundry-page {
       min-height: 100vh;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-      padding: 180px 20px 40px;
+      background:
+        linear-gradient(rgba(6,43,69,0.92), rgba(11,79,125,0.92)),
+        url("../img/Home-Background.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 120px 20px 60px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .track-container {
-      background: white;
-      padding: 50px 40px;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      max-width: 480px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(77,201,255,0.2);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 55px 50px 50px;
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+      max-width: 500px;
       width: 100%;
       text-align: center;
       position: relative;
     }
 
-    .track-container h2 {
-      font-size: 36px;
-      font-weight: 800;
-      color: #1e293b;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #3ba7ff, #0094ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .track-container p {
-      color: #64748b;
-      font-size: 16px;
-      margin-bottom: 35px;
-      line-height: 1.6;
-    }
-
     /* BACK BUTTON */
-    .back-btn {
+    .track-back-btn {
+      position: absolute;
+      top: 22px;
+      left: 24px;
+      background: rgba(77,201,255,0.1);
+      color: #4dc9ff;
+      border: 1px solid rgba(77,201,255,0.3);
+      padding: 9px 18px;
+      border-radius: 50px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, #0094ff, #0077cc);
-      color: white;
-      text-decoration: none;
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.25s ease;
+    }
+
+    .track-back-btn:hover {
+      background: rgba(77,201,255,0.2);
+      border-color: rgba(77,201,255,0.55);
+      color: #fff;
+      transform: translateX(-3px);
+    }
+
+    /* ICON CIRCLE */
+    .track-icon-wrap {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #00bfff, #4dc9ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto 26px;
+      box-shadow: 0 12px 30px rgba(0,191,255,0.35);
+    }
+
+    .track-icon-wrap i {
+      font-size: 28px;
+      color: #fff;
+    }
+
+    /* HEADING */
+    .track-container h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+
+    .track-container > p {
+      font-family: 'Barlow', sans-serif;
+      color: rgba(255,255,255,0.6);
       font-size: 15px;
-      box-shadow: 0 8px 25px rgba(0,148,255,0.3);
-      transition: all 0.3s ease;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* INPUT WRAPPER */
+    .track-input-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .track-input-wrap i {
       position: absolute;
-      top: -15px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4dc9ff;
+      font-size: 16px;
     }
 
-    .back-btn:hover {
-      transform: translateX(-50%) translateY(-2px);
-      box-shadow: 0 12px 35px rgba(0,148,255,0.4);
-    }
-
-    /* INPUT */
     #ticketInput {
       width: 100%;
-      padding: 20px 25px;
-      border: 2px solid #e2e8f0;
-      border-radius: 16px;
-      font-size: 16px;
-      margin-bottom: 25px;
-      font-family: 'Poppins', sans-serif;
+      padding: 17px 22px 17px 50px;
+      border: 1.5px solid rgba(77,201,255,0.25);
+      border-radius: 14px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      background: rgba(6,43,69,0.65);
+      color: #ffffff;
       transition: all 0.3s ease;
-      background: #fafbff;
+      box-sizing: border-box;
+    }
+
+    #ticketInput::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+
+    #ticketInput:hover {
+      border-color: rgba(77,201,255,0.45);
+      background: rgba(6,43,69,0.8);
     }
 
     #ticketInput:focus {
       outline: none;
-      border-color: #0094ff;
-      box-shadow: 0 0 0 4px rgba(0,148,255,0.1);
-      transform: translateY(-2px);
+      border-color: #4dc9ff;
+      background: rgba(6,43,69,0.9);
+      box-shadow: 0 0 0 4px rgba(77,201,255,0.12);
     }
 
-    /* BUTTON */
-    button[type="submit"] {
-      background: linear-gradient(135deg, #3ba7ff, #0094ff);
-      color: white;
-      border: none;
-      padding: 18px 40px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(59,167,255,0.3);
+    /* SUBMIT BUTTON */
+    .track-submit-btn {
       width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #00bfff, #4dc9ff);
+      color: #fff;
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.07em;
+      box-shadow: 0 10px 28px rgba(0,191,255,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    button[type="submit"]:hover {
+    .track-submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.45s;
+    }
+
+    .track-submit-btn:hover::before { left: 100%; }
+
+    .track-submit-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(59,167,255,0.4);
+      box-shadow: 0 18px 40px rgba(0,191,255,0.45);
     }
 
-    /* RESULT STYLES */
+    /* RESULT BOX */
     #trackResult {
-      margin-top: 30px;
+      margin-top: 28px;
       display: none;
     }
 
-    .track-success,
-    .track-error {
-      padding: 30px;
-      border-radius: 20px;
-      text-align: left;
-    }
-
+    /* SUCCESS RESULT */
     .track-success {
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      border: 2px solid #bbf7d0;
+      background: rgba(6,43,69,0.7);
+      border: 1px solid rgba(77,201,255,0.3);
+      border-radius: 18px;
+      padding: 28px 30px;
+      text-align: left;
+      backdrop-filter: blur(10px);
     }
 
-    .track-error {
-      background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
-      border: 2px solid #fca5a5;
-      color: #dc2626;
-    }
-
-    .track-success h3,
-    .track-error h3 {
-      color: #166534;
-      margin-bottom: 20px;
+    .track-success h3 {
+      font-family: 'Barlow Condensed', sans-serif;
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 900;
+      color: #4dc9ff;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-
-    .track-error h3 {
-      color: #dc2626;
-    }
-
-    .track-error i {
-      color: #f87171;
-      font-size: 24px;
-    }
-
-    .track-details p {
-      margin-bottom: 12px;
-      font-size: 15px;
-      color: #374151;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .status-badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
       text-transform: uppercase;
     }
 
+    .track-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .track-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(77,201,255,0.1);
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .track-row:last-child { border-bottom: none; }
+
+    .track-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .track-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      text-align: right;
+      max-width: 60%;
+    }
+
+    /* ERROR RESULT */
+    .track-error {
+      background: rgba(220,38,38,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 18px;
+      padding: 32px 28px;
+      text-align: center;
+    }
+
+    .track-error > i {
+      font-size: 36px;
+      color: #f87171;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .track-error h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #fca5a5;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .track-error p {
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      color: rgba(252,165,165,0.75);
+      margin: 0;
+    }
+
+    /* STATUS BADGES */
+    .status-badge {
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
     .status-badge.pending {
-      background: #fef3c7;
-      color: #d97706;
+      background: rgba(251,191,36,0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(251,191,36,0.3);
     }
 
     .status-badge.processing {
-      background: #dbeafe;
-      color: #1e40af;
+      background: rgba(77,201,255,0.15);
+      color: #4dc9ff;
+      border: 1px solid rgba(77,201,255,0.3);
     }
 
     .status-badge.completed {
-      background: #d1fae5;
-      color: #059669;
+      background: rgba(52,211,153,0.15);
+      color: #34d399;
+      border: 1px solid rgba(52,211,153,0.3);
     }
 
     /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .tracklaundry-page {
-        padding: 160px 15px 30px;
-      }
-      
-      .track-container {
-        padding: 40px 30px;
-        margin: 0 10px;
-      }
-      
-      .track-container h2 {
-        font-size: 28px;
-      }
+    @media (max-width: 560px) {
+      .tracklaundry-page { padding: 100px 16px 40px; }
+      .track-container { padding: 50px 24px 36px; }
+      .track-container h2 { font-size: 34px; }
     }
   </style>
+
 </body>
 </html>
