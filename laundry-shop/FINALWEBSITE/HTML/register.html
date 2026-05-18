@@ -1,114 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Create Account | M &amp; M Laundry</title>
+  <link rel="icon" type="../img/Logo.png" href="../img/Logo.png">
   <link rel="stylesheet" href="../CSS/register.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <!-- LEFT PANEL -->
-  <div class="left-panel">
-    <div class="left-logo-wrap">
-      <img src="../img/Logo.png" alt="M&M Laundry Logo">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="left-logo-wrap">
+        <img src="../img/Logo.png" alt="M&M Laundry Logo">
+      </div>
+      <h2>Join M&amp;M Laundry</h2>
+      <p>Create your account and enjoy fast, fresh &amp; hassle-free laundry services.</p>
     </div>
-    <h2>Join M&amp;M Laundry</h2>
-    <p>Create your account and enjoy fast, fresh &amp; hassle-free laundry services.</p>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <form id="registerForm" method="POST">
+
+        <div class="form-eyebrow">M &amp; M Laundry Shop</div>
+        <h2>Create your<br>account</h2>
+
+        <!-- Full Name -->
+        <div class="input-group">
+          <label class="input-label" for="fullname">Full Name</label>
+          <div class="input-wrap">
+            <i class="fas fa-user field-icon"></i>
+            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+          <label class="input-label" for="email">Email Address</label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope field-icon"></i>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="input-group">
+          <label class="input-label" for="username">Username</label>
+          <div class="input-wrap">
+            <i class="fas fa-at field-icon"></i>
+            <input type="text" id="username" name="username" placeholder="Choose a username" required>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+          <label class="input-label" for="password">Password</label>
+          <div class="input-wrap has-toggle">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
+            <button type="button" class="toggle-pw" id="togglePw" title="Show/hide password">
+              <i class="fas fa-eye" id="togglePwIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="input-group">
+          <label class="input-label" for="confirmPassword">Confirm Password</label>
+          <div class="input-wrap has-toggle">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password"
+              required>
+            <button type="button" class="toggle-pw" id="toggleConfirmPw" title="Show/hide password">
+              <i class="fas fa-eye" id="toggleConfirmPwIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="register-btn">
+          <i class="fas fa-user-plus" style="margin-right:8px;"></i> Create Account
+        </button>
+
+        <p class="login-link">
+          Already have an account? <a href="../HTML/login.html">Sign in here</a>
+        </p>
+
+      </form>
+    </div>
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="right-panel">
-    <form id="registerForm" method="POST">
+  <script>
+    function togglePassword(btnId, iconId, inputId) {
+      document.getElementById(btnId).addEventListener('click', function (e) {
+        e.preventDefault();
+        const pw = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (pw.type === 'password') {
+          pw.type = 'text';
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          pw.type = 'password';
+          icon.className = 'fas fa-eye';
+        }
+      });
+    }
 
-      <div class="form-eyebrow">M &amp; M Laundry Shop</div>
-      <h2>Create your<br>account</h2>
-
-      <!-- Full Name -->
-      <div class="input-group">
-        <label class="input-label" for="fullname">Full Name</label>
-        <div class="input-wrap">
-          <i class="fas fa-user field-icon"></i>
-          <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
-        </div>
-      </div>
-
-      <!-- Email -->
-      <div class="input-group">
-        <label class="input-label" for="email">Email Address</label>
-        <div class="input-wrap">
-          <i class="fas fa-envelope field-icon"></i>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required>
-        </div>
-      </div>
-
-      <!-- Username -->
-      <div class="input-group">
-        <label class="input-label" for="username">Username</label>
-        <div class="input-wrap">
-          <i class="fas fa-at field-icon"></i>
-          <input type="text" id="username" name="username" placeholder="Choose a username" required>
-        </div>
-      </div>
-
-      <!-- Password -->
-      <div class="input-group">
-        <label class="input-label" for="password">Password</label>
-        <div class="input-wrap has-toggle">
-          <i class="fas fa-lock field-icon"></i>
-          <input type="password" id="password" name="password" placeholder="Create a password" required>
-          <button type="button" class="toggle-pw" id="togglePw" title="Show/hide password">
-            <i class="fas fa-eye" id="togglePwIcon"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="input-group">
-        <label class="input-label" for="confirmPassword">Confirm Password</label>
-        <div class="input-wrap has-toggle">
-          <i class="fas fa-lock field-icon"></i>
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" required>
-          <button type="button" class="toggle-pw" id="toggleConfirmPw" title="Show/hide password">
-            <i class="fas fa-eye" id="toggleConfirmPwIcon"></i>
-          </button>
-        </div>
-      </div>
-
-      <button type="submit" class="register-btn">
-        <i class="fas fa-user-plus" style="margin-right:8px;"></i> Create Account
-      </button>
-
-      <p class="login-link">
-        Already have an account? <a href="../HTML/login.html">Sign in here</a>
-      </p>
-
-    </form>
-  </div>
-</div>
-
-<script>
-  function togglePassword(btnId, iconId, inputId) {
-    document.getElementById(btnId).addEventListener('click', function (e) {
-      e.preventDefault();
-      const pw = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (pw.type === 'password') {
-        pw.type = 'text';
-        icon.className = 'fas fa-eye-slash';
-      } else {
-        pw.type = 'password';
-        icon.className = 'fas fa-eye';
-      }
-    });
-  }
-
-  togglePassword('togglePw', 'togglePwIcon', 'password');
-  togglePassword('toggleConfirmPw', 'toggleConfirmPwIcon', 'confirmPassword');
-</script>
-<script src="../JS/register.js"></script>
+    togglePassword('togglePw', 'togglePwIcon', 'password');
+    togglePassword('toggleConfirmPw', 'toggleConfirmPwIcon', 'confirmPassword');
+  </script>
+  <script src="../JS/register.js"></script>
 </body>
+
 </html>
