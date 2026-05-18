@@ -4,7 +4,7 @@ const completedOrdersTable = document.querySelector("#completedOrdersBody");
 let orders = [];
 
 // ══════════════════════════════════════════════════════
-// COMPLETE LOCK: order must have been set to "Ready" first
+// COMPLETE LOCK
 // ══════════════════════════════════════════════════════
 function canComplete(order) {
     return order.wasReady === true;
@@ -16,7 +16,13 @@ function canComplete(order) {
 let activeStatusFilter = 'All';
 
 // ══════════════════════════════════════════════════════
-// LOAD ORDERS  +  LIVE POLLING (every 5 seconds)
+// COMPLETED ORDERS PAGINATION STATE
+// ══════════════════════════════════════════════════════
+let completedPage        = 1;
+const COMPLETED_PER_PAGE = 10;
+
+// ══════════════════════════════════════════════════════
+// LOAD ORDERS + LIVE POLLING
 // ══════════════════════════════════════════════════════
 function loadOrders() {
     fetch("http://localhost:3000/laundry-shop/FINALWEBSITE/PHP/orders.php")
@@ -53,11 +59,11 @@ loadOrders();
 setInterval(loadOrders, 5000);
 
 // ══════════════════════════════════════════════════════
-// STATUS FILTER BUTTONS (inject into DOM after load)
+// STATUS FILTER BAR
 // ══════════════════════════════════════════════════════
 function renderStatusFilterBar() {
     const existing = document.getElementById('statusFilterBar');
-    if (existing) return; // already injected
+    if (existing) return;
 
     const liveSection = document.querySelector('#orders .table-section');
     if (!liveSection) return;
@@ -66,11 +72,11 @@ function renderStatusFilterBar() {
     const bar = document.createElement('div');
     bar.id = 'statusFilterBar';
     bar.style.cssText = `
-        display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-        margin-bottom: 18px; padding: 14px 18px;
-        background: #fff; border-radius: 14px;
-        border: 1.5px solid rgba(0,100,200,0.12);
-        box-shadow: 0 2px 10px rgba(0,50,120,0.06);
+        display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+        margin-bottom:18px;padding:14px 18px;
+        background:#fff;border-radius:14px;
+        border:1.5px solid rgba(0,100,200,0.12);
+        box-shadow:0 2px 10px rgba(0,50,120,0.06);
     `;
 
     const label = document.createElement('span');
@@ -124,7 +130,6 @@ function getFilterBtnStyle(status, active) {
 function renderOrders() {
     if (!ordersTable || !completedOrdersTable) return;
 
-    // Inject filter bar first time
     renderStatusFilterBar();
 
     ordersTable.innerHTML          = "";
@@ -144,62 +149,38 @@ function renderOrders() {
 
     updateRevenueSummaryCards();
 
-    let hasLive = false, hasCompleted = false;
+    let hasLive = false;
 
     orders.forEach((o, i) => {
-        const tr     = document.createElement("tr");
-        const pickup = o.pickupType || o.delivery || "Store Pickup";
+        if (o.status === "Completed") return;
 
-        // ── COMPLETED TABLE ──
-        if (o.status === "Completed") {
-            hasCompleted = true;
-            tr.innerHTML = `
-                <td>${o.ticket  || ""}</td>
-                <td>${o.name    || ""}</td>
-                <td>${o.contact || "N/A"}</td>
-                <td>${o.service || ""}</td>
-                <td>₱${Number(o.amount || 0).toLocaleString()}</td>
-                <td><span class="status completed">Completed</span></td>
-                <td>${pickup}</td>
-                <td>
-                    <button class="action-btn delete-btn" onclick="deleteCompletedOrder(${i})">
-                        <i class="fa-solid fa-trash"></i> Delete
-                    </button>
-                </td>
-            `;
-            completedOrdersTable.appendChild(tr);
+        const currentStatus = o.status || "Pending";
+        if (activeStatusFilter !== 'All' && currentStatus !== activeStatusFilter) return;
 
-        // ── LIVE TABLE (apply status filter) ──
-        } else {
-            const currentStatus = o.status || "Pending";
-            // Apply filter
-            if (activeStatusFilter !== 'All' && currentStatus !== activeStatusFilter) return;
+        hasLive = true;
+        const tr          = document.createElement("tr");
+        const pickup      = o.pickupType || o.delivery || "Store Pickup";
+        const statusClass = currentStatus.toLowerCase().replace(/\s+/g, "");
+        const completeLocked = canComplete(o) ? "" : "disabled";
 
-            hasLive = true;
-            const statusClass   = currentStatus.toLowerCase().replace(/\s+/g, "");
-            const completeLocked = canComplete(o) ? "" : "disabled";
-
-            tr.innerHTML = `
-                <td>
-                    <input type="checkbox" class="select-checkbox order-checkbox" data-index="${i}">
-                </td>
-                <td>${o.ticket  || ""}</td>
-                <td>${o.name    || ""}</td>
-                <td>${o.contact || "N/A"}</td>
-                <td>${o.service || ""}</td>
-                <td>₱${Number(o.amount || 0).toLocaleString()}</td>
-                <td><span class="status ${statusClass}">${currentStatus}</span></td>
-                <td>${pickup}</td>
-                <td>
-                    <button class="action-btn received-btn"  onclick="updateStatus(${i},'Received')">Received</button>
-                    <button class="action-btn progress-btn"  onclick="updateStatus(${i},'In Progress')">In Progress</button>
-                    <button class="action-btn ready-btn"     onclick="updateStatus(${i},'Ready')">Ready</button>
-                    <button class="action-btn complete-btn"  onclick="updateStatus(${i},'Completed')" ${completeLocked}>Complete</button>
-                    <button class="action-btn delete-btn"    onclick="deleteOrder(${i})">Delete</button>
-                </td>
-            `;
-            ordersTable.appendChild(tr);
-        }
+        tr.innerHTML = `
+            <td><input type="checkbox" class="select-checkbox order-checkbox" data-index="${i}"></td>
+            <td>${o.ticket  || ""}</td>
+            <td>${o.name    || ""}</td>
+            <td>${o.contact || "N/A"}</td>
+            <td>${o.service || ""}</td>
+            <td>₱${Number(o.amount || 0).toLocaleString()}</td>
+            <td><span class="status ${statusClass}">${currentStatus}</span></td>
+            <td>${pickup}</td>
+            <td>
+                <button class="action-btn received-btn"  onclick="updateStatus(${i},'Received')">Received</button>
+                <button class="action-btn progress-btn"  onclick="updateStatus(${i},'In Progress')">In Progress</button>
+                <button class="action-btn ready-btn"     onclick="updateStatus(${i},'Ready')">Ready</button>
+                <button class="action-btn complete-btn"  onclick="updateStatus(${i},'Completed')" ${completeLocked}>Complete</button>
+                <button class="action-btn delete-btn"    onclick="deleteOrder(${i})">Delete</button>
+            </td>
+        `;
+        ordersTable.appendChild(tr);
     });
 
     if (!hasLive) {
@@ -209,16 +190,130 @@ function renderOrders() {
         ordersTable.innerHTML = `
             <tr><td colspan="9" style="text-align:center;padding:30px;color:#64748b;">${msg}</td></tr>`;
     }
-    if (!hasCompleted) {
-        completedOrdersTable.innerHTML = `
-            <tr><td colspan="8" style="text-align:center;padding:30px;color:#64748b;">No completed orders</td></tr>`;
-    }
 
+    renderCompletedOrders();
     localStorage.setItem("orders", JSON.stringify(orders));
     setupSelectAll();
-
-    // Also refresh gcash payments list if that tab exists
     renderGcashPayments();
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER COMPLETED ORDERS (paginated + alphabetical)
+// ══════════════════════════════════════════════════════
+function renderCompletedOrders() {
+    if (!completedOrdersTable) return;
+    completedOrdersTable.innerHTML = "";
+
+    const completedOrders = orders
+        .map((o, i) => ({ ...o, _realIdx: i }))
+        .filter(o => o.status === "Completed")
+        .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+    const totalPages = Math.max(1, Math.ceil(completedOrders.length / COMPLETED_PER_PAGE));
+    if (completedPage > totalPages) completedPage = totalPages;
+    if (completedPage < 1) completedPage = 1;
+
+    const start     = (completedPage - 1) * COMPLETED_PER_PAGE;
+    const pageItems = completedOrders.slice(start, start + COMPLETED_PER_PAGE);
+
+    if (!completedOrders.length) {
+        completedOrdersTable.innerHTML = `
+            <tr><td colspan="8" style="text-align:center;padding:30px;color:#64748b;">No completed orders</td></tr>`;
+        removePagination();
+        return;
+    }
+
+    pageItems.forEach(o => {
+        const tr     = document.createElement("tr");
+        const pickup = o.pickupType || o.delivery || "Store Pickup";
+        tr.innerHTML = `
+            <td>${o.ticket  || ""}</td>
+            <td>${o.name    || ""}</td>
+            <td>${o.contact || "N/A"}</td>
+            <td>${o.service || ""}</td>
+            <td>₱${Number(o.amount || 0).toLocaleString()}</td>
+            <td><span class="status completed">Completed</span></td>
+            <td>${pickup}</td>
+            <td>
+                <button class="action-btn delete-btn icon-only-btn" title="Delete order" onclick="deleteCompletedOrder(${o._realIdx})">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+        `;
+        completedOrdersTable.appendChild(tr);
+    });
+
+    renderPagination(completedPage, totalPages, completedOrders.length);
+}
+
+// ══════════════════════════════════════════════════════
+// PAGINATION CONTROLS
+// ══════════════════════════════════════════════════════
+function renderPagination(current, total, totalItems) {
+    removePagination();
+
+    const sections = document.querySelectorAll('#orders .table-section');
+    const completedSection = sections[sections.length - 1];
+    if (!completedSection) return;
+
+    // ── wrapper ──
+    const wrap = document.createElement('div');
+    wrap.id = 'completedPagination';
+    wrap.className = 'pagination-wrap';
+
+    // ── info label ──
+    const info = document.createElement('span');
+    info.className = 'pagination-info';
+    const start = (current - 1) * COMPLETED_PER_PAGE + 1;
+    const end   = Math.min(current * COMPLETED_PER_PAGE, totalItems);
+    info.innerHTML = `<i class="fa-solid fa-list-check"></i> Showing ${start}–${end} of ${totalItems} completed orders`;
+
+    // ── controls row ──
+    const controls = document.createElement('div');
+    controls.className = 'pagination-controls';
+
+    // Prev button
+    const prev = document.createElement('button');
+    prev.className = current === 1 ? 'page-btn page-btn-disabled' : 'page-btn';
+    prev.disabled  = current === 1;
+    prev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+    prev.onclick   = () => { if (current > 1) { completedPage--; renderCompletedOrders(); } };
+
+    // Page number buttons
+    const pages = document.createElement('div');
+    pages.className = 'page-numbers';
+
+    let startPage = Math.max(1, current - 2);
+    let endPage   = Math.min(total, startPage + 4);
+    if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+
+    for (let p = startPage; p <= endPage; p++) {
+        const btn = document.createElement('button');
+        btn.className = p === current ? 'page-btn page-btn-active' : 'page-btn';
+        btn.textContent = p;
+        btn.onclick = ((_p) => () => { completedPage = _p; renderCompletedOrders(); })(p);
+        pages.appendChild(btn);
+    }
+
+    // Next button
+    const next = document.createElement('button');
+    next.className = current === total ? 'page-btn page-btn-disabled' : 'page-btn';
+    next.disabled  = current === total;
+    next.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+    next.onclick   = () => { if (current < total) { completedPage++; renderCompletedOrders(); } };
+
+    controls.appendChild(prev);
+    controls.appendChild(pages);
+    controls.appendChild(next);
+
+    wrap.appendChild(info);
+    wrap.appendChild(controls);
+    completedSection.appendChild(wrap);
+}
+
+function removePagination() {
+    const old = document.getElementById('completedPagination');
+    if (old) old.remove();
 }
 
 // ══════════════════════════════════════════════════════
@@ -228,22 +323,18 @@ function updateStatus(i, status) {
     const order = orders[i];
     if (!order) return;
 
-    if (status === "Ready") {
-        order.wasReady = true;
-    }
-
-    if (status === "Completed" && !canComplete(order)) {
-        return;
-    }
+    if (status === "Ready") order.wasReady = true;
+    if (status === "Completed" && !canComplete(order)) return;
 
     order.status = status;
 
     if (status === "Completed") {
-        const now         = new Date();
+        const now           = new Date();
         order.completedDate = now.toISOString();
         order.month         = now.getMonth();
         order.year          = now.getFullYear();
         order.day           = now.toDateString();
+        completedPage       = 1;
     }
 
     localStorage.setItem("orders", JSON.stringify(orders));
@@ -277,6 +368,11 @@ function deleteCompletedOrder(i) {
 
     orders.splice(i, 1);
     localStorage.setItem("orders", JSON.stringify(orders));
+
+    const remaining  = orders.filter(o => o.status === "Completed").length;
+    const totalPages = Math.max(1, Math.ceil(remaining / COMPLETED_PER_PAGE));
+    if (completedPage > totalPages) completedPage = totalPages;
+
     renderOrders();
     renderRevenueChart();
 }
@@ -320,9 +416,9 @@ function switchTab(tabId) {
     const tab = document.getElementById(tabId);
     if (btn) btn.classList.add("active");
     if (tab) tab.classList.add("active-tab");
-    if (tabId === "settings")  loadSavedPricing();
-    if (tabId === "revenue")   setTimeout(() => renderRevenueChart(), 80);
-    if (tabId === "payments")  renderPaymentsTab();
+    if (tabId === "settings") loadSavedPricing();
+    if (tabId === "revenue")  setTimeout(() => renderRevenueChart(), 80);
+    if (tabId === "payments") renderPaymentsTab();
 }
 
 menuButtons.forEach(btn =>
@@ -350,24 +446,19 @@ if (searchInput) {
 }
 
 // ══════════════════════════════════════════════════════
-// GCASH PAYMENTS SECTION (legacy helper — still called by renderOrders)
+// GCASH PAYMENTS SECTION
 // ══════════════════════════════════════════════════════
 function renderGcashPayments() {
-    // This function is kept for backward compatibility.
-    // The full payments tab is handled by renderPaymentsTab() below.
-    // If the payments tab is currently active, re-render it.
     const payTab = document.getElementById('payments');
     if (payTab && payTab.classList.contains('active-tab')) {
         renderPaymentsTab();
     }
 }
 
-// ── Proof of Payment Viewer Modal (legacy, kept for Orders tab) ──
 function viewProof(orderIndex) {
     const o = orders[orderIndex];
     if (!o || !o.gcash || !o.gcash.proofImage) return;
 
-    // Create or reuse modal
     let modal = document.getElementById('proofModal');
     if (!modal) {
         modal = document.createElement('div');
@@ -388,24 +479,8 @@ function viewProof(orderIndex) {
                 style="position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;
                        background:#f0f6ff;border:none;cursor:pointer;font-size:18px;color:#0077cc;
                        font-weight:900;display:flex;align-items:center;justify-content:center;">&#10005;</button>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;
-                        color:#0077cc;text-transform:uppercase;margin-bottom:4px;">Proof of Payment</div>
-            <div style="font-size:13px;color:#64748b;margin-bottom:16px;">
-                Ticket #${o.ticket} &mdash; ${o.name}
-            </div>
-            <div style="background:#f0f6ff;border-radius:12px;padding:12px;margin-bottom:14px;">
-                <div style="font-size:11px;font-weight:800;color:#0077cc;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">GCash Details</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                    <div><div style="font-size:10px;color:#94a3b8;font-weight:700;">SENDER NAME</div>
-                         <div style="font-size:14px;font-weight:700;">${o.gcash.senderName || '—'}</div></div>
-                    <div><div style="font-size:10px;color:#94a3b8;font-weight:700;">SENDER NUMBER</div>
-                         <div style="font-size:14px;font-weight:700;">${o.gcash.senderNumber || '—'}</div></div>
-                    <div style="grid-column:1/-1;">
-                         <div style="font-size:10px;color:#94a3b8;font-weight:700;">REFERENCE NUMBER</div>
-                         <div style="font-size:15px;font-weight:800;font-family:monospace;letter-spacing:0.08em;color:#0d1b2e;">${o.gcash.refNumber || '—'}</div>
-                    </div>
-                </div>
-            </div>
+            <div style="font-size:22px;font-weight:900;color:#0077cc;text-transform:uppercase;margin-bottom:4px;">Proof of Payment</div>
+            <div style="font-size:13px;color:#64748b;margin-bottom:16px;">Ticket #${o.ticket} &mdash; ${o.name}</div>
             <img src="${o.gcash.proofImage}" alt="Proof of Payment"
                  style="width:100%;border-radius:12px;border:1.5px solid rgba(0,119,204,0.2);
                         max-height:380px;object-fit:contain;background:#f5f8ff;">
@@ -488,7 +563,6 @@ function renderRevenueChart() {
                 .filter(o => (o.completedDate ? new Date(o.completedDate).toDateString() : o.day || "") === dayStr)
                 .reduce((s, o) => s + Number(o.amount || 0), 0));
         }
-
     } else if (currentRevenuePeriod === "monthly") {
         label = `Monthly Revenue (${now.getFullYear()})`;
         borderColor = "#7c3aed"; bgColor = "rgba(124,58,237,0.1)";
@@ -500,7 +574,6 @@ function renderRevenueChart() {
             const y = d ? d.getFullYear() : (o.year  ?? now.getFullYear());
             if (y === now.getFullYear()) data[m] += Number(o.amount || 0);
         });
-
     } else if (currentRevenuePeriod === "yearly") {
         label = "Yearly Revenue";
         borderColor = "#10b981"; bgColor = "rgba(16,185,129,0.1)";
@@ -686,39 +759,20 @@ document.addEventListener("click", e => {
     }
 });
 
-// LOGOUT BUTTON FUNCTIONALITY
+// LOGOUT
 const logoutBtn = document.querySelector(".logout-btn");
-
 if (logoutBtn) {
     logoutBtn.addEventListener("click", function () {
-        const confirmLogout = confirm("Are you sure you want to logout?");
-        if (!confirmLogout) return;
-
-        // Optional: clear saved session data
+        if (!confirm("Are you sure you want to logout?")) return;
         localStorage.removeItem("loggedInUser");
         sessionStorage.clear();
-
-        // Redirect to login page
         window.location.href = "../HTML/login.html";
-        // Kung nasa ibang folder ang login page, palitan ito ng tamang path.
-        // Halimbawa:
-        // window.location.href = "../HTML/login.html";
     });
 }
 
-
-// ══════════════════════════════════════════════════════════════════════════════
-// ██████╗  █████╗ ██╗   ██╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗
-// ██╔══██╗██╔══██╗╚██╗ ██╔╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
-// ██████╔╝███████║ ╚████╔╝ ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   ███████╗
-// ██╔═══╝ ██╔══██║  ╚██╔╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   ╚════██║
-// ██║     ██║  ██║   ██║   ██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   ███████║
-// ╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
-//  TAB — NEW LOGIC (everything below is purely additive)
-// ══════════════════════════════════════════════════════════════════════════════
-
-// ── Payment status stored separately so it doesn't mutate the order itself ──
-// Format: { [ticket]: 'Pending' | 'Verified' | 'Rejected' }
+// ══════════════════════════════════════════════════════
+// PAYMENTS TAB
+// ══════════════════════════════════════════════════════
 function getPaymentStatuses() {
     try { return JSON.parse(localStorage.getItem('gcashPaymentStatuses')) || {}; }
     catch(e) { return {}; }
@@ -727,7 +781,6 @@ function savePaymentStatuses(obj) {
     localStorage.setItem('gcashPaymentStatuses', JSON.stringify(obj));
 }
 
-// ── Active filter for payments tab ──
 let activePayFilter = 'All';
 
 function setPayFilter(filter) {
@@ -738,16 +791,13 @@ function setPayFilter(filter) {
     renderPaymentsTab();
 }
 
-// ── Main render function for the Payments tab ──
 function renderPaymentsTab() {
     const tbody = document.getElementById('paymentsBody');
     if (!tbody) return;
 
-    // Pull all GCash orders from the shared `orders` array (already loaded)
-    const statuses   = getPaymentStatuses();
+    const statuses    = getPaymentStatuses();
     const gcashOrders = orders.filter(o => o.payment === 'GCash' && o.gcash);
 
-    // Summary counts
     const total    = gcashOrders.length;
     const verified = gcashOrders.filter(o => (statuses[o.ticket] || 'Pending') === 'Verified').length;
     const pending  = gcashOrders.filter(o => (statuses[o.ticket] || 'Pending') === 'Pending').length;
@@ -759,7 +809,6 @@ function renderPaymentsTab() {
     if (el('pay-pending'))  el('pay-pending').innerText  = pending;
     if (el('pay-amount'))   el('pay-amount').innerText   = `₱${totalAmt.toLocaleString()}`;
 
-    // Apply filter
     const filtered = activePayFilter === 'All'
         ? gcashOrders
         : gcashOrders.filter(o => (statuses[o.ticket] || 'Pending') === activePayFilter);
@@ -782,9 +831,7 @@ function renderPaymentsTab() {
         const badgeClass  = payStatus.toLowerCase();
         const orderStatus = o.status || 'Pending';
         const hasProof    = !!g.proofImage;
-
-        // Find real index in `orders` array for actions
-        const realIdx = orders.indexOf(o);
+        const realIdx     = orders.indexOf(o);
 
         return `
             <tr>
@@ -793,54 +840,27 @@ function renderPaymentsTab() {
                     <div style="font-weight:700;font-size:13.5px;">${o.name || '—'}</div>
                     <div style="font-size:11px;color:#64748b;">${o.address || ''}</div>
                 </td>
-                <td>
-                    <div style="font-weight:700;">${g.senderName || '—'}</div>
-                </td>
-                <td>
-                    <div style="font-weight:700;font-family:monospace;">${g.senderNumber || '—'}</div>
-                </td>
-                <td>
-                    <div style="font-weight:800;font-family:monospace;letter-spacing:0.06em;color:#0d1b2e;">
-                        ${g.refNumber || '—'}
-                    </div>
-                </td>
-                <td>
-                    <strong style="font-size:15px;color:#0077cc;">₱${Number(o.amount || 0).toLocaleString()}</strong>
-                </td>
+                <td><div style="font-weight:700;">${g.senderName || '—'}</div></td>
+                <td><div style="font-weight:700;font-family:monospace;">${g.senderNumber || '—'}</div></td>
+                <td><div style="font-weight:800;font-family:monospace;letter-spacing:0.06em;color:#0d1b2e;">${g.refNumber || '—'}</div></td>
+                <td><strong style="font-size:15px;color:#0077cc;">₱${Number(o.amount || 0).toLocaleString()}</strong></td>
                 <td>
                     ${hasProof
-                        ? `<img class="pay-proof-thumb"
-                                src="${g.proofImage}"
-                                alt="Proof"
-                                title="Click to view full proof"
-                                onclick="openPayModal(${realIdx})">`
+                        ? `<img class="pay-proof-thumb" src="${g.proofImage}" alt="Proof" title="Click to view full proof" onclick="openPayModal(${realIdx})">`
                         : `<span class="pay-no-proof">No screenshot</span>`}
                 </td>
-                <td>
-                    <span class="status ${orderStatus.toLowerCase().replace(/\s+/g,'')}">${orderStatus}</span>
-                </td>
-                <td>
-                    <span class="pay-badge ${badgeClass}">${payStatus}</span>
-                </td>
+                <td><span class="status ${orderStatus.toLowerCase().replace(/\s+/g,'')}">${orderStatus}</span></td>
+                <td><span class="pay-badge ${badgeClass}">${payStatus}</span></td>
                 <td>
                     <div class="pay-action-row">
-                        ${hasProof
-                            ? `<button class="pay-btn verify" onclick="openPayModal(${realIdx})">
-                                   <i class="fa-solid fa-eye"></i> View
-                               </button>`
-                            : ''}
-                        <button class="pay-btn verify"
-                            onclick="setPaymentStatus('${o.ticket}', 'Verified')"
-                            ${payStatus === 'Verified' ? 'disabled style="opacity:0.45;cursor:default;"' : ''}>
+                        ${hasProof ? `<button class="pay-btn verify" onclick="openPayModal(${realIdx})"><i class="fa-solid fa-eye"></i> View</button>` : ''}
+                        <button class="pay-btn verify" onclick="setPaymentStatus('${o.ticket}', 'Verified')" ${payStatus === 'Verified' ? 'disabled style="opacity:0.45;cursor:default;"' : ''}>
                             <i class="fa-solid fa-check"></i> Verify
                         </button>
-                        <button class="pay-btn reject"
-                            onclick="setPaymentStatus('${o.ticket}', 'Rejected')"
-                            ${payStatus === 'Rejected' ? 'disabled style="opacity:0.45;cursor:default;"' : ''}>
+                        <button class="pay-btn reject" onclick="setPaymentStatus('${o.ticket}', 'Rejected')" ${payStatus === 'Rejected' ? 'disabled style="opacity:0.45;cursor:default;"' : ''}>
                             <i class="fa-solid fa-xmark"></i> Reject
                         </button>
-                        <button class="pay-btn delete"
-                            onclick="deletePaymentRecord('${o.ticket}')">
+                        <button class="pay-btn delete" onclick="deletePaymentRecord('${o.ticket}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -849,7 +869,6 @@ function renderPaymentsTab() {
     }).join('');
 }
 
-// ── Set payment verification status ──
 function setPaymentStatus(ticket, status) {
     const statuses = getPaymentStatuses();
     statuses[ticket] = status;
@@ -857,13 +876,11 @@ function setPaymentStatus(ticket, status) {
     renderPaymentsTab();
 }
 
-// ── Delete a GCash payment record (removes gcash data from order, keeps order itself) ──
 function deletePaymentRecord(ticket) {
     if (!confirm(`Remove GCash payment record for ticket #${ticket}?\n\nThe order itself will remain but the payment details will be cleared.`)) return;
     const idx = orders.findIndex(o => o.ticket === ticket);
     if (idx !== -1) {
         delete orders[idx].gcash;
-        // Also clear payment status
         const statuses = getPaymentStatuses();
         delete statuses[ticket];
         savePaymentStatuses(statuses);
@@ -872,7 +889,6 @@ function deletePaymentRecord(ticket) {
     renderPaymentsTab();
 }
 
-// ── Open full proof viewer modal ──
 function openPayModal(orderIndex) {
     const o = orders[orderIndex];
     if (!o) return;
@@ -883,7 +899,6 @@ function openPayModal(orderIndex) {
     const modal = document.getElementById('payProofModal');
     if (!modal) return;
 
-    // Populate
     document.getElementById('payModalSub').textContent =
         `Ticket #${o.ticket || '—'} — ${o.name || '—'}`;
 
@@ -904,9 +919,7 @@ function openPayModal(orderIndex) {
         </div>
         <div class="pay-modal-field">
             <label>Amount Sent</label>
-            <span style="color:#0077cc;font-size:18px;font-weight:800;">
-                ₱${Number(o.amount || 0).toLocaleString()}
-            </span>
+            <span style="color:#0077cc;font-size:18px;font-weight:800;">₱${Number(o.amount || 0).toLocaleString()}</span>
         </div>
         <div class="pay-modal-field">
             <label>Payment Status</label>
@@ -929,12 +942,12 @@ function openPayModal(orderIndex) {
     const img   = document.getElementById('payModalImg');
     const fname = document.getElementById('payModalFname');
     if (g.proofImage) {
-        img.src          = g.proofImage;
+        img.src           = g.proofImage;
         img.style.display = 'block';
         fname.textContent = g.proofFileName || '';
     } else {
-        img.style.display  = 'none';
-        fname.textContent  = 'No proof of payment uploaded.';
+        img.style.display = 'none';
+        fname.textContent = 'No proof of payment uploaded.';
     }
 
     modal.classList.add('open');
@@ -945,13 +958,11 @@ function closePayModal() {
     if (modal) modal.classList.remove('open');
 }
 
-// Close modal on overlay click
 document.addEventListener('click', e => {
     const modal = document.getElementById('payProofModal');
     if (modal && e.target === modal) closePayModal();
 });
 
-// ── Auto-refresh Payments tab every 5 s (same cadence as orders polling) ──
 setInterval(() => {
     const payTab = document.getElementById('payments');
     if (payTab && payTab.classList.contains('active-tab')) {

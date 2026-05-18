@@ -327,24 +327,29 @@ tbody tr:hover {
     transform: translateY(-1px);
 }
 
-.received-btn {
-    background: #2563eb;
+.received-btn  { background: #2563eb; }
+.ready-btn     { background: #3b82f6; }
+.progress-btn  { background: #6366f1; }
+.complete-btn  { background: #10b981; }
+.delete-btn    { background: #ef4444; }
+
+/* ICON-ONLY DELETE BUTTON */
+.icon-only-btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin: 0;
+    font-size: 15px;
 }
 
-.ready-btn {
-    background: #3b82f6;
-}
-
-.progress-btn {
-    background: #6366f1;
-}
-
-.complete-btn {
-    background: #10b981;
-}
-
-.delete-btn {
-    background: #ef4444;
+.icon-only-btn:not(:disabled):hover {
+    background: #dc2626;
+    transform: scale(1.08);
+    opacity: 1;
 }
 
 .bulk-delete-btn {
@@ -370,15 +375,95 @@ tbody tr:hover {
 }
 
 /* TABS */
-.tab-content {
-    display: none;
+.tab-content  { display: none; }
+.active-tab   { display: block; }
+
+/* ══════════════════════════════════════════════
+   PAGINATION
+══════════════════════════════════════════════ */
+.pagination-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 16px 22px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1.5px solid rgba(37, 99, 235, 0.15);
+    box-shadow: 0 4px 18px rgba(37, 99, 235, 0.08);
 }
 
-.active-tab {
-    display: block;
+.pagination-info {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-/* ── REVENUE TOGGLE ── */
+.pagination-info i {
+    color: #2563eb;
+    font-size: 14px;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 4px;
+}
+
+.page-btn {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(37, 99, 235, 0.25);
+    background: #f0f6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    transition: all 0.18s ease;
+}
+
+.page-btn:hover:not(.page-btn-disabled):not(.page-btn-active) {
+    background: #dbeafe;
+    border-color: #2563eb;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.page-btn-active {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+}
+
+.page-btn-disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* REVENUE TOGGLE */
 .revenue-toggle {
     display: flex;
     gap: 12px;
@@ -412,7 +497,7 @@ tbody tr:hover {
     box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
 }
 
-/* ── REVENUE SUMMARY ── */
+/* REVENUE SUMMARY */
 .revenue-summary {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -443,7 +528,7 @@ tbody tr:hover {
     color: #0f172a;
 }
 
-/* ── SETTINGS / INVENTORY SECTION ── */
+/* SETTINGS / INVENTORY */
 .settings-grid {
     display: grid;
     gap: 30px;
@@ -483,7 +568,6 @@ tbody tr:hover {
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 
-/* Inventory column header */
 .inv-table-head {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -505,7 +589,6 @@ tbody tr:hover {
     gap: 14px;
 }
 
-/* Each inventory row */
 .price-item {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -542,17 +625,12 @@ tbody tr:hover {
     box-shadow: 0 0 0 3px rgba(0, 148, 255, 0.1);
 }
 
-/* Stock input color differentiation */
-.stock-input {
-    border-color: #10b981 !important;
-}
-
+.stock-input { border-color: #10b981 !important; }
 .stock-input:focus {
     border-color: #10b981 !important;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12) !important;
 }
 
-/* Stock badge */
 .stock-badge {
     display: inline-block;
     padding: 5px 11px;
@@ -562,22 +640,10 @@ tbody tr:hover {
     text-align: center;
 }
 
-.stock-badge.in-stock {
-    background: #dcfce7;
-    color: #166534;
-}
+.stock-badge.in-stock    { background: #dcfce7; color: #166534; }
+.stock-badge.low-stock   { background: #fef9c3; color: #92400e; }
+.stock-badge.out-of-stock{ background: #fee2e2; color: #991b1b; }
 
-.stock-badge.low-stock {
-    background: #fef9c3;
-    color: #92400e;
-}
-
-.stock-badge.out-of-stock {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-/* Fee section */
 .fee-card {
     display: flex;
     flex-direction: column;
@@ -600,11 +666,8 @@ tbody tr:hover {
     min-width: 180px;
 }
 
-.fee-item input {
-    width: 120px;
-}
+.fee-item input { width: 120px; }
 
-/* SAVE SECTION */
 .save-section {
     grid-column: 1 / -1;
     text-align: center;
@@ -671,26 +734,21 @@ tbody tr:hover {
     display: block !important;
 }
 
-/* Responsive */
-@media (max-width:768px) {
-    .pricing-grid {
-        grid-template-columns: 1fr;
-    }
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .pricing-grid { grid-template-columns: 1fr; }
 
     .price-item {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto;
     }
 
-    .inv-table-head {
-        display: none;
-    }
+    .inv-table-head { display: none; }
+    .revenue-summary { grid-template-columns: 1fr; }
+    .revenue-toggle { flex-wrap: wrap; }
 
-    .revenue-summary {
-        grid-template-columns: 1fr;
-    }
-
-    .revenue-toggle {
-        flex-wrap: wrap;
+    .pagination-wrap {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
