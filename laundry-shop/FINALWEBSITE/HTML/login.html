@@ -2,58 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Login | M &amp; M Laundry</title>
   <link rel="stylesheet" href="../CSS/login.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
 
 <div class="container">
 
+  <!-- LEFT PANEL -->
   <div class="left-panel">
-    <h2>Welcome to M&M Laundry</h2>
-    <p>Fast, Fresh & Hassle-Free Laundry Service</p>
-    <img src="../img/Logo.png" alt="logo">
+    <div class="left-logo-wrap">
+      <img src="../img/Logo.png" alt="M&M Laundry Logo">
+    </div>
+    <h2>Welcome to M&amp;M Laundry</h2>
+    <p>Fast, fresh &amp; hassle-free laundry service delivered right to your door.</p>
   </div>
 
+  <!-- RIGHT PANEL -->
   <div class="right-panel">
-
     <form id="loginForm" method="POST">
-      <h2>Login</h2>
+
+      <div class="form-eyebrow">M &amp; M Laundry Shop</div>
+      <h2>Sign in to<br>your account</h2>
 
       <div class="input-group">
-        <input type="text" name="username" placeholder="Username" required>
+        <label class="input-label" for="username">Username</label>
+        <div class="input-wrap">
+          <input type="text" id="username" name="username" placeholder="Enter your username" required>
+          <i class="fas fa-user"></i>
+        </div>
       </div>
 
-      <div class="input-group">
-        <input type="password" name="password" placeholder="Password" required>
-      </div>
-
-      <button type="submit" class="login-btn">Login</button>
-
-      <p class="divider">OR</p>
-
-      <div class="social-login">
-        <button type="button" class="google-btn">
-          <i class="fab fa-google"></i> Login with Google
-        </button>
-
-        <button type="button" class="facebook-btn">
-          <i class="fab fa-facebook-f"></i> Login with Facebook
-        </button>
-      </div>
-
-      <button type="button" class="register-btn" onclick="window.location.href='../HTML/register.html'">
-        Create Account
-      </button>
-
-    </form>
-
+<div class="input-group">
+  <label class="input-label" for="password">Password</label>
+  <div class="input-wrap" style="position:relative;">
+    <i class="fas fa-lock" style="position:absolute;left:14px;font-size:16px;color:#a0b8d8;pointer-events:none;z-index:1;"></i>
+    <input type="password" id="password" name="password"
+      placeholder="Enter your password" required
+      style="width:100%;padding:13px 46px 13px 42px;">
+    <button type="button" id="togglePw" title="Show/hide password"
+      style="position:absolute;right:0;top:0;bottom:0;width:46px;
+             background:none;border:none;cursor:pointer;color:#a0b8d8;
+             font-size:16px;z-index:2;display:flex;align-items:center;justify-content:center;
+             border-radius:0 12px 12px 0;">
+      <i class="fas fa-eye" id="togglePwIcon"></i>
+    </button>
   </div>
 </div>
 
+      <button type="submit" class="login-btn">
+        <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Login
+      </button>
+
+      <div class="divider">OR CONTINUE WITH</div>
+
+      <div class="social-login">
+        <button type="button" class="social-btn google-btn" id="googleLoginBtn">
+          <span class="google-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+          </span>
+          Continue with Google
+        </button>
+
+        <button type="button" class="social-btn facebook-btn" id="facebookLoginBtn">
+          <span class="facebook-icon">f</span>
+          Continue with Facebook
+        </button>
+      </div>
+
+      <div class="register-wrap">
+        Don't have an account?
+        <a href="../HTML/register.html">Create one here</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('togglePw').addEventListener('click', function (e) {
+    e.preventDefault();
+    const pw = document.getElementById('password');
+    const icon = document.getElementById('togglePwIcon');
+    if (pw.type === 'password') {
+      pw.type = 'text';
+      icon.className = 'fas fa-eye-slash';
+    } else {
+      pw.type = 'password';
+      icon.className = 'fas fa-eye';
+    }
+  });
+</script>
 <script src="../JS/login.js"></script>
 </body>
 </html>

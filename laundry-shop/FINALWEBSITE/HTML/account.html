@@ -3,255 +3,575 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Account</title>
+  <title>My Account – M & M Laundry Shop</title>
   <link rel="stylesheet" href="../CSS/account.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
   <!-- ===== HEADER ===== -->
   <header>
     <div class="header-left">
-      <div id="Lugu">
-        <img src="../img/Logo.png" alt="Logo">
-      </div>
-      <div class="tagline">
-        <span>FAST AND FRESH LAUNDRY JUST</span>
-          <a href="../HTML/booknow.html">
-          <button>CLICK AWAY!</button>
+      <img src="../img/Logo.png" alt="M&M Laundry">
+      <div class="header-tagline">
+        <span class="header-tagline-text">FAST AND FRESH LAUNDRY JUST</span>
+        <a href="../HTML/booknow.html" style="text-decoration:none;">
+          <span class="header-tagline-pill">CLICK AWAY!</span>
         </a>
       </div>
     </div>
-<nav>
+
+    <nav>
       <ul>
-<li><a href="../HTML/index.html">HOME</a></li>
-<li><a href="../HTML/index.html#franchise">FRANCHISE</a></li>
-<li><a href="../HTML/index.html#service">SERVICE</a></li>
-<li><a href="../HTML/index.html#about">ABOUT US</a></li>
-<li><a href="../HTML/index.html#contact">CONTACT US</a></li>
-<li><a href="../HTML/index.html#contact" class="account-btn active">ACCOUNT</a></li>
-<li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+        <li><a href="../HTML/index.html#Home">HOME</a></li>
+        <li><a href="../HTML/index.html#Franchise">FRANCHISE</a></li>
+        <li><a href="../HTML/index.html#Service">SERVICE</a></li>
+        <li><a href="../HTML/index.html#About">ABOUT US</a></li>
+        <li><a href="../HTML/index.html#Contact">CONTACT US</a></li>
+        <li><a href="../HTML/account.html" class="account-btn active-nav">ACCOUNT</a></li>
+        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+      </ul>
     </nav>
   </header>
 
-  <!-- ===== MAIN ACCOUNT SECTION ===== -->
-  <section class="account-container">
-    <div class="account-card">
-      <h2>My Account</h2>
-      <div class="profile-pic">
-  <img id="profileImage" src="" alt="Profile Picture" style="display:none;">
-  <div id="noProfileText">No Profile Picture</div>
+  <!-- ===== ACCOUNT SECTION ===== -->
+  <section class="account-section">
+    <div class="account-wrapper">
 
-  <input
-    type="file"
-    id="profileUpload"
-    accept="image/*"
-    style="margin-top: 10px;"
-  >
-</div>
+      <!-- LEFT PANEL -->
+      <div class="account-left">
+        <div class="avatar-ring">
+          <img id="profileImage" src="" alt="Profile">
+          <div id="avatarInitials" class="avatar-initials">?</div>
+        </div>
 
-        <div class="details">
-          <p><strong>Name:</strong> <span id="accName">Customer Name</span></p>
-          <p><strong>Username:</strong> <span id="accUsername">username</span></p>
-          <p><strong>Email:</strong> <span id="accEmail">customer@email.com</span></p>
-          <p><strong>Contact:</strong> <span id="accContact">0912 345 6789</span></p>
-          <p><strong>Address:</strong> <span id="accAddress">123 Laundry Street, City</span></p>
+        <label class="upload-label" for="profileUpload">
+          <i class="fas fa-camera"></i> Change Photo
+        </label>
+        <input type="file" id="profileUpload" accept="image/*" style="display:none;">
+
+        <h2 id="displayName">Loading...</h2>
+        <span id="displayUsername" class="display-username">@username</span>
+
+        <div class="left-stats">
+          <div class="left-stat">
+            <i class="fas fa-star"></i>
+            <span>Valued Member</span>
+          </div>
+          <div class="left-stat">
+            <i class="fas fa-map-marker-alt"></i>
+            <span id="displayCity">Philippines</span>
+          </div>
         </div>
       </div>
 
-      <div class="account-actions">
-        <button id="editBtn" class="btn">Edit Info</button>
-        <button id="saveBtn" class="btn hidden">Save Changes</button>
-      </div>
+      <!-- RIGHT PANEL -->
+      <div class="account-right">
+        <div class="right-header">
+          <h1>My <span>Account</span></h1>
+          <p>Manage your personal information</p>
+        </div>
+
+        <!-- PROFILE INFO GRID -->
+        <div class="info-grid" id="infoGrid">
+
+          <div class="info-item">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <span id="accName">—</span>
+          </div>
+
+          <div class="info-item">
+            <label><i class="fas fa-at"></i> Username</label>
+            <span id="accUsername">—</span>
+          </div>
+
+          <div class="info-item">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <span id="accEmail">—</span>
+          </div>
+
+          <div class="info-item">
+            <label><i class="fas fa-phone"></i> Contact Number</label>
+            <span id="accContact">—</span>
+          </div>
+
+          <div class="info-item full-width">
+            <label><i class="fas fa-map-marker-alt"></i> Address</label>
+            <span id="accAddress">—</span>
+          </div>
+
+        </div>
+
+        <div class="action-row">
+          <button id="editBtn" class="acc-btn primary-acc-btn">
+            <i class="fas fa-pen"></i> Edit Info
+          </button>
+          <button id="saveBtn" class="acc-btn save-acc-btn hidden">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+          <button id="cancelBtn" class="acc-btn cancel-acc-btn hidden">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button id="changePassBtn" class="acc-btn change-pass-btn">
+            <i class="fas fa-lock"></i> Change Password
+          </button>
+        </div>
+
+        <!-- PASSWORD CHANGE CARD -->
+        <div id="passwordCard" class="password-card hidden">
+          <div class="password-card-header">
+            <i class="fas fa-shield-alt"></i>
+            <span>Change Password</span>
+          </div>
+
+          <div class="pw-field">
+            <label>Current Password</label>
+            <div class="pw-input-wrap">
+              <input type="password" id="currentPw" placeholder="Enter current password" autocomplete="current-password">
+              <button type="button" class="pw-toggle" data-target="currentPw"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+
+          <div class="pw-field">
+            <label>New Password</label>
+            <div class="pw-input-wrap">
+              <input type="password" id="newPw" placeholder="At least 6 characters" autocomplete="new-password">
+              <button type="button" class="pw-toggle" data-target="newPw"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+
+          <div class="pw-field">
+            <label>Confirm New Password</label>
+            <div class="pw-input-wrap">
+              <input type="password" id="confirmPw" placeholder="Repeat new password" autocomplete="new-password">
+              <button type="button" class="pw-toggle" data-target="confirmPw"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+
+          <div id="pwStrengthBar" class="pw-strength-bar">
+            <div id="pwStrengthFill" class="pw-strength-fill"></div>
+          </div>
+          <span id="pwStrengthLabel" class="pw-strength-label"></span>
+
+          <div class="pw-action-row">
+            <button id="savePwBtn" class="acc-btn save-acc-btn">
+              <i class="fas fa-key"></i> Update Password
+            </button>
+            <button id="cancelPwBtn" class="acc-btn cancel-acc-btn">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /account-right -->
     </div>
   </section>
 
   <script>
-// Load user data from account.php
-fetch("../PHP/account.php")
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-
-    if (data.status === "success") {
-
-      // Display user information from database
-      document.getElementById("accName").textContent = data.fullname;
-      document.getElementById("accEmail").textContent = data.email;
-      document.getElementById("accContact").textContent = data.contact;
-      document.getElementById("accAddress").textContent = data.address;
-
-    } else {
-      alert("Please login first.");
-      window.location.href = "../HTML/login.html";
+    // ================================================
+    // HELPERS
+    // ================================================
+    function getInitials(name) {
+      if (!name) return '?';
+      return name.trim().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
     }
-  })
-  .catch(error => {
-    console.error(error);
-    alert("Error loading account information.");
-  });
 
+    function setDisplayName(name) {
+      document.getElementById('displayName').textContent = name || 'Guest';
+      document.getElementById('avatarInitials').textContent = getInitials(name);
+    }
 
-// Logout button
-document.getElementById("logoutBtn").addEventListener("click", function(e) {
-  e.preventDefault();
+    function populateFields(user) {
+      document.getElementById('accName').textContent     = user.fullname || user.name || '—';
+      document.getElementById('accUsername').textContent = user.username  || '—';
+      document.getElementById('accEmail').textContent    = user.email     || '—';
+      document.getElementById('accContact').textContent  = user.contact   || '—';
+      document.getElementById('accAddress').textContent  = user.address   || '—';
 
-  if (confirm("Are you sure you want to log out?")) {
-    fetch("../PHP/logout.php")
-      .then(() => {
-        localStorage.removeItem("loggedInUser");
-        window.location.href = "../HTML/login.html";
-      })
-      .catch(() => {
-        window.location.href = "../HTML/login.html";
-      });
+      setDisplayName(user.fullname || user.name);
+      document.getElementById('displayUsername').textContent = '@' + (user.username || 'user');
+
+      const city = (user.address || '').split(',').pop().trim();
+      document.getElementById('displayCity').textContent = city || 'Philippines';
+    }
+
+    // ================================================
+    // PROFILE PICTURE
+    // ================================================
+    const profileImage   = document.getElementById('profileImage');
+    const avatarInitials = document.getElementById('avatarInitials');
+
+function setProfilePic(src) {
+  if (!src) return;
+
+  let fullSrc;
+  if (src.startsWith('data:')) {
+    // base64 preview — use as-is
+    fullSrc = src;
+  } else if (src.startsWith('/')) {
+    // root-relative like "/uploads/profiles/file.jpg"
+    // go up from HTML/ to project root, then strip the leading slash
+    fullSrc = '../' + src.replace(/^\//, '');
+  } else {
+    // already relative like "uploads/profiles/file.jpg"
+    fullSrc = '../' + src;
   }
-});
 
-
-// Edit / Save toggle
-const editBtn = document.getElementById("editBtn");
-const saveBtn = document.getElementById("saveBtn");
-const detailsDiv = document.querySelector(".details");
-
-editBtn.addEventListener("click", () => {
-  detailsDiv.querySelectorAll("span").forEach(span => {
-    const val = span.textContent;
-    const input = document.createElement("input");
-    input.value = val;
-    span.replaceWith(input);
-  });
-
-  editBtn.classList.add("hidden");
-  saveBtn.classList.remove("hidden");
-});
-
-saveBtn.addEventListener("click", () => {
-  const inputs = detailsDiv.querySelectorAll("input");
-
-  const updatedUser = {
-    name: inputs[0].value,
-    email: inputs[1].value,
-    contact: inputs[2].value,
-    address: inputs[3].value
+  profileImage.onload = function () {
+    profileImage.style.display = 'block';
+    avatarInitials.style.display = 'none';
+  };
+  profileImage.onerror = function () {
+    profileImage.style.display = 'none';
+    avatarInitials.style.display = 'flex';
   };
 
-  // Save updated data to database
-  fetch("../PHP/update_account.php", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(updatedUser)
-  })
-  .then(response => response.json())
-  .then(data => {
+  profileImage.src = fullSrc;
+}
 
-    if (data.status === "success") {
+    // ================================================
+    // PROFILE PICTURE UPLOAD
+    // ================================================
+    document.getElementById('profileUpload').addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
 
-      // Replace inputs with spans again
-      inputs.forEach((input, i) => {
-        const span = document.createElement("span");
-        span.textContent = Object.values(updatedUser)[i];
+      // Instant local preview
+      const reader = new FileReader();
+      reader.onload = e => setProfilePic(e.target.result);
+      reader.readAsDataURL(file);
+
+      // Upload to server
+      const formData = new FormData();
+      formData.append('profile_picture', file);
+
+      fetch('../PHP/upload_picture.php', {
+        method : 'POST',
+        body   : formData
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'success') {
+          // Store the server path in localStorage
+          const user = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+          user.profilePicture = data.path;
+          localStorage.setItem('loggedInUser', JSON.stringify(user));
+          // Load from server path (replaces the base64 preview)
+          setProfilePic(data.path);
+          showToast('Profile picture updated!', 'success');
+        } else {
+          showToast(data.message || 'Upload failed.', 'error');
+        }
+      })
+      .catch(() => showToast('Upload failed. Check your connection.', 'error'));
+    });
+
+    // ================================================
+    // LOAD DATA — PHP session first, localStorage fallback
+    // ================================================
+    function loadFromLocalStorage() {
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+      if (!user) {
+        alert('Please login first.');
+        window.location.href = '../HTML/login.html';
+        return;
+      }
+      populateFields(user);
+      if (user.profilePicture) setProfilePic(user.profilePicture);
+    }
+
+    fetch('../PHP/account.php')
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'success') {
+          const local  = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+          const merged = Object.assign({}, local, {
+            fullname       : data.fullname,
+            email          : data.email,
+            username       : data.username,
+            contact        : data.contact,
+            address        : data.address,
+            // Server path takes priority; fall back to whatever is in localStorage
+            profilePicture : data.profile_picture || local.profilePicture || ''
+          });
+          localStorage.setItem('loggedInUser', JSON.stringify(merged));
+          populateFields(merged);
+
+          // Always attempt to set profile pic from merged data
+          if (merged.profilePicture) {
+            setProfilePic(merged.profilePicture);
+          }
+        } else {
+          loadFromLocalStorage();
+        }
+      })
+      .catch(() => loadFromLocalStorage());
+
+    // ================================================
+    // EDIT / SAVE / CANCEL
+    // ================================================
+    const editBtn   = document.getElementById('editBtn');
+    const saveBtn   = document.getElementById('saveBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const infoGrid  = document.getElementById('infoGrid');
+
+    let snapshot = {};
+
+    editBtn.addEventListener('click', () => {
+      snapshot = {};
+      infoGrid.querySelectorAll('.info-item').forEach(item => {
+        const span = item.querySelector('span');
+        const id   = span.id;
+        const val  = span.textContent === '—' ? '' : span.textContent;
+        snapshot[id] = val;
+
+        const input      = document.createElement('input');
+        input.value      = val;
+        input.className  = 'edit-input';
+        input.dataset.id = id;
+        span.replaceWith(input);
+      });
+
+      editBtn.classList.add('hidden');
+      saveBtn.classList.remove('hidden');
+      cancelBtn.classList.remove('hidden');
+    });
+
+    cancelBtn.addEventListener('click', restoreFields);
+
+    function restoreFields() {
+      infoGrid.querySelectorAll('input.edit-input').forEach(input => {
+        const span       = document.createElement('span');
+        span.id          = input.dataset.id;
+        span.textContent = snapshot[input.dataset.id] || '—';
+        input.replaceWith(span);
+      });
+      saveBtn.classList.add('hidden');
+      cancelBtn.classList.add('hidden');
+      editBtn.classList.remove('hidden');
+    }
+
+    saveBtn.addEventListener('click', () => {
+      const inputs  = infoGrid.querySelectorAll('input.edit-input');
+      const updated = {};
+      inputs.forEach(input => { updated[input.dataset.id] = input.value.trim(); });
+
+      const payload = {
+        name     : updated.accName,
+        email    : updated.accEmail,
+        contact  : updated.accContact,
+        address  : updated.accAddress,
+        username : updated.accUsername
+      };
+
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+
+      fetch('../PHP/update_account.php', {
+        method  : 'POST',
+        headers : { 'Content-Type': 'application/json' },
+        body    : JSON.stringify(payload)
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'success') {
+          applyUpdates(updated, payload);
+          showToast('Profile updated successfully!', 'success');
+        } else {
+          showToast(data.message || 'Server error.', 'error');
+          restoreFields();
+        }
+      })
+      .catch(() => {
+        showToast('Offline — changes saved locally.', 'warning');
+        applyUpdates(updated, payload);
+      })
+      .finally(() => {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+      });
+    });
+
+    function applyUpdates(updated, payload) {
+      infoGrid.querySelectorAll('input.edit-input').forEach(input => {
+        const span       = document.createElement('span');
+        span.id          = input.dataset.id;
+        span.textContent = input.value.trim() || '—';
         input.replaceWith(span);
       });
 
-      // Optional localStorage backup
-      localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+      setDisplayName(payload.name);
+      document.getElementById('displayUsername').textContent = '@' + (payload.username || 'user');
 
-      editBtn.classList.remove("hidden");
-      saveBtn.classList.add("hidden");
+      const local = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+      Object.assign(local, {
+        fullname : payload.name,
+        name     : payload.name,
+        email    : payload.email,
+        contact  : payload.contact,
+        address  : payload.address,
+        username : payload.username
+      });
+      localStorage.setItem('loggedInUser', JSON.stringify(local));
 
-      alert("Profile updated successfully!");
-
-    } else {
-      alert("Failed to update profile.");
+      saveBtn.classList.add('hidden');
+      cancelBtn.classList.add('hidden');
+      editBtn.classList.remove('hidden');
     }
 
-  })
-  .catch(error => {
-    console.error(error);
-    alert("Error updating profile.");
-  });
-});
-</script>
-<script>
-// ================================
-// LOAD USER DATA
-// ================================
-const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    // ================================================
+    // PASSWORD CHANGE
+    // ================================================
+    const changePassBtn = document.getElementById('changePassBtn');
+    const passwordCard  = document.getElementById('passwordCard');
+    const savePwBtn     = document.getElementById('savePwBtn');
+    const cancelPwBtn   = document.getElementById('cancelPwBtn');
 
-if (!user) {
-  alert("Please login first.");
-  window.location.href = "../HTML/login.html";
-}
+    changePassBtn.addEventListener('click', () => {
+      passwordCard.classList.toggle('hidden');
+      if (!passwordCard.classList.contains('hidden')) {
+        document.getElementById('currentPw').focus();
+      }
+    });
 
-// Display user info
-document.getElementById("accName").textContent =
-  user.fullname || user.name || "No Name";
+    cancelPwBtn.addEventListener('click', () => {
+      passwordCard.classList.add('hidden');
+      clearPwFields();
+    });
 
-document.getElementById("accUsername").textContent =
-  user.username || "No Username";
+    // Show / hide toggle
+    document.querySelectorAll('.pw-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        const icon  = btn.querySelector('i');
+        if (input.type === 'password') {
+          input.type     = 'text';
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          input.type     = 'password';
+          icon.className = 'fas fa-eye';
+        }
+      });
+    });
 
-document.getElementById("accEmail").textContent =
-  user.email || "No Email";
+    // Strength meter
+    document.getElementById('newPw').addEventListener('input', function () {
+      const val   = this.value;
+      const fill  = document.getElementById('pwStrengthFill');
+      const label = document.getElementById('pwStrengthLabel');
+      let score   = 0;
+      if (val.length >= 6)           score++;
+      if (val.length >= 10)          score++;
+      if (/[A-Z]/.test(val))         score++;
+      if (/[0-9]/.test(val))         score++;
+      if (/[^A-Za-z0-9]/.test(val))  score++;
 
-document.getElementById("accContact").textContent =
-  user.contact || "";
+      const levels = [
+        { pct: '0%',   color: 'transparent', text: '' },
+        { pct: '25%',  color: '#f05a28',     text: 'Weak' },
+        { pct: '50%',  color: '#f5a623',     text: 'Fair' },
+        { pct: '75%',  color: '#4dc9ff',     text: 'Good' },
+        { pct: '100%', color: '#4ade80',     text: 'Strong' }
+      ];
+      const lvl = levels[Math.min(score, 4)];
+      fill.style.width      = lvl.pct;
+      fill.style.background = lvl.color;
+      label.textContent     = lvl.text;
+      label.style.color     = lvl.color;
+    });
 
-document.getElementById("accAddress").textContent =
-  user.address || "";
+    savePwBtn.addEventListener('click', () => {
+      const currentPw = document.getElementById('currentPw').value;
+      const newPw     = document.getElementById('newPw').value;
+      const confirmPw = document.getElementById('confirmPw').value;
 
+      if (!currentPw || !newPw || !confirmPw) {
+        showToast('Please fill in all password fields.', 'error');
+        return;
+      }
+      if (newPw !== confirmPw) {
+        showToast('New passwords do not match.', 'error');
+        return;
+      }
+      if (newPw.length < 6) {
+        showToast('Password must be at least 6 characters.', 'error');
+        return;
+      }
 
-// ================================
-// PROFILE PICTURE LOAD
-// ================================
-const profileImage = document.getElementById("profileImage");
-const noProfileText = document.getElementById("noProfileText");
+      savePwBtn.disabled = true;
+      savePwBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating…';
 
-if (user.profilePicture) {
-  profileImage.src = user.profilePicture;
-  profileImage.style.display = "block";
-  noProfileText.style.display = "none";
-}
+      fetch('../PHP/update_account.php', {
+        method  : 'POST',
+        headers : { 'Content-Type': 'application/json' },
+        body    : JSON.stringify({
+          change_password  : true,
+          current_password : currentPw,
+          new_password     : newPw,
+          confirm_password : confirmPw
+        })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showToast('Password updated successfully!', 'success');
+          passwordCard.classList.add('hidden');
+          clearPwFields();
+        } else {
+          showToast(data.message || 'Failed to update password.', 'error');
+        }
+      })
+      .catch(() => showToast('Network error. Please try again.', 'error'))
+      .finally(() => {
+        savePwBtn.disabled = false;
+        savePwBtn.innerHTML = '<i class="fas fa-key"></i> Update Password';
+      });
+    });
 
+    function clearPwFields() {
+      ['currentPw', 'newPw', 'confirmPw'].forEach(id => {
+        const el = document.getElementById(id);
+        el.value = '';
+        el.type  = 'password';
+      });
+      document.querySelectorAll('.pw-toggle i').forEach(i => i.className = 'fas fa-eye');
+      document.getElementById('pwStrengthFill').style.width = '0%';
+      document.getElementById('pwStrengthLabel').textContent = '';
+    }
 
-// ================================
-// PROFILE PICTURE UPLOAD
-// ================================
-document.getElementById("profileUpload").addEventListener("change", function () {
-  const file = this.files[0];
-  if (!file) return;
+    // ================================================
+    // TOAST NOTIFICATIONS
+    // ================================================
+    function showToast(message, type = 'success') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
 
-  const reader = new FileReader();
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      const icons = { success: 'check-circle', error: 'times-circle', warning: 'exclamation-triangle' };
+      toast.innerHTML = `<i class="fas fa-${icons[type] || 'info-circle'}"></i> ${message}`;
+      document.body.appendChild(toast);
 
-  reader.onload = function (e) {
-    const imageData = e.target.result;
+      requestAnimationFrame(() => toast.classList.add('toast-visible'));
+      setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
 
-    profileImage.src = imageData;
-    profileImage.style.display = "block";
-    noProfileText.style.display = "none";
+    // ================================================
+    // LOGOUT
+    // ================================================
+    document.getElementById('logoutBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      if (confirm('Are you sure you want to log out?')) {
+        fetch('../PHP/logout.php').catch(() => {});
+        localStorage.removeItem('loggedInUser');
+        window.location.href = '../HTML/login.html';
+      }
+    });
+  </script>
 
-    user.profilePicture = imageData;
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-    alert("Profile picture updated successfully!");
-  };
-
-  reader.readAsDataURL(file);
-});
-
-
-// ================================
-// LOGOUT
-// ================================
-document.getElementById("logoutBtn").addEventListener("click", function (e) {
-  e.preventDefault();
-
-  if (confirm("Are you sure you want to log out?")) {
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "../HTML/login.html";
-  }
-});
-</script>
 </body>
 </html>
