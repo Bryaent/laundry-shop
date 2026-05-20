@@ -10,6 +10,93 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
+
+  <style>
+    /* ── Account Icon + Dropdown ── */
+    .account-nav-item {
+      position: relative;
+    }
+
+    .account-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      color: #fff;
+      font-size: 17px;
+      text-decoration: none;
+    }
+
+    .account-icon-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+      border-color: #fff;
+    }
+
+    .account-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      min-width: 190px;
+      overflow: hidden;
+      z-index: 9999;
+      animation: dropFade 0.18s ease;
+    }
+
+    @keyframes dropFade {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .account-nav-item:hover .account-dropdown,
+    .account-nav-item.open .account-dropdown {
+      display: block;
+    }
+
+    .account-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      color: #222;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .account-dropdown a i {
+      width: 16px;
+      color: #555;
+    }
+
+    .account-dropdown a:hover {
+      background: #f4f4f4;
+    }
+
+    .account-dropdown .dropdown-divider {
+      height: 1px;
+      background: #eee;
+      margin: 4px 0;
+    }
+
+    .account-dropdown .logout-item {
+      color: #e53935;
+    }
+
+    .account-dropdown .logout-item i {
+      color: #e53935;
+    }
+  </style>
 </head>
 
 <body>
@@ -32,8 +119,30 @@
         <li><a href="#Service">SERVICE</a></li>
         <li><a href="#About">ABOUT US</a></li>
         <li><a href="#Contact">CONTACT US</a></li>
-        <li><a href="../HTML/account.html" class="account-btn">ACCOUNT</a></li>
-        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+
+        <!-- Account icon with dropdown — shown only when logged in -->
+        <li class="account-nav-item" id="accountNavItem" style="display:none;">
+          <a href="#" class="account-icon-btn" id="accountIconBtn" title="My Account">
+            <i class="fas fa-user"></i>
+          </a>
+          <div class="account-dropdown" id="accountDropdown">
+            <a href="../HTML/account.html">
+              <i class="fas fa-id-card"></i> View My Profile
+            </a>
+            <a href="../HTML/tracklaundry.html">
+              <i class="fas fa-tshirt"></i> Track My Laundry
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="logout-item" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+
+        <!-- Login button — shown only when NOT logged in -->
+        <li id="loginNavItem" style="display:none;">
+          <a href="../HTML/login.html" class="account-btn">LOGIN</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -63,7 +172,8 @@
         </p>
 
         <div class="hero-buttons">
-          <a href="../HTML/booknow.html" class="hero-btn primary-btn">
+          <!-- Uses JS to guard booking -->
+          <a href="#" class="hero-btn primary-btn" id="schedulePickupBtn">
             Schedule Pickup
           </a>
 
@@ -293,7 +403,8 @@
 
     </div>
 
-    <a href="../HTML/booknow.html" class="book-btn">BOOK NOW</a>
+    <!-- Book Now button — guarded by login check -->
+    <a href="#" class="book-btn" id="bookNowBtn">BOOK NOW</a>
 
   </section>
 
@@ -495,15 +606,17 @@
     </div>
   </footer>
 
+  <!-- ── SCRIPTS ── -->
+
   <script>
+    /* ── Reveal on scroll ── */
     function revealOnScroll() {
       const reveals = document.querySelectorAll(".reveal");
       for (let i = 0; i < reveals.length; i++) {
         const windowHeight = window.innerHeight;
         const elementTop = reveals[i].getBoundingClientRect().top;
-        const elementVisible = 150;
         if (
-          elementTop < windowHeight - elementVisible ||
+          elementTop < windowHeight - 150 ||
           window.scrollY + windowHeight >= document.body.scrollHeight - 100
         ) {
           reveals[i].classList.add("active");
@@ -517,6 +630,36 @@
   </script>
 
   <script>
+    /* ── Auth state: show/hide nav items ── */
+    const loggedInUser = localStorage.getItem("loggedInUser");
+
+    const accountNavItem = document.getElementById("accountNavItem");
+    const loginNavItem   = document.getElementById("loginNavItem");
+
+    if (loggedInUser) {
+      // User is logged in → show account icon, hide login
+      accountNavItem.style.display = "list-item";
+      loginNavItem.style.display   = "none";
+    } else {
+      // Not logged in → show login button, hide account icon
+      accountNavItem.style.display = "none";
+      loginNavItem.style.display   = "list-item";
+    }
+
+    /* ── Guard booking buttons: redirect to login if not logged in ── */
+    function guardedBook(e) {
+      e.preventDefault();
+      if (localStorage.getItem("loggedInUser")) {
+        window.location.href = "../HTML/booknow.html";
+      } else {
+        window.location.href = "../HTML/login.html";
+      }
+    }
+
+    document.getElementById("schedulePickupBtn").addEventListener("click", guardedBook);
+    document.getElementById("bookNowBtn").addEventListener("click", guardedBook);
+
+    /* ── Logout ── */
     document.getElementById("logoutBtn").addEventListener("click", function (e) {
       e.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
@@ -524,13 +667,34 @@
         window.location.href = "../HTML/login.html";
       }
     });
+
+    /* ── Toggle dropdown on click (mobile-friendly) ── */
+    document.getElementById("accountIconBtn").addEventListener("click", function (e) {
+      e.preventDefault();
+      const item = document.getElementById("accountNavItem");
+      item.classList.toggle("open");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (e) {
+      const item = document.getElementById("accountNavItem");
+      if (!item.contains(e.target)) {
+        item.classList.remove("open");
+      }
+    });
   </script>
 
   <script src="../JS/web.js"></script>
 
-  <a href="../HTML/tracklaundry.html" class="track-btn" title="Track Your Laundry">
-    <img src="../img/laundrybasket.png" alt="Track Laundry">
-  </a>
+  <!-- Floating track button — only show when logged in -->
+  <script>
+    if (localStorage.getItem("loggedInUser")) {
+      document.write(
+        '<a href="../HTML/tracklaundry.html" class="track-btn" title="Track Your Laundry">' +
+        '<img src="../img/laundrybasket.png" alt="Track Laundry"></a>'
+      );
+    }
+  </script>
 
 </body>
 

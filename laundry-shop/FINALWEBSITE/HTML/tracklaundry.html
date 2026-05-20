@@ -14,7 +14,7 @@
 
 <body>
 
-  <!-- HEADER — matches index.html -->
+  <!-- HEADER -->
   <header>
     <div class="header-left">
       <img src="../img/Logo.png" alt="M&M Laundry">
@@ -32,8 +32,25 @@
         <li><a href="../HTML/index.html#Service">SERVICE</a></li>
         <li><a href="../HTML/index.html#About">ABOUT US</a></li>
         <li><a href="../HTML/index.html#Contact">CONTACT US</a></li>
-        <li><a href="../HTML/account.html" class="account-btn">ACCOUNT</a></li>
-        <li><a href="#" id="logoutBtn" class="logout-btn">LOGOUT</a></li>
+
+        <!-- PROFILE DROPDOWN -->
+        <li class="profile-dropdown-wrap">
+          <button class="profile-icon-btn" id="profileToggle" aria-label="Account menu">
+            <i class="fas fa-user-circle"></i>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="../HTML/account.html" class="dropdown-item">
+              <i class="fas fa-id-card"></i> View My Profile
+            </a>
+            <a href="../HTML/tracklaundry.html" class="dropdown-item">
+              <i class="fas fa-tshirt"></i> Track My Laundry
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
       </ul>
     </nav>
   </header>
@@ -75,6 +92,24 @@
   <script src="../JS/web.js"></script>
 
   <script>
+    // Profile dropdown toggle
+    const profileToggle = document.getElementById("profileToggle");
+    const profileDropdown = document.getElementById("profileDropdown");
+
+    profileToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      profileDropdown.classList.toggle("open");
+    });
+
+    document.addEventListener("click", function () {
+      profileDropdown.classList.remove("open");
+    });
+
+    profileDropdown.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+
+    // Logout
     document.getElementById("logoutBtn").addEventListener("click", function (e) {
       e.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
@@ -83,6 +118,7 @@
       }
     });
 
+    // Track form logic
     const form = document.getElementById("trackForm");
     const resultBox = document.getElementById("trackResult");
 
@@ -98,24 +134,68 @@
       const orders = JSON.parse(localStorage.getItem("orders")) || [];
       const match = orders.find(o => o.ticket === code);
 
+      // Get payment status from admin-controlled storage
+      const paymentStatuses = JSON.parse(localStorage.getItem("gcashPaymentStatuses")) || {};
+      const cashPaymentStatuses = JSON.parse(localStorage.getItem("cashPaymentStatuses")) || {};
+
       resultBox.style.display = "block";
 
       if (match) {
+        const isGcash = match.payment === "GCash";
+        const isCash = match.payment === "Cash";
+
+        let paymentStatus = "Pending";
+        let paymentStatusClass = "pending";
+        let paymentStatusIcon = "fa-clock";
+
+      if (isGcash) {
+  const gcashStatus = paymentStatuses[match.ticket] || "Pending";
+  paymentStatus = gcashStatus;
+  const s = gcashStatus.toLowerCase();
+  if (s === "verified")  { paymentStatusClass = "verified";  paymentStatusIcon = "fa-check-circle"; }
+  else if (s === "rejected") { paymentStatusClass = "rejected"; paymentStatusIcon = "fa-times-circle"; }
+  else                   { paymentStatusClass = "pending";   paymentStatusIcon = "fa-clock"; }
+} else if (isCash) {
+  const cashStatus = (cashPaymentStatuses[match.ticket] || "Pending").toLowerCase();
+  if (cashStatus === "received") {
+    paymentStatus = "Received";
+    paymentStatusClass = "verified";
+    paymentStatusIcon = "fa-check-circle";
+  } else {
+    paymentStatus = "Pending";
+    paymentStatusClass = "pending";
+    paymentStatusIcon = "fa-clock";
+  }
+}
         resultBox.innerHTML = `
           <div class="track-success">
             <h3><i class="fas fa-check-circle"></i> Order Found!</h3>
-            <div class="track-details">
-              <div class="track-row"><span class="track-label">Ticket</span><span class="track-value">${match.ticket}</span></div>
-              <div class="track-row"><span class="track-label">Name</span><span class="track-value">${match.name}</span></div>
-              <div class="track-row"><span class="track-label">Address</span><span class="track-value">${match.address}</span></div>
-              <div class="track-row"><span class="track-label">Service</span><span class="track-value">${match.service}</span></div>
-              <div class="track-row"><span class="track-label">Soap</span><span class="track-value">${match.soap}</span></div>
-              <div class="track-row"><span class="track-label">Fabcon</span><span class="track-value">${match.fabcon}</span></div>
-              <div class="track-row"><span class="track-label">Payment</span><span class="track-value">${match.payment}</span></div>
-              <div class="track-row"><span class="track-label">Amount</span><span class="track-value">₱${match.amount}</span></div>
-              <div class="track-row">
-                <span class="track-label">Status</span>
+            <div class="track-details-horizontal">
+              <div class="track-col">
+                <div class="track-row"><span class="track-label">Ticket</span><span class="track-value">${match.ticket}</span></div>
+                <div class="track-row"><span class="track-label">Name</span><span class="track-value">${match.name}</span></div>
+                <div class="track-row"><span class="track-label">Address</span><span class="track-value">${match.address}</span></div>
+                <div class="track-row"><span class="track-label">Service</span><span class="track-value">${match.service}</span></div>
+              </div>
+              <div class="track-col-divider"></div>
+              <div class="track-col">
+                <div class="track-row"><span class="track-label">Soap</span><span class="track-value">${match.soap}</span></div>
+                <div class="track-row"><span class="track-label">Fabcon</span><span class="track-value">${match.fabcon}</span></div>
+                <div class="track-row"><span class="track-label">Payment</span><span class="track-value">${match.payment}</span></div>
+                <div class="track-row"><span class="track-label">Amount</span><span class="track-value">₱${match.amount}</span></div>
+              </div>
+            </div>
+
+            <div class="track-status-row">
+              <div class="track-status-pill">
+                <span class="ts-label">Order Status</span>
                 <span class="status-badge ${match.status.toLowerCase()}">${match.status}</span>
+              </div>
+              <div class="track-status-pill">
+                <span class="ts-label">Payment Status</span>
+                <span class="status-badge ${paymentStatusClass}">
+                  <i class="fas ${paymentStatusIcon}"></i> ${paymentStatus}
+                </span>
               </div>
             </div>
           </div>
@@ -137,6 +217,103 @@
   </script>
 
   <style>
+    /* ===== PROFILE DROPDOWN NAV ===== */
+    .profile-dropdown-wrap {
+      position: relative;
+      list-style: none;
+    }
+
+    .profile-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #ffffff;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      padding: 4px 6px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      opacity: 0.85;
+    }
+
+    .profile-icon-btn:hover {
+      opacity: 1;
+      color: #4dc9ff;
+      transform: scale(1.08);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      background: rgba(6, 30, 55, 0.98);
+      border: 1px solid rgba(77, 201, 255, 0.25);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px;
+      min-width: 210px;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.97);
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+    }
+
+    .profile-dropdown.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0) scale(1);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 20px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: all 0.18s ease;
+    }
+
+    .dropdown-item i {
+      font-size: 15px;
+      color: #4dc9ff;
+      width: 18px;
+      text-align: center;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(77, 201, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: rgba(77, 201, 255, 0.15);
+      margin: 4px 0;
+    }
+
+    .dropdown-logout {
+      color: rgba(248, 113, 113, 0.85);
+    }
+
+    .dropdown-logout i {
+      color: #f87171;
+    }
+
+    .dropdown-logout:hover {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+    }
+
     /* ===== TRACK LAUNDRY PAGE ===== */
     .tracklaundry-page {
       min-height: 100vh;
@@ -160,7 +337,7 @@
       padding: 55px 50px 50px;
       border-radius: 28px;
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-      max-width: 500px;
+      max-width: 680px;
       width: 100%;
       text-align: center;
       position: relative;
@@ -261,15 +438,8 @@
       box-sizing: border-box;
     }
 
-    #ticketInput::placeholder {
-      color: rgba(255, 255, 255, 0.3);
-    }
-
-    #ticketInput:hover {
-      border-color: rgba(77, 201, 255, 0.45);
-      background: rgba(6, 43, 69, 0.8);
-    }
-
+    #ticketInput::placeholder { color: rgba(255, 255, 255, 0.3); }
+    #ticketInput:hover { border-color: rgba(77, 201, 255, 0.45); background: rgba(6, 43, 69, 0.8); }
     #ticketInput:focus {
       outline: none;
       border-color: #4dc9ff;
@@ -304,22 +474,14 @@
     .track-submit-btn::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
       transition: left 0.45s;
     }
 
-    .track-submit-btn:hover::before {
-      left: 100%;
-    }
-
-    .track-submit-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 40px rgba(0, 191, 255, 0.45);
-    }
+    .track-submit-btn:hover::before { left: 100%; }
+    .track-submit-btn:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,191,255,0.45); }
 
     /* RESULT BOX */
     #trackResult {
@@ -349,39 +511,80 @@
       text-transform: uppercase;
     }
 
-    .track-details {
+    /* HORIZONTAL LAYOUT */
+    .track-details-horizontal {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+    }
+
+    .track-col {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
+    }
+
+    .track-col-divider {
+      width: 1px;
+      background: rgba(77, 201, 255, 0.15);
+      margin: 0 20px;
+      flex-shrink: 0;
     }
 
     .track-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(77, 201, 255, 0.1);
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(77, 201, 255, 0.08);
       font-family: 'Barlow', sans-serif;
     }
 
-    .track-row:last-child {
-      border-bottom: none;
-    }
+    .track-row:last-child { border-bottom: none; }
 
     .track-label {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.45);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.07em;
     }
 
     .track-value {
       font-size: 14px;
       font-weight: 600;
       color: #ffffff;
-      text-align: right;
-      max-width: 60%;
+    }
+
+    /* STATUS ROW */
+    .track-status-row {
+      display: flex;
+      gap: 14px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(77, 201, 255, 0.15);
+      flex-wrap: wrap;
+    }
+
+    .track-status-pill {
+      flex: 1;
+      min-width: 140px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(77, 201, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ts-label {
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
 
     /* ERROR RESULT */
@@ -393,7 +596,7 @@
       text-align: center;
     }
 
-    .track-error>i {
+    .track-error > i {
       font-size: 36px;
       color: #f87171;
       margin-bottom: 14px;
@@ -418,6 +621,9 @@
 
     /* STATUS BADGES */
     .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 5px 14px;
       border-radius: 50px;
       font-family: 'Barlow', sans-serif;
@@ -427,40 +633,23 @@
       letter-spacing: 0.05em;
     }
 
-    .status-badge.pending {
-      background: rgba(251, 191, 36, 0.15);
-      color: #fbbf24;
-      border: 1px solid rgba(251, 191, 36, 0.3);
-    }
-
-    .status-badge.processing {
-      background: rgba(77, 201, 255, 0.15);
-      color: #4dc9ff;
-      border: 1px solid rgba(77, 201, 255, 0.3);
-    }
-
-    .status-badge.completed {
-      background: rgba(52, 211, 153, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(52, 211, 153, 0.3);
-    }
+    /* Add these if not already present */
+.status-badge.completed { background: rgba(52,211,153,0.15);  color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+.status-badge.processing{ background: rgba(77,201,255,0.15);  color: #4dc9ff; border: 1px solid rgba(77,201,255,0.3); }
+.status-badge.pending   { background: rgba(251,191,36,0.15);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.status-badge.verified  { background: rgba(52,211,153,0.15);  color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+.status-badge.rejected  { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+.status-badge.received  { background: rgba(52,211,153,0.15);  color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
 
     /* RESPONSIVE */
-    @media (max-width: 560px) {
-      .tracklaundry-page {
-        padding: 100px 16px 40px;
-      }
-
-      .track-container {
-        padding: 50px 24px 36px;
-      }
-
-      .track-container h2 {
-        font-size: 34px;
-      }
+    @media (max-width: 600px) {
+      .tracklaundry-page { padding: 100px 16px 40px; }
+      .track-container { padding: 50px 20px 36px; max-width: 100%; }
+      .track-container h2 { font-size: 34px; }
+      .track-details-horizontal { flex-direction: column; }
+      .track-col-divider { width: 100%; height: 1px; margin: 8px 0; }
     }
   </style>
 
 </body>
-
 </html>

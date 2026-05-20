@@ -8,6 +8,296 @@
   <link rel="stylesheet" href="../CSS/account.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── ORDER TABS ── */
+    .order-tabs-row {
+      display: flex;
+      gap: 4px;
+      margin: 28px 0 0;
+      border-bottom: 2px solid rgba(0,119,204,0.15);
+      padding-bottom: 0;
+    }
+
+    .order-tab-btn {
+      padding: 10px 22px;
+      border: none;
+      background: none;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #5a7194;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .order-tab-btn:hover { color: #0077cc; background: rgba(0,119,204,0.05); }
+
+    .active-order-tab {
+      color: #0077cc !important;
+      border-bottom-color: #0077cc !important;
+      background: rgba(0,119,204,0.06) !important;
+    }
+
+    /* ── ORDER HISTORY PANEL ── */
+    .order-history-panel { margin-top: 22px; }
+
+    .order-history-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .order-history-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0d1b2e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .order-history-header h3 i { color: #0077cc; }
+
+    .track-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 20px;
+      background: #0077cc;
+      color: #fff;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: 0.2s;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 14px rgba(0,119,204,0.3);
+    }
+
+    .track-link-btn:hover { background: #005fa3; transform: translateY(-1px); }
+
+    .order-history-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .order-card {
+      background: #f5f8ff;
+      border: 1.5px solid rgba(0,119,204,0.15);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 16px;
+      align-items: start;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .order-card:hover {
+      border-color: rgba(0,119,204,0.35);
+      box-shadow: 0 4px 18px rgba(0,119,204,0.1);
+    }
+
+    .order-card-ticket {
+      font-size: 12px;
+      font-weight: 800;
+      color: #0077cc;
+      margin-bottom: 3px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .order-card-service {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0d1b2e;
+    }
+
+    .order-card-meta {
+      font-size: 11.5px;
+      color: #5a7194;
+      margin-top: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .order-card-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #e8f0fb;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .order-card-right { text-align: right; }
+
+    .order-card-amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #0077cc;
+      line-height: 1;
+    }
+
+    .order-card-status {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .oc-status-pending    { background: rgba(245,158,11,0.12); color: #b45309; }
+    .oc-status-received   { background: rgba(99,102,241,0.12); color: #4338ca; }
+    .oc-status-inprogress { background: rgba(59,130,246,0.12); color: #1d4ed8; }
+    .oc-status-ready      { background: rgba(16,185,129,0.12); color: #065f46; }
+    .oc-status-completed  { background: rgba(16,185,129,0.18); color: #065f46; }
+
+    .order-card-track {
+      grid-column: 1 / -1;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0,119,204,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .order-card-track-left { font-size: 11.5px; color: #5a7194; }
+    .order-card-track-left strong { color: #0d1b2e; }
+
+    .order-card-track a {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0077cc;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border: 1.5px solid rgba(0,119,204,0.3);
+      border-radius: 20px;
+      transition: 0.2s;
+    }
+
+    .order-card-track a:hover {
+      background: #0077cc;
+      color: #fff;
+      border-color: #0077cc;
+    }
+
+    .no-orders-msg {
+      text-align: center;
+      padding: 40px 20px;
+      color: #94a3b8;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .no-orders-msg i { font-size: 36px; color: #c8d8f0; }
+    .no-orders-msg a { color: #0077cc; font-weight: 700; text-decoration: none; }
+    .no-orders-msg a:hover { text-decoration: underline; }
+
+    /* ── PAYMENT BADGE IN HISTORY ── */
+    .pay-badge-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .pay-badge-small.cash  { background: rgba(16,185,129,0.12); color: #065f46; }
+    .pay-badge-small.gcash { background: rgba(99,102,241,0.12); color: #4338ca; }
+
+    /* ── HIDE HELPER ── */
+    .hidden { display: none !important; }
+
+    /* ── ORDER STATS STRIP ── */
+    .order-stats-strip {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .order-stat-pill {
+      flex: 1;
+      min-width: 80px;
+      background: #fff;
+      border: 1.5px solid rgba(0,119,204,0.15);
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: center;
+    }
+
+    .order-stat-pill .osp-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #0077cc;
+      line-height: 1;
+    }
+
+    .order-stat-pill .osp-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #5a7194;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 3px;
+    }
+
+    /* ── FILTER BAR ── */
+    .order-filter-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .order-filter-pill {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(0,119,204,0.2);
+      background: #f0f6ff;
+      color: #5a7194;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+      transition: 0.15s;
+    }
+
+    .order-filter-pill:hover { border-color: #0077cc; color: #0077cc; }
+    .order-filter-pill.of-active { background: #0077cc; color: #fff; border-color: #0077cc; }
+  </style>
 </head>
 <body>
 
@@ -65,105 +355,163 @@
             <span id="displayCity">Philippines</span>
           </div>
         </div>
+
+        <!-- Quick Order Button on Left Panel -->
+        <a href="../HTML/booknow.html" style="
+          display:inline-flex;align-items:center;gap:8px;
+          margin-top:18px;padding:10px 22px;
+          background:#0077cc;color:#fff;border-radius:30px;
+          font-size:12px;font-weight:800;text-decoration:none;
+          text-transform:uppercase;letter-spacing:0.05em;
+          box-shadow:0 4px 14px rgba(0,119,204,0.35);
+          transition:0.2s;
+        " onmouseover="this.style.background='#005fa3'" onmouseout="this.style.background='#0077cc'">
+          <i class="fas fa-plus"></i> Book Laundry
+        </a>
       </div>
 
       <!-- RIGHT PANEL -->
       <div class="account-right">
         <div class="right-header">
           <h1>My <span>Account</span></h1>
-          <p>Manage your personal information</p>
+          <p>Manage your personal information and track your orders</p>
         </div>
 
-        <!-- PROFILE INFO GRID -->
-        <div class="info-grid" id="infoGrid">
-
-          <div class="info-item">
-            <label><i class="fas fa-user"></i> Full Name</label>
-            <span id="accName">—</span>
-          </div>
-
-          <div class="info-item">
-            <label><i class="fas fa-at"></i> Username</label>
-            <span id="accUsername">—</span>
-          </div>
-
-          <div class="info-item">
-            <label><i class="fas fa-envelope"></i> Email Address</label>
-            <span id="accEmail">—</span>
-          </div>
-
-          <div class="info-item">
-            <label><i class="fas fa-phone"></i> Contact Number</label>
-            <span id="accContact">—</span>
-          </div>
-
-          <div class="info-item full-width">
-            <label><i class="fas fa-map-marker-alt"></i> Address</label>
-            <span id="accAddress">—</span>
-          </div>
-
-        </div>
-
-        <div class="action-row">
-          <button id="editBtn" class="acc-btn primary-acc-btn">
-            <i class="fas fa-pen"></i> Edit Info
+        <!-- ── TAB ROW ── -->
+        <div class="order-tabs-row">
+          <button class="order-tab-btn active-order-tab" id="tabInfo" onclick="switchAccountTab('info')">
+            <i class="fas fa-user"></i> My Info
           </button>
-          <button id="saveBtn" class="acc-btn save-acc-btn hidden">
-            <i class="fas fa-save"></i> Save Changes
-          </button>
-          <button id="cancelBtn" class="acc-btn cancel-acc-btn hidden">
-            <i class="fas fa-times"></i> Cancel
-          </button>
-          <button id="changePassBtn" class="acc-btn change-pass-btn">
-            <i class="fas fa-lock"></i> Change Password
+          <button class="order-tab-btn" id="tabOrders" onclick="switchAccountTab('orders')">
+            <i class="fas fa-tshirt"></i> My Orders
           </button>
         </div>
 
-        <!-- PASSWORD CHANGE CARD -->
-        <div id="passwordCard" class="password-card hidden">
-          <div class="password-card-header">
-            <i class="fas fa-shield-alt"></i>
-            <span>Change Password</span>
-          </div>
+        <!-- ══════════════════════════════════
+             INFO PANEL
+        ══════════════════════════════════ -->
+        <div id="infoPanel">
 
-          <div class="pw-field">
-            <label>Current Password</label>
-            <div class="pw-input-wrap">
-              <input type="password" id="currentPw" placeholder="Enter current password" autocomplete="current-password">
-              <button type="button" class="pw-toggle" data-target="currentPw"><i class="fas fa-eye"></i></button>
+          <!-- PROFILE INFO GRID -->
+          <div class="info-grid" id="infoGrid" style="margin-top:22px;">
+
+            <div class="info-item">
+              <label><i class="fas fa-user"></i> Full Name</label>
+              <span id="accName">—</span>
             </div>
-          </div>
 
-          <div class="pw-field">
-            <label>New Password</label>
-            <div class="pw-input-wrap">
-              <input type="password" id="newPw" placeholder="At least 6 characters" autocomplete="new-password">
-              <button type="button" class="pw-toggle" data-target="newPw"><i class="fas fa-eye"></i></button>
+            <div class="info-item">
+              <label><i class="fas fa-at"></i> Username</label>
+              <span id="accUsername">—</span>
             </div>
-          </div>
 
-          <div class="pw-field">
-            <label>Confirm New Password</label>
-            <div class="pw-input-wrap">
-              <input type="password" id="confirmPw" placeholder="Repeat new password" autocomplete="new-password">
-              <button type="button" class="pw-toggle" data-target="confirmPw"><i class="fas fa-eye"></i></button>
+            <div class="info-item">
+              <label><i class="fas fa-envelope"></i> Email Address</label>
+              <span id="accEmail">—</span>
             </div>
-          </div>
 
-          <div id="pwStrengthBar" class="pw-strength-bar">
-            <div id="pwStrengthFill" class="pw-strength-fill"></div>
-          </div>
-          <span id="pwStrengthLabel" class="pw-strength-label"></span>
+            <div class="info-item">
+              <label><i class="fas fa-phone"></i> Contact Number</label>
+              <span id="accContact">—</span>
+            </div>
 
-          <div class="pw-action-row">
-            <button id="savePwBtn" class="acc-btn save-acc-btn">
-              <i class="fas fa-key"></i> Update Password
+            <div class="info-item full-width">
+              <label><i class="fas fa-map-marker-alt"></i> Address</label>
+              <span id="accAddress">—</span>
+            </div>
+
+          </div><!-- /info-grid -->
+
+          <div class="action-row">
+            <button id="editBtn" class="acc-btn primary-acc-btn">
+              <i class="fas fa-pen"></i> Edit Info
             </button>
-            <button id="cancelPwBtn" class="acc-btn cancel-acc-btn">
+            <button id="saveBtn" class="acc-btn save-acc-btn hidden">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button id="cancelBtn" class="acc-btn cancel-acc-btn hidden">
               <i class="fas fa-times"></i> Cancel
             </button>
+            <button id="changePassBtn" class="acc-btn change-pass-btn">
+              <i class="fas fa-lock"></i> Change Password
+            </button>
           </div>
-        </div>
+
+          <!-- PASSWORD CHANGE CARD -->
+          <div id="passwordCard" class="password-card hidden">
+            <div class="password-card-header">
+              <i class="fas fa-shield-alt"></i>
+              <span>Change Password</span>
+            </div>
+
+            <div class="pw-field">
+              <label>Current Password</label>
+              <div class="pw-input-wrap">
+                <input type="password" id="currentPw" placeholder="Enter current password" autocomplete="current-password">
+                <button type="button" class="pw-toggle" data-target="currentPw"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+
+            <div class="pw-field">
+              <label>New Password</label>
+              <div class="pw-input-wrap">
+                <input type="password" id="newPw" placeholder="At least 6 characters" autocomplete="new-password">
+                <button type="button" class="pw-toggle" data-target="newPw"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+
+            <div class="pw-field">
+              <label>Confirm New Password</label>
+              <div class="pw-input-wrap">
+                <input type="password" id="confirmPw" placeholder="Repeat new password" autocomplete="new-password">
+                <button type="button" class="pw-toggle" data-target="confirmPw"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+
+            <div id="pwStrengthBar" class="pw-strength-bar">
+              <div id="pwStrengthFill" class="pw-strength-fill"></div>
+            </div>
+            <span id="pwStrengthLabel" class="pw-strength-label"></span>
+
+            <div class="pw-action-row">
+              <button id="savePwBtn" class="acc-btn save-acc-btn">
+                <i class="fas fa-key"></i> Update Password
+              </button>
+              <button id="cancelPwBtn" class="acc-btn cancel-acc-btn">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /infoPanel -->
+
+        <!-- ══════════════════════════════════
+             ORDERS PANEL
+        ══════════════════════════════════ -->
+        <div id="ordersPanel" class="hidden" style="margin-top:22px;">
+
+          <div class="order-history-header">
+            <h3><i class="fas fa-tshirt"></i> Order History</h3>
+            <a href="../HTML/tracklaundry.html" class="track-link-btn">
+              <i class="fas fa-search"></i> Track My Laundry
+            </a>
+          </div>
+
+          <!-- Stats Strip -->
+          <div class="order-stats-strip" id="orderStatsStrip"></div>
+
+          <!-- Filter Bar -->
+          <div class="order-filter-bar" id="orderFilterBar"></div>
+
+          <!-- Order List -->
+          <div class="order-history-list" id="orderHistoryList">
+            <div class="no-orders-msg">
+              <i class="fas fa-circle-notch fa-spin"></i>
+              <span>Loading your orders...</span>
+            </div>
+          </div>
+
+        </div><!-- /ordersPanel -->
 
       </div><!-- /account-right -->
     </div>
@@ -203,33 +551,26 @@
     const profileImage   = document.getElementById('profileImage');
     const avatarInitials = document.getElementById('avatarInitials');
 
-function setProfilePic(src) {
-  if (!src) return;
-
-  let fullSrc;
-  if (src.startsWith('data:')) {
-    // base64 preview — use as-is
-    fullSrc = src;
-  } else if (src.startsWith('/')) {
-    // root-relative like "/uploads/profiles/file.jpg"
-    // go up from HTML/ to project root, then strip the leading slash
-    fullSrc = '../' + src.replace(/^\//, '');
-  } else {
-    // already relative like "uploads/profiles/file.jpg"
-    fullSrc = '../' + src;
-  }
-
-  profileImage.onload = function () {
-    profileImage.style.display = 'block';
-    avatarInitials.style.display = 'none';
-  };
-  profileImage.onerror = function () {
-    profileImage.style.display = 'none';
-    avatarInitials.style.display = 'flex';
-  };
-
-  profileImage.src = fullSrc;
-}
+    function setProfilePic(src) {
+      if (!src) return;
+      let fullSrc;
+      if (src.startsWith('data:')) {
+        fullSrc = src;
+      } else if (src.startsWith('/')) {
+        fullSrc = '../' + src.replace(/^\//, '');
+      } else {
+        fullSrc = '../' + src;
+      }
+      profileImage.onload = function () {
+        profileImage.style.display = 'block';
+        avatarInitials.style.display = 'none';
+      };
+      profileImage.onerror = function () {
+        profileImage.style.display = 'none';
+        avatarInitials.style.display = 'flex';
+      };
+      profileImage.src = fullSrc;
+    }
 
     // ================================================
     // PROFILE PICTURE UPLOAD
@@ -238,34 +579,27 @@ function setProfilePic(src) {
       const file = this.files[0];
       if (!file) return;
 
-      // Instant local preview
       const reader = new FileReader();
       reader.onload = e => setProfilePic(e.target.result);
       reader.readAsDataURL(file);
 
-      // Upload to server
       const formData = new FormData();
       formData.append('profile_picture', file);
 
-      fetch('../PHP/upload_picture.php', {
-        method : 'POST',
-        body   : formData
-      })
-      .then(r => r.json())
-      .then(data => {
-        if (data.status === 'success') {
-          // Store the server path in localStorage
-          const user = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
-          user.profilePicture = data.path;
-          localStorage.setItem('loggedInUser', JSON.stringify(user));
-          // Load from server path (replaces the base64 preview)
-          setProfilePic(data.path);
-          showToast('Profile picture updated!', 'success');
-        } else {
-          showToast(data.message || 'Upload failed.', 'error');
-        }
-      })
-      .catch(() => showToast('Upload failed. Check your connection.', 'error'));
+      fetch('../PHP/upload_picture.php', { method: 'POST', body: formData })
+        .then(r => r.json())
+        .then(data => {
+          if (data.status === 'success') {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+            user.profilePicture = data.path;
+            localStorage.setItem('loggedInUser', JSON.stringify(user));
+            setProfilePic(data.path);
+            showToast('Profile picture updated!', 'success');
+          } else {
+            showToast(data.message || 'Upload failed.', 'error');
+          }
+        })
+        .catch(() => showToast('Upload failed. Check your connection.', 'error'));
     });
 
     // ================================================
@@ -293,16 +627,11 @@ function setProfilePic(src) {
             username       : data.username,
             contact        : data.contact,
             address        : data.address,
-            // Server path takes priority; fall back to whatever is in localStorage
             profilePicture : data.profile_picture || local.profilePicture || ''
           });
           localStorage.setItem('loggedInUser', JSON.stringify(merged));
           populateFields(merged);
-
-          // Always attempt to set profile pic from merged data
-          if (merged.profilePicture) {
-            setProfilePic(merged.profilePicture);
-          }
+          if (merged.profilePicture) setProfilePic(merged.profilePicture);
         } else {
           loadFromLocalStorage();
         }
@@ -441,7 +770,6 @@ function setProfilePic(src) {
       clearPwFields();
     });
 
-    // Show / hide toggle
     document.querySelectorAll('.pw-toggle').forEach(btn => {
       btn.addEventListener('click', () => {
         const input = document.getElementById(btn.dataset.target);
@@ -456,7 +784,6 @@ function setProfilePic(src) {
       });
     });
 
-    // Strength meter
     document.getElementById('newPw').addEventListener('input', function () {
       const val   = this.value;
       const fill  = document.getElementById('pwStrengthFill');
@@ -488,16 +815,13 @@ function setProfilePic(src) {
       const confirmPw = document.getElementById('confirmPw').value;
 
       if (!currentPw || !newPw || !confirmPw) {
-        showToast('Please fill in all password fields.', 'error');
-        return;
+        showToast('Please fill in all password fields.', 'error'); return;
       }
       if (newPw !== confirmPw) {
-        showToast('New passwords do not match.', 'error');
-        return;
+        showToast('New passwords do not match.', 'error'); return;
       }
       if (newPw.length < 6) {
-        showToast('Password must be at least 6 characters.', 'error');
-        return;
+        showToast('Password must be at least 6 characters.', 'error'); return;
       }
 
       savePwBtn.disabled = true;
@@ -542,6 +866,213 @@ function setProfilePic(src) {
     }
 
     // ================================================
+    // TAB SWITCHING — Info vs Orders
+    // ================================================
+    let _currentOrderFilter = 'All';
+
+    function switchAccountTab(tab) {
+      const infoPanel   = document.getElementById('infoPanel');
+      const ordersPanel = document.getElementById('ordersPanel');
+      const tabInfo     = document.getElementById('tabInfo');
+      const tabOrders   = document.getElementById('tabOrders');
+
+      if (tab === 'orders') {
+        infoPanel.classList.add('hidden');
+        ordersPanel.classList.remove('hidden');
+        tabInfo.classList.remove('active-order-tab');
+        tabOrders.classList.add('active-order-tab');
+        _currentOrderFilter = 'All';
+        loadOrderHistory();
+      } else {
+        infoPanel.classList.remove('hidden');
+        ordersPanel.classList.add('hidden');
+        tabInfo.classList.add('active-order-tab');
+        tabOrders.classList.remove('active-order-tab');
+      }
+    }
+
+    // ================================================
+    // ORDER HISTORY
+    // ================================================
+    function getStatusClass(status) {
+      const map = {
+        'Pending'    : 'oc-status-pending',
+        'Received'   : 'oc-status-received',
+        'In Progress': 'oc-status-inprogress',
+        'Ready'      : 'oc-status-ready',
+        'Completed'  : 'oc-status-completed'
+      };
+      return map[status] || 'oc-status-pending';
+    }
+
+    function loadOrderHistory() {
+      const list        = document.getElementById('orderHistoryList');
+      const statsStrip  = document.getElementById('orderStatsStrip');
+      const filterBar   = document.getElementById('orderFilterBar');
+      if (!list) return;
+
+      // Get logged-in user
+      const user     = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+      const userName = (user.fullname || user.name || '').toLowerCase().trim();
+      const userEmail= (user.email || '').toLowerCase().trim();
+
+      if (!userName && !userEmail) {
+        list.innerHTML = `
+          <div class="no-orders-msg">
+            <i class="fas fa-user-slash"></i>
+            <span>Could not identify your account. Please log in again.</span>
+          </div>`;
+        return;
+      }
+
+      // Pull all orders from localStorage
+      const allOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+      // Match by name (primary) or email (fallback)
+      const myOrders = allOrders.filter(o => {
+        const oName  = (o.name  || '').toLowerCase().trim();
+        const oEmail = (o.email || '').toLowerCase().trim();
+        return (userName && oName === userName) || (userEmail && oEmail === userEmail);
+      });
+
+      // Build stats
+      const total     = myOrders.length;
+      const completed = myOrders.filter(o => o.status === 'Completed').length;
+      const pending   = myOrders.filter(o => ['Pending','Received','In Progress','Ready'].includes(o.status)).length;
+      const totalSpent= myOrders.filter(o => o.status === 'Completed')
+                                .reduce((s, o) => s + Number(o.amount || 0), 0);
+
+      // Render stats strip
+      statsStrip.innerHTML = `
+        <div class="order-stat-pill">
+          <div class="osp-num">${total}</div>
+          <div class="osp-label">Total</div>
+        </div>
+        <div class="order-stat-pill">
+          <div class="osp-num">${pending}</div>
+          <div class="osp-label">Active</div>
+        </div>
+        <div class="order-stat-pill">
+          <div class="osp-num">${completed}</div>
+          <div class="osp-label">Done</div>
+        </div>
+        <div class="order-stat-pill">
+          <div class="osp-num" style="font-size:16px;">₱${totalSpent.toLocaleString()}</div>
+          <div class="osp-label">Spent</div>
+        </div>`;
+
+      if (!myOrders.length) {
+        filterBar.innerHTML = '';
+        list.innerHTML = `
+          <div class="no-orders-msg">
+            <i class="fas fa-tshirt"></i>
+            <span>No orders found yet.</span>
+            <a href="../HTML/booknow.html">Book your first laundry now!</a>
+          </div>`;
+        return;
+      }
+
+      // Build filter bar
+      const statuses = ['All', 'Pending', 'Received', 'In Progress', 'Ready', 'Completed'];
+      filterBar.innerHTML = statuses.map(s => `
+        <button class="order-filter-pill${_currentOrderFilter === s ? ' of-active' : ''}"
+          onclick="filterOrders('${s}')">${s}</button>
+      `).join('');
+
+      renderOrderCards(myOrders);
+    }
+
+    function filterOrders(status) {
+      _currentOrderFilter = status;
+      // Re-highlight filter buttons
+      document.querySelectorAll('.order-filter-pill').forEach(btn => {
+        btn.classList.toggle('of-active', btn.textContent.trim() === status);
+      });
+
+      const user     = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+      const userName = (user.fullname || user.name || '').toLowerCase().trim();
+      const userEmail= (user.email || '').toLowerCase().trim();
+      const allOrders= JSON.parse(localStorage.getItem('orders') || '[]');
+      const myOrders = allOrders.filter(o => {
+        const oName  = (o.name  || '').toLowerCase().trim();
+        const oEmail = (o.email || '').toLowerCase().trim();
+        return (userName && oName === userName) || (userEmail && oEmail === userEmail);
+      });
+
+      renderOrderCards(myOrders);
+    }
+
+    function renderOrderCards(myOrders) {
+      const list = document.getElementById('orderHistoryList');
+
+      // Apply filter
+      const filtered = _currentOrderFilter === 'All'
+        ? myOrders
+        : myOrders.filter(o => o.status === _currentOrderFilter);
+
+      if (!filtered.length) {
+        list.innerHTML = `
+          <div class="no-orders-msg">
+            <i class="fas fa-filter"></i>
+            <span>No orders with status "<strong>${_currentOrderFilter}</strong>".</span>
+          </div>`;
+        return;
+      }
+
+      // Sort newest first
+      const sorted = filtered.slice().sort((a, b) =>
+        new Date(b.date || 0) - new Date(a.date || 0)
+      );
+
+      list.innerHTML = sorted.map(o => {
+        const statusLabel = o.status || 'Pending';
+        const statusCls   = getStatusClass(statusLabel);
+        const payType     = (o.payment || 'Cash').toLowerCase();
+        const payIcon     = payType === 'gcash' ? 'fa-mobile-screen-button' : 'fa-money-bill-wave';
+        const dateStr     = o.date
+          ? new Date(o.date).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })
+          : '—';
+
+        return `
+          <div class="order-card">
+            <div>
+              <div class="order-card-ticket">
+                <i class="fas fa-ticket-alt"></i> Ticket #${o.ticket || '—'}
+              </div>
+              <div class="order-card-service">${o.service || 'Laundry Service'}</div>
+              <div class="order-card-meta">
+                ${o.soap    ? `<span><i class="fas fa-soap"></i> ${o.soap}</span>` : ''}
+                ${o.fabcon  ? `<span><i class="fas fa-spray-can"></i> ${o.fabcon}</span>` : ''}
+                <span><i class="fas fa-truck"></i> ${o.pickupType || 'Store Pickup'}</span>
+                <span><i class="fas fa-calendar-alt"></i> ${dateStr}</span>
+                <span>
+                  <span class="pay-badge-small ${payType}">
+                    <i class="fas ${payIcon}"></i> ${o.payment || 'Cash'}
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <div class="order-card-right">
+              <div class="order-card-amount">₱${Number(o.amount || 0).toLocaleString()}</div>
+              <div class="order-card-status ${statusCls}">${statusLabel}</div>
+            </div>
+
+            <div class="order-card-track">
+              <div class="order-card-track-left">
+                ${o.kg ? `<strong>${o.kg} kg</strong> · ` : ''}
+                ${o.quantity > 1 ? `<strong>${o.quantity} orders</strong> · ` : ''}
+                ${o.pickup ? `<strong>${o.pickup}</strong>` : ''}
+              </div>
+              <a href="../HTML/tracklaundry.html?ticket=${o.ticket}">
+                <i class="fas fa-search"></i> Track Order
+              </a>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    // ================================================
     // TOAST NOTIFICATIONS
     // ================================================
     function showToast(message, type = 'success') {
@@ -572,6 +1103,16 @@ function setProfilePic(src) {
         window.location.href = '../HTML/login.html';
       }
     });
+
+    // ================================================
+    // CHECK URL PARAM — auto-open orders tab if ?tab=orders
+    // ================================================
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('tab') === 'orders') {
+        switchAccountTab('orders');
+      }
+    })();
   </script>
 
 </body>

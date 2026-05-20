@@ -49,13 +49,10 @@ let orderQuantity = 1;
 let kg            = 1;
 let deliveryFee   = 0;
 
-// Carousel: which 3-card page is currently shown per step
-// Each step has 6 items → 2 pages (0 = items 0-2, 1 = items 3-5)
 const carouselPage = { 1: 0, 2: 0, 3: 0 };
 
 // =====================================================
 // USER SELECTIONS
-// Step 4 (Pickup Schedule) removed — now a form dropdown
 // =====================================================
 const selections = {
   1: [],   // soaps (multiple)
@@ -65,7 +62,6 @@ const selections = {
 
 // =====================================================
 // STEP CONTENTS
-// Pickup Schedule removed from stepContents
 // =====================================================
 const stepContents = {
   1: {
@@ -87,12 +83,12 @@ const stepContents = {
     text: "Choose your preferred fabric conditioner. You may select multiple.",
     multi: true,
     items: [
-      { name: "Downy",       img: "../img/downy.jpg", price: 30, desc: "Softens with a lasting fresh fragrance." },
-      { name: "Del",         img: "../img/del.jpg",   price: 20, desc: "Gentle conditioner for smooth, soft fabrics." },
-      { name: "Champion",    img: "../img/champ.jpg", price: 22, desc: "Long-lasting scent all day long." },
-      { name: "Surf Fabcon", img: "../img/serf.jpg",  price: 18, desc: "Fresh scent with softening care." },
-      { name: "Lala Fabcon", img: "../img/lala.jpg",  price: 15, desc: "Mild and budget-friendly conditioner." },
-      { name: "Personal Choice", img: "../img/personal.jpg", price: 0, desc: "Bring your own fabric conditioner." }
+      { name: "Downy",           img: "../img/downy.jpg",    price: 30, desc: "Softens with a lasting fresh fragrance." },
+      { name: "Del",             img: "../img/del.jpg",      price: 20, desc: "Gentle conditioner for smooth, soft fabrics." },
+      { name: "Champion",        img: "../img/champ.jpg",    price: 22, desc: "Long-lasting scent all day long." },
+      { name: "Surf Fabcon",     img: "../img/serf.jpg",     price: 18, desc: "Fresh scent with softening care." },
+      { name: "Lala Fabcon",     img: "../img/lala.jpg",     price: 15, desc: "Mild and budget-friendly conditioner." },
+      { name: "Personal Choice", img: "../img/personal.jpg", price: 0,  desc: "Bring your own fabric conditioner." }
     ]
   },
 
@@ -119,7 +115,7 @@ const paymentItems = [
 let selectedPayment = "Cash";
 
 // =====================================================
-// SIDEBAR — 4 steps (no pickup)
+// SIDEBAR — 4 steps
 // =====================================================
 const sidebarMeta = [
   { label: "Laundry Soap",       hint: "Step 1" },
@@ -193,11 +189,11 @@ function updateTotalLive() {
 }
 
 // =====================================================
-// CAROUSEL — one click = jump a full page of 3 cards
+// CAROUSEL
 // =====================================================
 function applyCarousel(step) {
-  const track  = document.getElementById(`track-${step}`);
-  const winEl  = document.getElementById(`win-${step}`);
+  const track   = document.getElementById(`track-${step}`);
+  const winEl   = document.getElementById(`win-${step}`);
   const prevBtn = document.getElementById(`prev-${step}`);
   const nextBtn = document.getElementById(`next-${step}`);
   const dotsEl  = document.getElementById(`dots-${step}`);
@@ -207,10 +203,9 @@ function applyCarousel(step) {
   const pages = Math.ceil(total / 3);
   const page  = carouselPage[step];
 
-  // Calculate shift: 3 cards + 2 gaps per page
   const winW  = winEl.offsetWidth;
-  const cardW = (winW - 28) / 3;          // 28 = 2 gaps × 14px
-  const shift = page * ((cardW + 14) * 3); // jump 3 cards at a time
+  const cardW = (winW - 28) / 3;
+  const shift = page * ((cardW + 14) * 3);
 
   track.style.transform = `translateX(-${shift}px)`;
 
@@ -388,7 +383,7 @@ function usePersonalChoice(step) {
 }
 
 // =====================================================
-// SCROLL SYNC — sidebar active step follows scroll
+// SCROLL SYNC
 // =====================================================
 let _observer = null;
 
@@ -419,7 +414,6 @@ function initScrollSync() {
     if (el) _observer.observe(el);
   }
 
-  // Proceed / confirm section → highlight step 4
   const proceed = document.getElementById('section-proceed');
   if (proceed) {
     const o2 = new IntersectionObserver(entries => {
@@ -430,7 +424,7 @@ function initScrollSync() {
 }
 
 // =====================================================
-// RENDER ALL STEPS (3 product steps only)
+// RENDER ALL STEPS
 // =====================================================
 function renderAllSteps() {
   const content = document.getElementById('bookContent');
@@ -588,7 +582,7 @@ function renderConfirmation() {
         <div class="qty-control">
           <button onclick="changeQty(-1)" ${orderQuantity <= 1 ? 'disabled' : ''}>&#8722;</button>
           <input type="text" id="qtyDisplay" value="${orderQuantity}" readonly>
-          <button onclick="changeQty(1)">&#43;</button>
+          <button onclick="changeQty(1)" ${orderQuantity >= 4 ? 'disabled' : ''}>&#43;</button>
         </div>
 
         <div style="background:#fff9e6;border:1.5px solid #f5d87a;border-radius:9px;padding:12px 14px;font-size:12px;color:#7a5c00;margin-top:16px;line-height:1.6;">
@@ -664,17 +658,17 @@ function goBack() {
 // CONFIRMATION HELPERS
 // =====================================================
 function toggleDelivery(val)      { deliveryFee = val === 'delivery' ? 40 : 0; updateTotalLive(); }
-function updateKg(val)             { kg = Math.max(1, parseInt(val) || 1); renderConfirmation(); }
-function changeQty(delta)          { orderQuantity = Math.max(1, orderQuantity + delta); const d = document.getElementById('qtyDisplay'); if (d) d.value = orderQuantity; updateTotalLive(); }
-function selectPayment(name)       { selectedPayment = name; document.querySelectorAll('.payment-option').forEach(el => el.classList.toggle('selected', el.getAttribute('onclick')?.includes(`'${name}'`))); updateTotalLive(); }
+function updateKg(val)            { kg = Math.max(1, parseInt(val) || 1); renderConfirmation(); }
+function changeQty(delta)         { orderQuantity = Math.min(4, Math.max(1, orderQuantity + delta)); const d = document.getElementById('qtyDisplay'); if (d) d.value = orderQuantity; updateTotalLive(); }
+function selectPayment(name)      { selectedPayment = name; document.querySelectorAll('.payment-option').forEach(el => el.classList.toggle('selected', el.getAttribute('onclick')?.includes(`'${name}'`))); updateTotalLive(); }
 function updateSingleSelection(step, value) { const item = stepContents[step].items.find(i => i.name === value); if (item) selections[step] = item; updateTotalLive(); }
 function confirmRemoveItem(step, name)      { selections[step] = selections[step].filter(i => i.name !== name); renderConfirmation(); }
 function confirmChangeQty(step, name, delta){ const item = selections[step].find(i => i.name === name); if (item) item.qty = Math.max(1, item.qty + delta); renderConfirmation(); }
 
-// =====================================================
-// CONF QTY BTN style (used inline in confirmation HTML)
-// =====================================================
-// Appended via renderConfirmation — no separate element needed
+function updateStepUI() {
+  // Refresh visible prices after pricing update without full re-render
+  if (!isConfirmed) renderAllSteps();
+}
 
 // =====================================================
 // FINAL ORDER
@@ -689,6 +683,23 @@ function confirmFinalOrder() {
   if (selections[2].length === 0) { alert('Fabric conditioner is empty. Please go back.'); return; }
   if (!selections[3])             { alert('No wash type selected. Please go back.'); return; }
 
+  // If GCash, open modal first; Cash goes directly to finalize
+  if (selectedPayment === 'GCash') {
+    openGcashModal();
+  } else {
+    finalizeOrder();
+  }
+}
+
+// =====================================================
+// FIX: finalizeOrder — handles BOTH Cash and GCash
+// Cash: saves immediately with payment:'Cash'
+// GCash: called from submitGcashPayment() after modal
+// =====================================================
+function finalizeOrder() {
+  const name          = document.getElementById('custName')?.value?.trim();
+  const address       = document.getElementById('custAddress')?.value?.trim();
+  const schedule      = document.getElementById('pickupSchedule')?.value || 'Morning';
   const expressCharge = schedule === 'Express' ? 50 : 0;
   const ticketNumber  = Math.floor(100 + Math.random() * 900).toString();
 
@@ -700,23 +711,39 @@ function confirmFinalOrder() {
     soap:       selections[1].map(i => `${i.name} x${i.qty}`).join(', '),
     fabcon:     selections[2].map(i => `${i.name} x${i.qty}`).join(', '),
     pickup:     schedule,
+    // ── FIX: always store proper case "Cash" or "GCash" ──
     payment:    selectedPayment,
     kg,
     quantity:   orderQuantity,
     amount:     getTotal() + expressCharge,
     status:     'Pending',
-    pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup'
+    pickupType: deliveryFee === 40 ? 'Home Delivery' : 'Store Pickup',
+    date:       new Date().toISOString()
   };
 
+  // ── FIX: Attach GCash details if payment is GCash ──
+  if (selectedPayment === 'GCash' && window._gcashPaymentDetails) {
+    newOrder.gcash = window._gcashPaymentDetails;
+    window._gcashPaymentDetails = null;
+  }
+
+  // Deduct stocks
+  deductStocksFromOrder(newOrder);
+
+  // Save to localStorage
   const orders = JSON.parse(localStorage.getItem('orders') || '[]');
   orders.push(newOrder);
   localStorage.setItem('orders', JSON.stringify(orders));
 
+  // Try to save to backend
   fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php', {
-    method: 'POST',
+    method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newOrder)
-  }).then(r => r.json()).then(d => console.log('Saved to DB:', d)).catch(e => console.log('DB Error:', e));
+    body:    JSON.stringify(newOrder)
+  })
+    .then(r => r.json())
+    .then(d => console.log('Saved to DB:', d))
+    .catch(e => console.log('DB Error (order still saved locally):', e));
 
   alert(
     `ORDER CONFIRMED!\n\nTicket: #${ticketNumber}\nCustomer: ${name}\nTotal: ₱${newOrder.amount.toLocaleString()}\n\nYou can now track your laundry.`
@@ -725,7 +752,56 @@ function confirmFinalOrder() {
 }
 
 // =====================================================
-// STEP BOX CLICKS (for kiosk layout steps panel)
+// STOCK DEDUCTION
+// =====================================================
+function deductStocksFromOrder(order) {
+  try {
+    const stocks = JSON.parse(localStorage.getItem('laundryStocks') || '{}');
+
+    const soapKeys = [
+      { name: 'Ariel',  key: 'stock-soap-ariel'  },
+      { name: 'Tide',   key: 'stock-soap-tide'   },
+      { name: 'Breeze', key: 'stock-soap-breeze' },
+      { name: 'Surf',   key: 'stock-soap-surf'   },
+      { name: 'Pride',  key: 'stock-soap-pride'  },
+      { name: 'Wings',  key: 'stock-soap-wings'  },
+    ];
+
+    const fabconKeys = [
+      { name: 'Downy',         key: 'stock-fabcon-downy'           },
+      { name: 'Del',           key: 'stock-fabcon-del'             },
+      { name: 'Champion',      key: 'stock-fabcon-champion'        },
+      { name: 'Surf Fabcon',   key: 'stock-fabcon-surf-fabcon'     },
+      { name: 'Lala Fabcon',   key: 'stock-fabcon-lala-fabcon'     },
+      { name: 'Del Gentle',    key: 'stock-fabcon-personal-choice' },
+    ];
+
+    selections[1].forEach(selectedItem => {
+      if (selectedItem.name === 'Personal Choice') return;
+      const mapping = soapKeys.find(m => m.name === selectedItem.name);
+      if (!mapping) return;
+      const current = parseInt(stocks[mapping.key] || 0);
+      stocks[mapping.key] = Math.max(0, current - (selectedItem.qty || 1));
+    });
+
+    selections[2].forEach(selectedItem => {
+      if (selectedItem.name === 'Personal Choice') return;
+      const mapping = fabconKeys.find(m => m.name === selectedItem.name);
+      if (!mapping) return;
+      const current = parseInt(stocks[mapping.key] || 0);
+      stocks[mapping.key] = Math.max(0, current - (selectedItem.qty || 1));
+    });
+
+    localStorage.setItem('laundryStocks', JSON.stringify(stocks));
+    window.dispatchEvent(new CustomEvent('stocksUpdated', { detail: stocks }));
+    console.log('✅ Stocks deducted:', stocks);
+  } catch (e) {
+    console.error('Stock deduction error:', e);
+  }
+}
+
+// =====================================================
+// STEP BOX CLICKS
 // =====================================================
 function activateStepClicks() {
   const stepBoxes = document.querySelectorAll('.step-box');
