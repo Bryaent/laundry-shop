@@ -26,41 +26,47 @@ if (backBtn) {
 }
 
 // SUBMIT FORM
+// SUBMIT FORM  (replace the entire inquiryForm addEventListener block)
 if (inquiryForm) {
   inquiryForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const fullName = inquiryForm.querySelector('[name="full_name"]').value;
-    const email = inquiryForm.querySelector('[name="email"]').value;
-    const contact = inquiryForm.querySelector('[name="contact"]').value;
-    const message = inquiryForm.querySelector('[name="message"]').value;
+    const full_name = inquiryForm.querySelector('[name="full_name"]').value.trim();
+    const email     = inquiryForm.querySelector('[name="email"]').value.trim();
+    const contact   = inquiryForm.querySelector('[name="contact"]').value.trim();
+    const message   = inquiryForm.querySelector('[name="message"]').value.trim();
 
     submitBtn.innerText = "Sending...";
-    submitBtn.disabled = true;
+    submitBtn.disabled  = true;
 
-    setTimeout(() => {
-
-      let inquiries = JSON.parse(localStorage.getItem("inquiries")) || [];
-
-      inquiries.push({
-        fullName,
-        email,
-        contact,
-        message,
-        date: new Date().toLocaleString()
+    fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/inquiries.php', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ full_name, email, contact, message }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          inquiryForm.reset();
+          franchiseForm.style.display = 'none';
+          thankYou.style.display      = 'flex';
+        } else {
+          alert('Failed to send inquiry. Please try again.');
+        }
+      })
+      .catch(() => {
+        // Fallback: save to localStorage if DB is unreachable
+        let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+        inquiries.push({ fullName: full_name, email, contact, message, date: new Date().toLocaleString() });
+        localStorage.setItem('inquiries', JSON.stringify(inquiries));
+        inquiryForm.reset();
+        franchiseForm.style.display = 'none';
+        thankYou.style.display      = 'flex';
+      })
+      .finally(() => {
+        submitBtn.innerText = "SEND INQUIRY";
+        submitBtn.disabled  = false;
       });
-
-      localStorage.setItem("inquiries", JSON.stringify(inquiries));
-
-      inquiryForm.reset();
-
-      franchiseForm.style.display = 'none';
-      thankYou.style.display = 'flex';
-
-      submitBtn.innerText = "SEND INQUIRY";
-      submitBtn.disabled = false;
-
-    }, 800);
   });
 }
 

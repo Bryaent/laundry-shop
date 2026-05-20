@@ -1,6 +1,5 @@
-const ordersTable          = document.querySelector("#ordersBody");
-const completedOrdersTable = document.querySelector("#completedOrdersBody");
-
+const ordersTable          = document.querySelector('#ordersBody');
+const completedOrdersTable = document.querySelector('#completedOrdersBody');
 let orders = [];
 
 // ══════════════════════════════════════════════════════
@@ -25,14 +24,14 @@ const COMPLETED_PER_PAGE = 10;
 // LOAD ORDERS + LIVE POLLING
 // ══════════════════════════════════════════════════════
 function loadOrders() {
-  fetch('http://localhost:3000/laundry-shop/FINALWEBSITE/PHP/orders.php')
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php')
     .then(res => res.json())
     .then(data => {
       orders = data.map(serverOrder => {
         const local = orders.find(o => o.id === serverOrder.id || o.ticket === serverOrder.ticket);
         return {
           ...serverOrder,
-          status:        serverOrder.status   || 'Pending',
+          status:        serverOrder.status || 'Pending',
           wasReady:      local ? local.wasReady      : (serverOrder.wasReady === true),
           completedDate: local ? local.completedDate : serverOrder.completedDate,
           month:         local ? local.month         : serverOrder.month,
@@ -46,7 +45,6 @@ function loadOrders() {
     })
     .catch(() => {
       const saved = JSON.parse(localStorage.getItem('orders') || '[]');
-      // Merge: preserve in-memory status fields for existing orders
       saved.forEach(savedOrder => {
         const exists = orders.find(o => o.ticket === savedOrder.ticket);
         if (!exists) {
@@ -58,7 +56,6 @@ function loadOrders() {
       refreshPaymentsIfActive();
     });
 }
-
 loadOrders();
 setInterval(loadOrders, 5000);
 
@@ -82,10 +79,8 @@ function refreshPaymentsIfActive() {
 function renderStatusFilterBar() {
   const existing = document.getElementById('statusFilterBar');
   if (existing) return;
-
   const liveSection = document.querySelector('#orders .table-section');
   if (!liveSection) return;
-
   const statuses = ['All', 'Pending', 'Received', 'In Progress', 'Ready'];
   const bar = document.createElement('div');
   bar.id = 'statusFilterBar';
@@ -96,40 +91,37 @@ function renderStatusFilterBar() {
     border:1.5px solid rgba(0,100,200,0.12);
     box-shadow:0 2px 10px rgba(0,50,120,0.06);
   `;
-
   const label = document.createElement('span');
   label.textContent = 'Filter by Status:';
   label.style.cssText = 'font-size:12px;font-weight:800;color:#5a7194;text-transform:uppercase;letter-spacing:0.1em;margin-right:4px;';
   bar.appendChild(label);
-
   statuses.forEach(status => {
     const btn = document.createElement('button');
     btn.textContent = status;
     btn.dataset.status = status;
-    btn.className = 'status-filter-btn' + (status === activeStatusFilter ? ' sf-active' : '');
+    btn.className  = 'status-filter-btn' + (status === activeStatusFilter ? ' sf-active' : '');
     btn.style.cssText = getFilterBtnStyle(status, status === activeStatusFilter);
     btn.onclick = () => {
       activeStatusFilter = status;
       document.querySelectorAll('.status-filter-btn').forEach(b => {
         const s = b.dataset.status;
-        b.className = 'status-filter-btn' + (s === status ? ' sf-active' : '');
+        b.className   = 'status-filter-btn' + (s === status ? ' sf-active' : '');
         b.style.cssText = getFilterBtnStyle(s, s === status);
       });
       renderOrders();
     };
     bar.appendChild(btn);
   });
-
   liveSection.insertBefore(bar, liveSection.querySelector('.section-header').nextSibling);
 }
 
 function getFilterBtnStyle(status, active) {
   const colorMap = {
-    'All':         { bg: '#0077cc', shadow: 'rgba(0,119,204,0.3)' },
+    'All':         { bg: '#0077cc', shadow: 'rgba(0,119,204,0.3)'  },
     'Pending':     { bg: '#f59e0b', shadow: 'rgba(245,158,11,0.3)' },
     'Received':    { bg: '#6366f1', shadow: 'rgba(99,102,241,0.3)' },
     'In Progress': { bg: '#3b82f6', shadow: 'rgba(59,130,246,0.3)' },
-    'Ready':       { bg: '#10b981', shadow: 'rgba(16,185,129,0.3)' }
+    'Ready':       { bg: '#10b981', shadow: 'rgba(16,185,129,0.3)' },
   };
   const c = colorMap[status] || colorMap['All'];
   if (active) {
@@ -147,19 +139,17 @@ function getFilterBtnStyle(status, active) {
 // ══════════════════════════════════════════════════════
 function renderOrders() {
   if (!ordersTable || !completedOrdersTable) return;
-
   renderStatusFilterBar();
-
   ordersTable.innerHTML          = '';
   completedOrdersTable.innerHTML = '';
 
-  const totalOrders    = orders.length;
-  const completedCount = orders.filter(o => o.status === 'Completed').length;
-  const pendingCount   = orders.filter(o => o.status === 'Pending').length;
+  const totalOrders     = orders.length;
+  const completedCount  = orders.filter(o => o.status === 'Completed').length;
+  const pendingCount    = orders.filter(o => o.status === 'Pending').length;
   const inProgressCount = orders.filter(o => o.status === 'In Progress').length;
-  const readyCount     = orders.filter(o => o.status === 'Ready').length;
-  const receivedCount  = orders.filter(o => o.status === 'Received').length;
-  const totalRevenue   = orders
+  const readyCount      = orders.filter(o => o.status === 'Ready').length;
+  const receivedCount   = orders.filter(o => o.status === 'Received').length;
+  const totalRevenue    = orders
     .filter(o => o.status === 'Completed')
     .reduce((sum, o) => sum + Number(o.amount || 0), 0);
 
@@ -171,34 +161,23 @@ function renderOrders() {
   if (el('card-total-revenue')) el('card-total-revenue').innerText = `₱${totalRevenue.toLocaleString()}`;
 
   // ── Update extra info sub-labels if they exist ──
-  if (el('card-orders-sub'))   el('card-orders-sub').innerText   = `${completedCount} completed · ${pendingCount} pending`;
-  if (el('card-revenue-sub'))  el('card-revenue-sub').innerText  = `From ${completedCount} completed order${completedCount !== 1 ? 's' : ''}`;
-  if (el('card-pending-sub'))  el('card-pending-sub').innerText  = `${inProgressCount} in progress · ${readyCount} ready`;
+  if (el('card-orders-sub'))    el('card-orders-sub').innerText    = `${completedCount} completed · ${pendingCount} pending`;
+  if (el('card-revenue-sub'))   el('card-revenue-sub').innerText   = `From ${completedCount} completed order${completedCount !== 1 ? 's' : ''}`;
+  if (el('card-pending-sub'))   el('card-pending-sub').innerText   = `${inProgressCount} in progress · ${readyCount} ready`;
   if (el('card-completed-sub')) el('card-completed-sub').innerText = `${receivedCount} received · ${completedCount} done`;
 
   updateRevenueSummaryCards();
 
   let hasLive = false;
-
   orders.forEach((o, i) => {
     if (o.status === 'Completed') return;
-
     const currentStatus = o.status || 'Pending';
     if (activeStatusFilter !== 'All' && currentStatus !== activeStatusFilter) return;
-
     hasLive = true;
     const tr          = document.createElement('tr');
     const pickup      = o.pickupType || o.delivery || 'Store Pickup';
     const statusClass = currentStatus.toLowerCase().replace(/\s+/g, '');
-
-    // ─────────────────────────────────────────────────────────
-    // FIX: Order status buttons — each button calls updateStatus
-    // directly with onclick. All four buttons are always rendered
-    // but only the logically valid next-step button is highlighted.
-    // Complete is locked until wasReady === true.
-    // ─────────────────────────────────────────────────────────
     const completeLocked = canComplete(o) ? '' : 'disabled title="Mark Ready first before completing"';
-
     tr.innerHTML = `
       <td><input type="checkbox" class="select-checkbox order-checkbox" data-index="${i}"></td>
       <td>${o.ticket  || ''}</td>
@@ -209,11 +188,11 @@ function renderOrders() {
       <td><span class="status ${statusClass}">${currentStatus}</span></td>
       <td>${pickup}</td>
       <td>
-        <button class="action-btn received-btn"  onclick="updateStatus(${i},'Received')">Received</button>
-        <button class="action-btn progress-btn"  onclick="updateStatus(${i},'In Progress')">In Progress</button>
-        <button class="action-btn ready-btn"     onclick="updateStatus(${i},'Ready')">Ready</button>
-        <button class="action-btn complete-btn"  onclick="updateStatus(${i},'Completed')" ${completeLocked}>Complete</button>
-        <button class="action-btn delete-btn"    onclick="deleteOrder(${i})">Delete</button>
+        <button class="action-btn received-btn" onclick="updateStatus(${i},'Received')">Received</button>
+        <button class="action-btn progress-btn" onclick="updateStatus(${i},'In Progress')">In Progress</button>
+        <button class="action-btn ready-btn"    onclick="updateStatus(${i},'Ready')">Ready</button>
+        <button class="action-btn complete-btn" onclick="updateStatus(${i},'Completed')" ${completeLocked}>Complete</button>
+        <button class="action-btn delete-btn"   onclick="deleteOrder(${i})">Delete</button>
       </td>
     `;
     ordersTable.appendChild(tr);
@@ -247,7 +226,7 @@ function renderCompletedOrders() {
 
   const totalPages = Math.max(1, Math.ceil(completedOrders.length / COMPLETED_PER_PAGE));
   if (completedPage > totalPages) completedPage = totalPages;
-  if (completedPage < 1) completedPage = 1;
+  if (completedPage < 1)         completedPage = 1;
 
   const start     = (completedPage - 1) * COMPLETED_PER_PAGE;
   const pageItems = completedOrders.slice(start, start + COMPLETED_PER_PAGE);
@@ -287,46 +266,44 @@ function renderCompletedOrders() {
 // ══════════════════════════════════════════════════════
 function renderPagination(current, total, totalItems) {
   removePagination();
-
-  const sections = document.querySelectorAll('#orders .table-section');
+  const sections         = document.querySelectorAll('#orders .table-section');
   const completedSection = sections[sections.length - 1];
   if (!completedSection) return;
 
   const wrap = document.createElement('div');
-  wrap.id = 'completedPagination';
+  wrap.id        = 'completedPagination';
   wrap.className = 'pagination-wrap';
 
-  const info = document.createElement('span');
-  info.className = 'pagination-info';
-  const start = (current - 1) * COMPLETED_PER_PAGE + 1;
-  const end   = Math.min(current * COMPLETED_PER_PAGE, totalItems);
-  info.innerHTML = `<i class="fa-solid fa-list-check"></i> Showing ${start}–${end} of ${totalItems} completed orders`;
+  const info       = document.createElement('span');
+  info.className   = 'pagination-info';
+  const start      = (current - 1) * COMPLETED_PER_PAGE + 1;
+  const end        = Math.min(current * COMPLETED_PER_PAGE, totalItems);
+  info.innerHTML   = `<i class="fa-solid fa-list-check"></i> Showing ${start}–${end} of ${totalItems} completed orders`;
 
-  const controls = document.createElement('div');
+  const controls   = document.createElement('div');
   controls.className = 'pagination-controls';
 
-  const prev = document.createElement('button');
+  const prev     = document.createElement('button');
   prev.className = current === 1 ? 'page-btn page-btn-disabled' : 'page-btn';
   prev.disabled  = current === 1;
   prev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
   prev.onclick   = () => { if (current > 1) { completedPage--; renderCompletedOrders(); } };
 
-  const pages = document.createElement('div');
-  pages.className = 'page-numbers';
-
-  let startPage = Math.max(1, current - 2);
-  let endPage   = Math.min(total, startPage + 4);
+  const pages      = document.createElement('div');
+  pages.className  = 'page-numbers';
+  let startPage    = Math.max(1, current - 2);
+  let endPage      = Math.min(total, startPage + 4);
   if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
 
   for (let p = startPage; p <= endPage; p++) {
-    const btn = document.createElement('button');
+    const btn       = document.createElement('button');
     btn.className   = p === current ? 'page-btn page-btn-active' : 'page-btn';
     btn.textContent = p;
-    btn.onclick = ((_p) => () => { completedPage = _p; renderCompletedOrders(); })(p);
+    btn.onclick     = ((_p) => () => { completedPage = _p; renderCompletedOrders(); })(p);
     pages.appendChild(btn);
   }
 
-  const next = document.createElement('button');
+  const next     = document.createElement('button');
   next.className = current === total ? 'page-btn page-btn-disabled' : 'page-btn';
   next.disabled  = current === total;
   next.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
@@ -335,7 +312,6 @@ function renderPagination(current, total, totalItems) {
   controls.appendChild(prev);
   controls.appendChild(pages);
   controls.appendChild(next);
-
   wrap.appendChild(info);
   wrap.appendChild(controls);
   completedSection.appendChild(wrap);
@@ -347,22 +323,17 @@ function removePagination() {
 }
 
 // ══════════════════════════════════════════════════════
-// UPDATE STATUS — FIX: saves to localStorage immediately
-// so status persists between polling cycles
+// UPDATE STATUS
 // ══════════════════════════════════════════════════════
 function updateStatus(i, status) {
   const order = orders[i];
   if (!order) return;
-
-  // Must go through Ready before Complete
-  if (status === 'Ready')     order.wasReady = true;
+  if (status === 'Ready') order.wasReady = true;
   if (status === 'Completed' && !canComplete(order)) {
     alert('Please mark the order as Ready before completing it.');
     return;
   }
-
   order.status = status;
-
   if (status === 'Completed') {
     const now           = new Date();
     order.completedDate = now.toISOString();
@@ -371,8 +342,16 @@ function updateStatus(i, status) {
     order.day           = now.toDateString();
     completedPage       = 1;
   }
+  // ── SYNC TO DATABASE ──
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: order.id, status: status }),
+  })
+    .then(res => res.json())
+    .then(data => { if (!data.success) console.error('Status update failed:', data); })
+    .catch(err => console.error('PUT error:', err));
 
-  // ── FIX: save immediately so polling doesn't overwrite ──
   localStorage.setItem('orders', JSON.stringify(orders));
   renderOrders();
   renderRevenueChart();
@@ -383,6 +362,17 @@ function updateStatus(i, status) {
 // ══════════════════════════════════════════════════════
 function deleteOrder(i) {
   if (!confirm('Delete this order?')) return;
+  const order = orders[i];
+  // ── SYNC TO DATABASE ──
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: order.id }),
+  })
+    .then(res => res.json())
+    .then(data => { if (!data.success) console.error('Delete failed:', data); })
+    .catch(err => console.error('DELETE error:', err));
+
   orders.splice(i, 1);
   localStorage.setItem('orders', JSON.stringify(orders));
   renderOrders();
@@ -401,6 +391,16 @@ function deleteCompletedOrder(i) {
     `Delete completed order ni ${name}?\n\n` +
     `Mababawas ang ₱${amount.toLocaleString()} sa total revenue.`
   )) return;
+
+  // ── SYNC TO DATABASE ──
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/orders.php', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: order.id }),
+  })
+    .then(res => res.json())
+    .then(data => { if (!data.success) console.error('Delete failed:', data); })
+    .catch(err => console.error('DELETE error:', err));
 
   orders.splice(i, 1);
   localStorage.setItem('orders', JSON.stringify(orders));
@@ -512,8 +512,7 @@ function updateRevenueSummaryCards() {
   const todayStr  = now.toDateString();
   const thisMonth = now.getMonth();
   const thisYear  = now.getFullYear();
-
-  const getD = o => o.completedDate ? new Date(o.completedDate) : null;
+  const getD      = o => o.completedDate ? new Date(o.completedDate) : null;
 
   const todayRev = done
     .filter(o => { const d = getD(o); return (d ? d.toDateString() : o.day || '') === todayStr; })
@@ -554,8 +553,9 @@ function renderRevenueChart() {
   let labels = [], data = [], label = '', borderColor, bgColor;
 
   if (currentRevenuePeriod === 'daily') {
-    label = 'Daily Revenue (Last 30 Days)';
-    borderColor = '#2563eb'; bgColor = 'rgba(37,99,235,0.1)';
+    label       = 'Daily Revenue (Last 30 Days)';
+    borderColor = '#2563eb';
+    bgColor     = 'rgba(37,99,235,0.1)';
     for (let d = 29; d >= 0; d--) {
       const day    = new Date(now);
       day.setDate(now.getDate() - d);
@@ -566,10 +566,11 @@ function renderRevenueChart() {
         .reduce((s, o) => s + Number(o.amount || 0), 0));
     }
   } else if (currentRevenuePeriod === 'monthly') {
-    label = `Monthly Revenue (${now.getFullYear()})`;
-    borderColor = '#7c3aed'; bgColor = 'rgba(124,58,237,0.1)';
-    labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    data   = new Array(12).fill(0);
+    label       = `Monthly Revenue (${now.getFullYear()})`;
+    borderColor = '#7c3aed';
+    bgColor     = 'rgba(124,58,237,0.1)';
+    labels      = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    data        = new Array(12).fill(0);
     done.forEach(o => {
       const d = o.completedDate ? new Date(o.completedDate) : null;
       const m = d ? d.getMonth()    : (o.month ?? now.getMonth());
@@ -577,8 +578,9 @@ function renderRevenueChart() {
       if (y === now.getFullYear()) data[m] += Number(o.amount || 0);
     });
   } else if (currentRevenuePeriod === 'yearly') {
-    label = 'Yearly Revenue';
-    borderColor = '#10b981'; bgColor = 'rgba(16,185,129,0.1)';
+    label       = 'Yearly Revenue';
+    borderColor = '#10b981';
+    bgColor     = 'rgba(16,185,129,0.1)';
     const yearMap = {};
     done.forEach(o => {
       const d = o.completedDate ? new Date(o.completedDate) : null;
@@ -602,22 +604,25 @@ function renderRevenueChart() {
       labels,
       datasets: [{
         label, data,
-        tension: 0.4, fill: true,
-        borderColor, backgroundColor: bgColor,
-        borderWidth: 4,
+        tension:         0.4,
+        fill:            true,
+        borderColor,
+        backgroundColor: bgColor,
+        borderWidth:          4,
         pointBackgroundColor: borderColor,
-        pointRadius: 5, pointHoverRadius: 8
-      }]
+        pointRadius:      5,
+        pointHoverRadius: 8,
+      }],
     },
     options: {
-      responsive: true,
+      responsive:          true,
       maintainAspectRatio: false,
       plugins: { legend: { labels: { font: { size: 14, weight: '700' } } } },
       scales: {
         y: { beginAtZero: true, ticks: { callback: v => `₱${v.toLocaleString()}`, font: { size: 13 } } },
-        x: { ticks: { font: { size: 12 } } }
-      }
-    }
+        x: { ticks: { font: { size: 12 } } },
+      },
+    },
   });
 
   updateRevenueSummaryCards();
@@ -627,36 +632,77 @@ function renderRevenueChart() {
 // INQUIRIES
 // ══════════════════════════════════════════════════════
 const inquiriesBody = document.querySelector('#inquiriesBody');
-let inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
 
-function renderInquiries() {
+function loadInquiries() {
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/inquiries.php')
+    .then(res => res.json())
+    .then(data => renderInquiries(data))
+    .catch(() => {
+      // Fallback to localStorage
+      const saved = JSON.parse(localStorage.getItem('inquiries') || '[]');
+      renderInquiries(saved.map((inq, i) => ({
+        id:         null,
+        full_name:  inq.fullName || '',
+        email:      inq.email    || '',
+        contact:    inq.contact  || '',
+        message:    inq.message  || '',
+        created_at: inq.date     || '',
+        _localIdx:  i,
+      })));
+    });
+}
+loadInquiries();
+
+function renderInquiries(data) {
   if (!inquiriesBody) return;
   inquiriesBody.innerHTML = '';
-  if (!inquiries.length) {
+  if (!data.length) {
     inquiriesBody.innerHTML = `
       <tr><td colspan="6" style="text-align:center;padding:30px;color:#64748b;">No franchise inquiries</td></tr>`;
     return;
   }
-  inquiries.forEach((inq, i) => {
+  data.forEach(inq => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${inq.fullName || ''}</td>
-      <td>${inq.email    || ''}</td>
-      <td>${inq.contact  || ''}</td>
-      <td>${inq.message  || ''}</td>
-      <td>${inq.date     || ''}</td>
-      <td><button class="action-btn delete-btn" onclick="deleteInquiry(${i})">Delete</button></td>
+      <td>${inq.full_name  || inq.fullName || ''}</td>
+      <td>${inq.email      || ''}</td>
+      <td>${inq.contact    || ''}</td>
+      <td>${inq.message    || ''}</td>
+      <td>${inq.created_at || inq.date || ''}</td>
+      <td>
+        <button class="action-btn delete-btn"
+          onclick="deleteInquiry(${inq.id ?? inq._localIdx ?? 0}, ${!inq.id})">
+          Delete
+        </button>
+      </td>
     `;
     inquiriesBody.appendChild(tr);
   });
 }
 
-renderInquiries();
+function deleteInquiry(id, isLocal = false) {
+  if (!confirm('Delete this inquiry?')) return;
 
-function deleteInquiry(i) {
-  inquiries.splice(i, 1);
-  localStorage.setItem('inquiries', JSON.stringify(inquiries));
-  renderInquiries();
+  if (isLocal) {
+    // localStorage fallback
+    const saved = JSON.parse(localStorage.getItem('inquiries') || '[]');
+    saved.splice(id, 1);
+    localStorage.setItem('inquiries', JSON.stringify(saved));
+    loadInquiries();
+    return;
+  }
+
+  fetch('http://localhost/HTML1/PHP/laundry-shop/FINALWEBSITE/PHP/inquiries.php', {
+    method:  'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ id }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) loadInquiries();
+      else alert('Delete failed.');
+    })
+    .catch(() => alert('Could not reach server.'));
 }
 
 // ══════════════════════════════════════════════════════
@@ -679,25 +725,31 @@ function setupStockListeners() {
 }
 
 const STOCK_IDS = [
-  'stock-soap-ariel','stock-soap-tide','stock-soap-breeze',
-  'stock-soap-surf','stock-soap-pride','stock-soap-wings',
-  'stock-fabcon-downy','stock-fabcon-del','stock-fabcon-champion',
-  'stock-fabcon-surf-fabcon','stock-fabcon-lala-fabcon','stock-fabcon-personal-choice',
-  'stock-wash-quick-wash','stock-wash-deep-clean','stock-wash-premium-wash',
-  'stock-wash-eco-wash','stock-wash-cold-wash','stock-wash-hot-wash'
+  'stock-soap-ariel',         'stock-soap-tide',             'stock-soap-breeze',
+  'stock-soap-surf',          'stock-soap-pride',            'stock-soap-wings',
+  'stock-fabcon-downy',       'stock-fabcon-del',            'stock-fabcon-champion',
+  'stock-fabcon-surf-fabcon', 'stock-fabcon-lala-fabcon',    'stock-fabcon-personal-choice',
+  'stock-wash-quick-wash',    'stock-wash-deep-clean',       'stock-wash-premium-wash',
+  'stock-wash-eco-wash',      'stock-wash-cold-wash',        'stock-wash-hot-wash',
 ];
 
 function savePricing() {
   const flt = (id, def) => parseFloat(document.getElementById(id)?.value) || def;
   const pricingData = {
-    step1: [flt('soap-ariel',20), flt('soap-tide',25), flt('soap-breeze',18),
-            flt('soap-surf',15),  flt('soap-pride',17), flt('soap-wings',16)],
-    step2: [flt('fabcon-downy',30),     flt('fabcon-del',20),          flt('fabcon-champion',22),
-            flt('fabcon-surf-fabcon',18), flt('fabcon-lala-fabcon',15), flt('fabcon-personal-choice',21)],
-    step3: [flt('wash-quick-wash',50), flt('wash-deep-clean',80),   flt('wash-premium-wash',120),
-            flt('wash-eco-wash',60),    flt('wash-cold-wash',40),    flt('wash-hot-wash',70)],
+    step1: [
+      flt('soap-ariel', 20),  flt('soap-tide', 25),  flt('soap-breeze', 18),
+      flt('soap-surf',  15),  flt('soap-pride', 17), flt('soap-wings',  16),
+    ],
+    step2: [
+      flt('fabcon-downy',           30), flt('fabcon-del',              20), flt('fabcon-champion',         22),
+      flt('fabcon-surf-fabcon',     18), flt('fabcon-lala-fabcon',      15), flt('fabcon-personal-choice',  21),
+    ],
+    step3: [
+      flt('wash-quick-wash',   50), flt('wash-deep-clean',    80), flt('wash-premium-wash', 120),
+      flt('wash-eco-wash',     60), flt('wash-cold-wash',     40), flt('wash-hot-wash',      70),
+    ],
     deliveryFee: flt('delivery-fee', 40),
-    kgExtraFee:  flt('kg-extra-fee', 5)
+    kgExtraFee:  flt('kg-extra-fee', 5),
   };
 
   const stockData = {};
@@ -707,7 +759,7 @@ function savePricing() {
   localStorage.setItem('laundryStocks',  JSON.stringify(stockData));
   window.dispatchEvent(new CustomEvent('pricingUpdated'));
 
-  const statusEl = document.getElementById('pricingStatus');
+  const statusEl         = document.getElementById('pricingStatus');
   statusEl.innerHTML     = '✅ <strong>Saved! Pricing and stocks updated.</strong>';
   statusEl.className     = 'pricing-status status-success';
   statusEl.style.display = 'block';
@@ -716,23 +768,25 @@ function savePricing() {
 
 function loadSavedPricing() {
   try {
-    const saved = JSON.parse(localStorage.getItem('laundryPricing'));
+    const saved  = JSON.parse(localStorage.getItem('laundryPricing'));
     const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
     if (saved) {
       const [s1, s2, s3] = [saved.step1 || [], saved.step2 || [], saved.step3 || []];
-      setVal('soap-ariel',   s1[0] || 20); setVal('soap-tide',  s1[1] || 25);
-      setVal('soap-breeze',  s1[2] || 18); setVal('soap-surf',  s1[3] || 15);
-      setVal('soap-pride',   s1[4] || 17); setVal('soap-wings', s1[5] || 16);
-      setVal('fabcon-downy',            s2[0] || 30); setVal('fabcon-del',       s2[1] || 20);
-      setVal('fabcon-champion',         s2[2] || 22); setVal('fabcon-surf-fabcon', s2[3] || 18);
-      setVal('fabcon-lala-fabcon',      s2[4] || 15); setVal('fabcon-personal-choice', s2[5] || 21);
-      setVal('wash-quick-wash',  s3[0] || 50); setVal('wash-deep-clean',   s3[1] || 80);
-      setVal('wash-premium-wash',s3[2] || 120); setVal('wash-eco-wash',    s3[3] || 60);
-      setVal('wash-cold-wash',   s3[4] || 40); setVal('wash-hot-wash',     s3[5] || 70);
+      setVal('soap-ariel',  s1[0] || 20); setVal('soap-tide',   s1[1] || 25);
+      setVal('soap-breeze', s1[2] || 18); setVal('soap-surf',   s1[3] || 15);
+      setVal('soap-pride',  s1[4] || 17); setVal('soap-wings',  s1[5] || 16);
+
+      setVal('fabcon-downy',           s2[0] || 30); setVal('fabcon-del',              s2[1] || 20);
+      setVal('fabcon-champion',        s2[2] || 22); setVal('fabcon-surf-fabcon',      s2[3] || 18);
+      setVal('fabcon-lala-fabcon',     s2[4] || 15); setVal('fabcon-personal-choice',  s2[5] || 21);
+
+      setVal('wash-quick-wash',   s3[0] || 50);  setVal('wash-deep-clean',   s3[1] || 80);
+      setVal('wash-premium-wash', s3[2] || 120); setVal('wash-eco-wash',     s3[3] || 60);
+      setVal('wash-cold-wash',    s3[4] || 40);  setVal('wash-hot-wash',     s3[5] || 70);
+
       setVal('delivery-fee', saved.deliveryFee || 40);
       setVal('kg-extra-fee', saved.kgExtraFee  || 5);
     }
-
     // ── Load stocks (includes BookNow deductions) ──
     const savedStocks = JSON.parse(localStorage.getItem('laundryStocks') || '{}');
     STOCK_IDS.forEach(id => {
@@ -748,12 +802,13 @@ function loadSavedPricing() {
 function resetPricing() {
   if (!confirm('Reset ALL pricing and stocks to defaults?')) return;
   const defaults = {
-    'soap-ariel':20,'soap-tide':25,'soap-breeze':18,'soap-surf':15,'soap-pride':17,'soap-wings':16,
-    'fabcon-downy':30,'fabcon-del':20,'fabcon-champion':22,'fabcon-surf-fabcon':18,
-    'fabcon-lala-fabcon':15,'fabcon-personal-choice':21,
-    'wash-quick-wash':50,'wash-deep-clean':80,'wash-premium-wash':120,
-    'wash-eco-wash':60,'wash-cold-wash':40,'wash-hot-wash':70,
-    'delivery-fee':40,'express-fee':50,'kg-extra-fee':5,'gcash-fee':5
+    'soap-ariel': 20,   'soap-tide': 25,    'soap-breeze': 18,
+    'soap-surf':  15,   'soap-pride': 17,   'soap-wings':  16,
+    'fabcon-downy': 30,          'fabcon-del': 20,           'fabcon-champion': 22,
+    'fabcon-surf-fabcon': 18,    'fabcon-lala-fabcon': 15,   'fabcon-personal-choice': 21,
+    'wash-quick-wash':   50,     'wash-deep-clean': 80,      'wash-premium-wash': 120,
+    'wash-eco-wash':     60,     'wash-cold-wash':  40,      'wash-hot-wash': 70,
+    'delivery-fee': 40, 'express-fee': 50, 'kg-extra-fee': 5, 'gcash-fee': 5,
   };
   Object.entries(defaults).forEach(([id, val]) => {
     const el = document.getElementById(id); if (el) el.value = val;
@@ -769,7 +824,9 @@ document.addEventListener('click', e => {
   }
 });
 
+// ══════════════════════════════════════════════════════
 // LOGOUT
+// ══════════════════════════════════════════════════════
 const logoutBtn = document.querySelector('.logout-btn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', function () {
@@ -790,7 +847,6 @@ function getGcashStatuses() {
 function saveGcashStatuses(obj) {
   localStorage.setItem('gcashPaymentStatuses', JSON.stringify(obj));
 }
-
 function getCashStatuses() {
   try { return JSON.parse(localStorage.getItem('cashPaymentStatuses')) || {}; }
   catch (e) { return {}; }
@@ -832,7 +888,7 @@ function setPayFilter(filter) {
 function setPayStatusFilter(filter) {
   activePayStatusFilter = filter;
   document.querySelectorAll('.pay-filter-btn[data-ps]').forEach(btn => {
-    const isActive = btn.dataset.ps === filter;
+    const isActive        = btn.dataset.ps === filter;
     btn.style.background  = isActive ? '#0077cc' : '';
     btn.style.color       = isActive ? '#fff'    : '';
     btn.style.borderColor = isActive ? '#0077cc' : '';
@@ -850,7 +906,6 @@ function renderPaymentsTab() {
   const cashStatuses  = getCashStatuses();
 
   const allPaymentOrders = latestOrders.filter(o => o.payment === 'GCash' || o.payment === 'Cash');
-
   const total    = allPaymentOrders.length;
   const verified = allPaymentOrders.filter(o => {
     const s = getPaymentStatus(o);
@@ -884,10 +939,10 @@ function renderPaymentsTab() {
   }
 
   tbody.innerHTML = filtered.map(o => {
-    const g         = o.gcash || {};
-    const isGcash   = o.payment === 'GCash';
-    const isCash    = o.payment === 'Cash';
-    const payStatus = getPaymentStatus(o);
+    const g           = o.gcash || {};
+    const isGcash     = o.payment === 'GCash';
+    const isCash      = o.payment === 'Cash';
+    const payStatus   = getPaymentStatus(o);
     const badgeClass  = payStatus.toLowerCase();
     const orderStatus = o.status || 'Pending';
     const hasProof    = isGcash && !!g.proofImage;
@@ -950,7 +1005,7 @@ function renderPaymentsTab() {
             ? `<img class="pay-proof-thumb" src="${g.proofImage}" alt="Proof" title="Click to view" onclick="openPayModal(${realIdx})">`
             : `<span class="pay-no-proof">${isCash ? '—' : 'No screenshot'}</span>`}
         </td>
-        <td><span class="status ${orderStatus.toLowerCase().replace(/\s+/g,'')}">${orderStatus}</span></td>
+        <td><span class="status ${orderStatus.toLowerCase().replace(/\s+/g, '')}">${orderStatus}</span></td>
         <td><span class="pay-badge ${badgeClass}">${payStatus}</span></td>
         <td>
           <div class="pay-action-row">${actionBtns}</div>
@@ -960,8 +1015,8 @@ function renderPaymentsTab() {
 }
 
 function setGcashStatus(ticket, status) {
-  const statuses = getGcashStatuses();
-  statuses[ticket] = status;
+  const statuses    = getGcashStatuses();
+  statuses[ticket]  = status;
   saveGcashStatuses(statuses);
   renderPaymentsTab();
 }
@@ -994,10 +1049,9 @@ function openPayModal(orderIndex) {
   const latestOrders = getLatestOrders();
   const o = latestOrders[orderIndex];
   if (!o) return;
-  const g = o.gcash || {};
+  const g         = o.gcash || {};
   const payStatus = getPaymentStatus(o);
-
-  const modal = document.getElementById('payProofModal');
+  const modal     = document.getElementById('payProofModal');
   if (!modal) return;
 
   document.getElementById('payModalSub').textContent =
