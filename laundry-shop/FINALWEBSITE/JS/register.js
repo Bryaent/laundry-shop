@@ -19,7 +19,7 @@ form.addEventListener("submit", function(e) {
 
     if (data.status === "success") {
 
-  window.location.href = "login.html";
+  window.location.href = "../HTML/login.html";
 
 }
     else if (data.status === "exists") {
@@ -48,3 +48,6 @@ form.addEventListener("submit", function(e) {
   });
 
 });
+
+
+
