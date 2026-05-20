@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $host   = 'localhost';
 $dbname = 'admin_db';
-$user   = 'root';       // change if needed
-$pass   = '';           // change if needed
+$user   = 'root';       
+$pass   = '';           
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
