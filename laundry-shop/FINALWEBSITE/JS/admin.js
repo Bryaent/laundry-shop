@@ -184,6 +184,10 @@ function renderOrders() {
       <td>${o.name    || ''}</td>
       <td>${o.contact || 'N/A'}</td>
       <td>${o.service || ''}</td>
+      <td>${o.soap       || '—'}</td>
+<td>${o.fabcon     || '—'}</td>
+<td>${o.pickupTime || '—'}</td>
+<td>${o.address    || '—'}</td>
       <td>₱${Number(o.amount || 0).toLocaleString()}</td>
       <td><span class="status ${statusClass}">${currentStatus}</span></td>
       <td>${pickup}</td>
@@ -203,7 +207,7 @@ function renderOrders() {
       ? `No orders with status "${activeStatusFilter}"`
       : 'No live orders';
     ordersTable.innerHTML = `
-      <tr><td colspan="9" style="text-align:center;padding:30px;color:#64748b;">${msg}</td></tr>`;
+      <tr><td colspan="13" style="text-align:center;padding:30px;color:#64748b;">${msg}</td></tr>`;
   }
 
   renderCompletedOrders();
@@ -233,7 +237,7 @@ function renderCompletedOrders() {
 
   if (!completedOrders.length) {
     completedOrdersTable.innerHTML = `
-      <tr><td colspan="8" style="text-align:center;padding:30px;color:#64748b;">No completed orders</td></tr>`;
+      <tr><td colspan="12" style="text-align:center;padding:30px;color:#64748b;">No completed orders</td></tr>`;
     removePagination();
     return;
   }
